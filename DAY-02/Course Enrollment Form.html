@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Course Enrollment</title>
+</head>
+
+<body>
+
+    <header>
+        <h1>Online Learning Portal</h1>
+        <p>Enroll in Your Desired Course</p>
+    </header>
+
+    <main>
+
+        <form action="#" method="post">
+
+            <fieldset>
+                <legend>Student Enrollment Details</legend>
+
+                <!-- Full Name -->
+                <label for="name">Full Name:</label><br>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                <br><br>
+
+                <!-- Email -->
+                <label for="email">Email Address:</label><br>
+                <input type="email" id="email" name="email" placeholder="example@email.com" required>
+                <br><br>
+
+                <!-- Phone with pattern validation -->
+                <label for="phone">Phone Number:</label><br>
+                <input type="tel" id="phone" name="phone" placeholder="9876543210" pattern="[0-9]{10}"
+                    title="Enter a valid 10-digit phone number" required>
+                <br><br>
+
+                <!-- Course Selection using datalist -->
+                <label for="course">Choose Course:</label><br>
+                <input list="course-list" id="course" name="course" placeholder="Start typing..." required>
+
+                <datalist id="course-list">
+                    <option value="HTML Fundamentals">
+                    <option value="CSS Advanced">
+                    <option value="JavaScript Basics">
+                    <option value="Java Programming">
+                    <option value="Python Development">
+                    <option value="Full Stack Web Development">
+                </datalist>
+                <br><br>
+
+                <!-- Age -->
+                <label for="age">Age:</label><br>
+                <input type="number" id="age" name="age" min="16" max="60" required>
+                <br><br>
+
+                <!-- Skill Level Range -->
+                <label for="skill">Skill Level (1 - Beginner, 10 - Expert):</label><br>
+                <input type="range" id="skill" name="skill" min="1" max="10" value="5">
+                <br><br>
+
+                <!-- Visual Skill Meter -->
+                <label>Skill Level Indicator:</label><br>
+                <meter min="1" max="10" low="3" high="8" optimum="9" value="5">
+                </meter>
+                <br><br>
+
+                <!-- Enrollment Progress -->
+                <label>Form Completion Status:</label><br>
+                <progress value="80" max="100"></progress>
+                <br><br>
+
+                <!-- Submit -->
+                <input type="submit" value="Enroll Now" onclick="show()">
+
+            </fieldset>
+
+        </form>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Online Learning Portal</p>
+    </footer>
+
+
+    <script>
+        function show() {
+
+            const form = document.querySelector("form");
+
+            if (form.checkValidity()) {
+
+                const name = document.getElementById("name").value;
+
+                alert("Successfully registered, " + name + "!");
+                return false;  // prevents page reload
+
+            } else {
+
+                alert("Please fill all required fields correctly.");
+                return false;
+
+            }
+        }
+    </script>
+</body>
+
+
+</html>

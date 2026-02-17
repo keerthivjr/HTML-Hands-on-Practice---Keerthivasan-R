@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<!-- Declares HTML5 document -->
+
+<html lang="en">
+<!-- Root element, language set to English -->
+
+<head>
+    <meta charset="UTF-8">
+    <!-- Supports special characters -->
+
+    <title>Contact / Registration</title>
+    <!-- Title shown in browser tab -->
+</head>
+
+<body>
+
+    <!-- Navigation section for page links -->
+    <nav>
+        <a href="index.html">Home</a> |
+        <!-- Anchor tag creates hyperlink to Home page -->
+
+        <a href="contact.html">Contact</a>
+        <!-- Link to current Contact page -->
+    </nav>
+
+    <h1>Registration Form</h1>
+    <!-- Main heading -->
+
+    <!-- Form element collects user input -->
+    <form action="#" method="post" onsubmit="return validateForm()" novalidate>
+        <!-- 
+        action="#" → prevents form from submitting to server
+        method="post" → sends data securely
+        onsubmit → calls JavaScript validation function
+        novalidate → disables default browser validation
+        -->
+
+        <fieldset>
+            <!-- Groups related form elements -->
+
+            <legend>Student Registration Form</legend>
+            <!-- Title for fieldset -->
+
+            <!-- Name Input -->
+            <label for="name">Name:</label><br>
+            <!-- Label improves accessibility -->
+
+            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+            <!-- 
+            type="text" → text input
+            placeholder → hint text
+            required → mandatory field
+            -->
+            <br><br>
+
+            <!-- Email Input -->
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+            <!-- type="email" validates email format -->
+            <br><br>
+
+            <!-- Password Input -->
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" placeholder="Create a strong password" required
+                minlength="6">
+            <!-- minlength ensures at least 6 characters -->
+            <br><br>
+
+            <!-- Gender Radio Buttons -->
+            <label>Gender:</label><br>
+
+            <input type="radio" id="male" name="gender" value="Male" required>
+            <label for="male">Male</label>
+
+            <input type="radio" id="female" name="gender" value="Female">
+            <label for="female">Female</label>
+
+            <input type="radio" id="other" name="gender" value="Other">
+            <label for="other">Other</label>
+            <!-- Same name groups radio buttons -->
+            <br><br>
+
+            <!-- Course Dropdown -->
+            <label for="course">Select Course:</label><br>
+            <select id="course" name="course" required>
+                <!-- Dropdown selection -->
+
+                <option value="">-- Select Course --</option>
+                <option value="Java">Java</option>
+                <option value="Python">Python</option>
+                <option value="Web Development">Web Development</option>
+                <option value="Data Science">Data Science</option>
+            </select>
+            <br><br>
+
+            <!-- Submit Button -->
+            <input type="submit" value="Register">
+            <!-- Triggers form submission -->
+
+        </fieldset>
+
+    </form>
+
+    <!-- JavaScript Validation -->
+    <script>
+        function validateForm() {
+
+            // Select the form
+            const form = document.querySelector("form");
+
+            // Check built-in HTML validation
+            if (form.checkValidity()) {
+
+                // Get name value
+                const name = document.getElementById("name").value;
+
+                alert("Successfully registered, " + name + "!");
+
+                return false;
+                // Prevents page reload
+
+            } else {
+
+                alert("Please fill all required fields correctly.");
+                return false;
+            }
+        }
+    </script>
+
+</body>
+
+</html>

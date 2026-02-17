@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!-- Declares HTML5 document -->
+
+<html lang="en">
+<!-- Root element with English language -->
+
+<head>
+    <meta charset="UTF-8">
+    <!-- Supports special characters -->
+
+    <title>Student Registration Form</title>
+    <!-- Title displayed in browser tab -->
+</head>
+
+<body>
+
+    <h1>Student Registration Form</h1>
+    <!-- Main heading -->
+
+    <form action="#" method="post" onsubmit="return validateForm()" novalidate>
+        <!-- 
+        action="#" → No backend submission
+        method="post" → Secure method for sending data
+        onsubmit → Calls JavaScript function
+        novalidate → Disables default browser popup validation
+        -->
+
+        <fieldset>
+            <!-- Groups related form fields -->
+
+            <legend>Register Your Details</legend>
+            <!-- Title for grouped fields -->
+
+            <!-- Full Name -->
+            <label for="name">Full Name:</label><br>
+            <!-- Label improves accessibility -->
+
+            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+            <!-- required makes it mandatory -->
+            <br><br>
+
+            <!-- Email -->
+            <label for="email">Email Address:</label><br>
+
+            <input type="email" id="email" name="email" placeholder="example@email.com" required>
+            <!-- type="email" validates email format -->
+            <br><br>
+
+            <!-- Phone -->
+            <label for="phone">Phone Number:</label><br>
+
+            <input type="tel" id="phone" name="phone" placeholder="9876543210" pattern="[0-9]{10}"
+                title="Enter a 10-digit phone number" required>
+            <!-- 
+            pattern → Regex validation
+            [0-9]{10} → Exactly 10 digits
+            title → Error message shown on invalid input
+            -->
+            <br><br>
+
+            <!-- Age -->
+            <label for="age">Age:</label><br>
+
+            <input type="number" id="age" name="age" min="17" max="60" required>
+            <!-- min and max restrict numeric range -->
+            <br><br>
+
+            <!-- Date of Birth -->
+            <label for="dob">Date of Birth:</label><br>
+
+            <input type="date" id="dob" name="dob" required>
+            <!-- Provides calendar date picker -->
+            <br><br>
+
+            <!-- Submit Button -->
+            <input type="submit" value="Register">
+            <!-- Triggers form submission -->
+
+        </fieldset>
+
+    </form>
+
+    <!-- JavaScript Validation -->
+    <script>
+        function validateForm() {
+
+            const form = document.querySelector("form");
+
+            // Checks built-in HTML5 validation
+            if (form.checkValidity()) {
+
+                const name = document.getElementById("name").value;
+
+                alert("Form successfully submitted, " + name + "!");
+
+                return false; // Prevent page reload
+
+            } else {
+
+                alert("Please fill all required fields correctly.");
+                return false;
+            }
+        }
+    </script>
+
+</body>
+
+</html>
