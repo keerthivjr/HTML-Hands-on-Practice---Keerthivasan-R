@@ -1,0 +1,110 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+/* Header */
+header {
+    background-color: #222;
+    color: white;
+}
+
+/* Navigation Container */
+.nav-container {
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+/* Logo */
+.logo {
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+
+/* Hamburger */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    gap: 30px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 8px 0;
+}
+
+/* Simple hover */
+.navbar a:hover {
+    color: #00bcd4;
+}
+
+/* Main Content */
+.content {
+    padding: 3rem 1rem;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+p {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+/*MOBILE*/
+
+@media screen and (max-width: 768px) {
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .navbar {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: #333;
+    }
+
+    .navbar.active {
+        display: flex;
+    }
+
+    .navbar a {
+        padding: 15px 0;
+        text-align: center;
+        border-top: 1px solid #444;
+    }
+
+    .content {
+        padding: 3rem 1rem;
+        text-align: center;
+    }
+}

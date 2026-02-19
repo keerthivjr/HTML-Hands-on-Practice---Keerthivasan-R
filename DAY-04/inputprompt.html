@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Input Prompt Demo</title>
+</head>
+
+<body>
+    <h1>Input Prompt Demo</h1>
+    <p id="output"></p>
+
+    <script>
+        // using prompt to get a number and perform a calculation
+        /*let num1 = parseFloat(prompt("Enter the first number:"));
+        let num2 = parseFloat(prompt("Enter the second number:"));
+        let sum = num1 + num2;
+        console.log("The sum of " + num1 + " and " + num2 + " is: " + sum);*/
+
+        let input;
+        let number;
+
+        while (true) {
+            input = prompt("Please enter a number:");
+
+            // Exit loop if user clicks "Cancel"
+            if (input === null) {
+                console.log("Input cancelled by the user.");
+                break;
+            }
+
+            number = parseFloat(input);
+
+            if (isNaN(number)) {
+                alert("Invalid input. Please enter a valid number.");
+                console.log("Invalid input. Please enter a valid number.");
+            } else {
+                alert("You entered: " + number);
+                console.log("You entered: " + number);
+            }
+        }
+
+        // Type Coercion Examples
+        let a = "5";
+        console.log(a > 0); // true because "5" is converted to 5
+        console.log(typeof a); // string
+        console.log(a + 10); // "510" because a is a string
+    </script>
+</body>
+
+</html>

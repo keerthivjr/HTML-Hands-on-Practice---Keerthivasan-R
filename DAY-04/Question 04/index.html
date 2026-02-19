@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Title shown in browser tab -->
+    <title>Traffic Signal Simulator</title>
+
+    <!-- Character encoding for proper text display -->
+    <meta charset="UTF-8">
+</head>
+<body>
+
+    <script>
+        // prompt() asks the user to enter a signal color.
+        // The entered value is stored in the variable 'signal'.
+        let signal = prompt("Enter the signal value: ");
+
+        // switch statement is used when we want to compare
+        // one variable with multiple fixed values.
+        switch (signal) {
+
+            // If user enters "red"
+            case "red":
+                // Print "Stop" in the browser console
+                console.log("Stop");
+                break; // Stops further checking once matched
+
+            // If user enters "yellow"
+            case "yellow":
+                console.log("Get Ready");
+                break;
+
+            // If user enters "green"
+            case "green":
+                console.log("Go");
+                break;
+
+            // If input does not match any case above
+            default:
+                console.log("Invalid Signal Value.");
+        }
+    </script>
+
+</body>
+</html>

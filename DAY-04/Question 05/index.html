@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Character encoding -->
+    <meta charset="UTF-8">
+
+    <!-- Makes page responsive on mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title shown in browser tab -->
+    <title>Number Analysis Tool</title>
+</head>
+
+<body>
+    <!-- Page heading -->
+    <h2>Number Analysis Tool</h2>
+
+    <script>
+        // prompt() asks user to enter a number
+        // parseInt() converts the string input into an integer
+        let n = parseInt(prompt("Enter the number : "));
+
+        // Ternary operator is a short form of if-else
+        // It checks whether the number is positive or negative
+        let type = (n >= 0) ? "positive" : "negative";
+
+        // Variable to store even/odd result
+        let parity;
+
+        // If number is negative, we mark it invalid for parity check
+        if (n < 0) {
+            parity = "Invalid number";
+        }
+        // If remainder when divided by 2 is 0 → Even
+        else if (n % 2 === 0) {
+            parity = "Even";
+        }
+        // Otherwise → Odd
+        else {
+            parity = "Odd";
+        }
+
+        // Display numbers from 1 to n
+        document.write("Numbers from 1 to " + n + ":<br>");
+
+        // for loop runs from 1 up to n
+        // i++ increases value by 1 each time
+        for (let i = 1; i <= n; i++) {
+            document.write(i + " ");
+        }
+
+        // Add spacing
+        document.write("<br><br>");
+
+        // Display final results
+        document.write("Number: " + n + "<br>");
+        document.write("Type: " + type + "<br>");
+        document.write("Parity: " + parity);
+    </script>
+
+</body>
+
+</html>

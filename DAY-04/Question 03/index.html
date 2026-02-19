@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Title displayed in the browser tab -->
+    <title>Discount Calculator</title>
+
+    <!-- Defines character encoding -->
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <!-- Heading shown on the webpage -->
+    <h2>Simple Discount Calculator</h2>
+
+    <script>
+        // prompt() asks user to enter purchase amount.
+        // parseInt() converts the entered string value into a number.
+        let amt = parseInt(prompt("Enter the Purchase amt: "));
+
+        // Variable to store calculated discount (initially 0)
+        let discount = 0;
+
+        // Variable to store final amount after discount
+        let finalamt = 0;
+
+        // -------------------------
+        // Discount Calculation Logic
+        // -------------------------
+
+        // If amount is 5000 or more → 20% discount
+        if (amt >= 5000) {
+            discount = amt * 0.20;
+        }
+        // If amount is 3000 or more but less than 5000 → 10% discount
+        else if (amt >= 3000) {
+            discount = amt * 0.10;
+        }
+        // If amount is less than 3000 → no discount
+        else {
+            discount = 0;
+        }
+
+        // -------------------------
+        // Final Amount Calculation
+        // -------------------------
+
+        // Subtract discount from original amount
+        finalamt = amt - discount;
+
+        // -------------------------
+        // Display Results on Webpage
+        // -------------------------
+
+        // document.write() prints output directly to the webpage
+        document.write("Purchase amount: ₹" + amt + "<br>");
+        document.write("Discount: ₹" + discount + "<br>");
+        document.write("Final amt to pay: ₹" + finalamt);
+    </script>
+
+</body>
+
+</html>

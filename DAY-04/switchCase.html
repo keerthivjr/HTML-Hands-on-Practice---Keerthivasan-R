@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Switch Case Scenario</title>
+</head>
+
+<body>
+
+    <h2>Day Finder</h2>
+
+    <p id="output"></p>
+
+    <button onclick="findDay()">Find Day</button>
+
+    <script>
+        function findDay() {
+
+            // Convert input to number
+            let day = parseInt(prompt("Enter the Number of the day (1-7):"));
+            let result = "";
+
+            switch (day) {
+                case 1:
+                    result = "Monday";
+                    break;
+                case 2:
+                    result = "Tuesday";
+                    break;
+                case 3:
+                    result = "Wednesday";
+                    break;
+                case 4:
+                    result = "Thursday";
+                    break;
+                case 5:
+                    result = "Friday";
+                    break;
+                case 6:
+                    result = "Saturday";
+                    break;
+                case 7:
+                    result = "Sunday";
+                    break;
+                default:
+                    result = "Invalid Number! Please enter 1-7.";
+            }
+
+            console.log(result);
+        }
+    </script>
+
+</body>
+
+</html>

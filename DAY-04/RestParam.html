@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Rest Parameter</title>
+</head>
+
+<body>
+    <h2>Rest Parameter Example</h2>
+    <p id="result"></p>
+
+    <script>
+        function sum(...numbers) {
+            return numbers.reduce((total, num) => total + num, 0);
+        }
+
+        document.getElementById("result").innerHTML = sum(10, 20, 30);
+    </script>
+</body>
+
+</html>

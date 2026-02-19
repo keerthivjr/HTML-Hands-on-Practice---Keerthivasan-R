@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>If Condition Scenario</title>
+</head>
+
+<body>
+
+    <h2>Student Result Checker</h2>
+
+    <label>Enter Marks:</label>
+    <button onclick="checkResult()">Check Result</button>
+
+    <script>
+        function checkResult() {
+            let marks = parseInt(prompt("Enter Marks : "));
+            let result = "";
+
+            if (marks >= 90) {
+                result = "Grade A";
+            }
+            else if (marks >= 75) {
+                result = "Grade B";
+            }
+            else if (marks >= 50) {
+                result = "Grade C";
+            }
+            else {
+                result = "Fail";
+            }
+
+            console.log(result)
+        }
+    </script>
+
+</body>
+
+</html>

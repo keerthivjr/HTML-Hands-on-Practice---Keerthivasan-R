@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Title of the webpage shown in browser tab -->
+    <title>Evaluate Grade</title>
+
+    <!-- Defines character encoding so text displays properly -->
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <!-- Heading displayed on the webpage -->
+    <h2>Student Grade Evaluator</h2>
+
+    <script>
+        // prompt() asks the user to enter marks.
+        // parseInt() converts the entered value (string) into an integer number.
+        let marks = parseInt(prompt("Enter the Marks:"));
+
+        // Variable to store the grade result
+        let grade;
+
+        // If marks are 75 or above, assign Grade A
+        if (marks >= 75) {
+            grade = "Grade A";
+        }
+        // If marks are between 60 and 74, assign Grade B
+        else if (marks >= 60) {
+            grade = "Grade B";
+        }
+        // If marks are between 40 and 59, assign Grade C
+        else if (marks >= 40) {
+            grade = "Grade C";
+        }
+        // If marks are below 40, student fails
+        else {
+            grade = "Fail"
+        }
+
+        // console.log() prints output in browser console (for developers/testing)
+        console.log("Marks: ", marks);
+        console.log("Result: ", grade);
+
+        // document.write() displays the result directly on the webpage
+        document.write("Marks: " + marks + "<br>");
+        document.write("Result: " + grade);
+    </script>
+
+</body>
+
+</html>

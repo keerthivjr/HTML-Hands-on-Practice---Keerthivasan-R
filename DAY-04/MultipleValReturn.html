@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Multiple Value Return</title>
+</head>
+
+<body>
+    <h2>Multiple Value Return Demo</h2>
+    <p id="output"></p>
+
+    <script>
+        function calculate(a, b) {
+            let sum = a + b;
+            let difference = a - b;
+            let product = a * b;
+            let quotient = a / b;
+
+            return [sum, difference, product, quotient];
+        }
+
+        let results = calculate(10, 5);
+
+        document.getElementById("output").innerHTML =
+            "Sum: " + results[0] + "<br>" +
+            "Difference: " + results[1] + "<br>" +
+            "Product: " + results[2] + "<br>" +
+            "Quotient: " + results[3];
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Function Hoisting Demo</title>
+</head>
+
+<body>
+
+    <h2>Function Hoisting Example</h2>
+
+    <script>
+        // ✅ Calling function BEFORE declaration
+        let result1 = greet("Venkat");
+
+        // Function Declaration (Hoisted)
+        function greet(name) {
+            return "Hello " + name;
+        }
+
+        // ❌ Function Expression (Not Hoisted)
+        // Uncommenting below line will cause error
+        // let result2 = sayHi("Venkat");
+
+        var sayHi = function (name) {
+            return "Hi " + name;
+        };
+
+        let result2 = sayHi("Venkat");
+
+        // Console Output
+        console.log("Function Declaration:", result1);
+        console.log("Function Expression:", result2);
+    </script>
+
+</body>
+
+</html>

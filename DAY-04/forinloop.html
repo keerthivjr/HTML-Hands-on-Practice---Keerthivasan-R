@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>For...in Loop Demo</title>
+</head>
+
+<body>
+
+    <h2>For...in Loop Demo</h2>
+    <p id="output"></p>
+
+    <script>
+        let outputText = "";
+
+        // Object Example
+        let person = {
+            name: "Alice",
+            age: 30,
+            city: "New York"
+        };
+
+        outputText += "<b>Object Properties:</b><br>";
+
+        for (let key in person) {
+            outputText += key + " : " + person[key] + "<br>";
+        }
+
+        outputText += "<br><b>Array Values:</b><br>";
+
+        // Array Example
+        let numbers = [10, 20, 30, 40, 50];
+
+        for (let index in numbers) {
+            outputText += index + " : " + numbers[index] + "<br>";
+        }
+
+        document.getElementById("output").innerHTML = outputText;
+    </script>
+
+</body>
+
+</html>
