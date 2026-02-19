@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Descendant Combinators</title>
+    <style>
+        /* Only targets <p> tags inside a <div> */
+        div p {
+            color: red;
+            font-style: italic;
+        }
+
+        /* Targets <p> tags anywhere else */
+        p {
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <p>I am a normal paragraph.</p>
+
+    <div>
+        <p>I am a descendant paragraph (inside a div).</p>
+    </div>
+</body>
+
+</html>

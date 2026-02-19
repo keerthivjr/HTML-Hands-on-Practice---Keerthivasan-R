@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<!-- Declares HTML5 document type -->
+
+<html>
+<head>
+
+    <!-- Makes layout responsive on mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Responsive Blog</title>
+
+    <style>
+
+        /* Body Styling */
+        body {
+            margin: 0;
+            /* Removes default browser margin */
+
+            font-family: Arial, sans-serif;
+            /* Sets default font */
+
+            background-color: #f4f4f4;
+            /* Light background color */
+        }
+
+        /* Header Section */
+        header {
+            background-color: #333;
+            /* Dark background */
+
+            color: white;
+            /* White text */
+
+            padding: 1.5rem;
+            /* Space inside header */
+
+            text-align: center;
+            /* Centers text horizontally */
+        }
+
+        header h1 {
+            margin: 0;
+            /* Removes default margin */
+
+            font-size: 2rem;
+            /* Controls heading size */
+        }
+
+        /* Container for blog cards */
+        .container {
+            display: flex;
+            /* Enables flexbox layout */
+
+            flex-wrap: wrap;
+            /* Allows items to wrap to next row */
+
+            gap: 1.5rem;
+            /* Space between cards */
+
+            padding: 2rem;
+            /* Outer spacing */
+
+            justify-content: center;
+            /* Centers cards horizontally */
+        }
+
+        /* Individual Blog Card */
+        .card {
+            background-color: white;
+
+            padding: 1.5rem;
+
+            border: 1px solid #ddd;
+
+            border-radius: 10px;
+
+            box-sizing: border-box;
+            /* Includes padding and border inside width */
+
+            flex: 1 1 300px;
+            /*
+            flex-grow: 1
+            flex-shrink: 1
+            flex-basis: 300px
+            Automatically adjusts width
+            */
+
+            max-width: 400px;
+            /* Prevents card from becoming too wide */
+
+            transition: 0.3s;
+            /* Smooth animation */
+        }
+
+        /* Hover effect */
+        .card:hover {
+            transform: translateY(-5px);
+            /* Moves card slightly upward */
+        }
+
+        /* Card Heading */
+        .card h3 {
+            margin-top: 0;
+            /* Removes extra space at top */
+
+            font-size: 1.3rem;
+        }
+
+        /* Card Paragraph */
+        .card p {
+            line-height: 1.6;
+            /* Improves readability */
+
+            font-size: 0.95rem;
+        }
+
+        /* Button Styling */
+        .btn {
+            display: inline-block;
+            /* Allows padding and margin */
+
+            padding: 0.5rem 1rem;
+
+            background-color: #007BFF;
+
+            color: white;
+
+            text-decoration: none;
+            /* Removes underline */
+
+            border-radius: 5px;
+
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+            /* Darker blue on hover */
+        }
+
+        /* ---------------- Responsive Design ---------------- */
+
+        /* Tablet View */
+        @media (max-width: 992px) {
+            header h1 {
+                font-size: 1.8rem;
+                /* Slightly smaller heading */
+            }
+        }
+
+        /* Mobile View */
+        @media (max-width: 600px) {
+
+            .container {
+                padding: 1rem;
+                /* Reduce spacing */
+            }
+
+            .card {
+                flex: 1 1 100%;
+                /* Full width cards */
+
+                max-width: 100%;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+                /* Smaller heading for small screens */
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Header contains blog title -->
+    <header>
+        <h1>My Blog</h1>
+    </header>
+
+    <!-- Container holds multiple blog cards -->
+    <div class="container">
+
+        <!-- Blog Card 1 -->
+        <div class="card">
+            <h3>Article One</h3>
+            <p>This is a short blog description explaining the topic in a clean and responsive layout.</p>
+            <a href="#" class="btn">Read More</a>
+        </div>
+
+        <!-- Blog Card 2 -->
+        <div class="card">
+            <h3>Article Two</h3>
+            <p>This article demonstrates how flexbox automatically adjusts to screen size.</p>
+            <a href="#" class="btn">Read More</a>
+        </div>
+
+        <!-- Blog Card 3 -->
+        <div class="card">
+            <h3>Article Three</h3>
+            <p>Modern layouts should adapt smoothly across devices of all sizes.</p>
+            <a href="#" class="btn">Read More</a>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

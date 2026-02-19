@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Grid Layout 2</title>
+    <style>
+        .wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        .box {
+            background: teal;
+            color: white;
+            padding: 20px;
+        }
+
+        .box1 {
+            grid-column: 1 / 4;
+            /* Spans all 3 columns */
+            background: darkslategray;
+        }
+
+        .box2 {
+            grid-row: 2 / 4;
+            /* Spans 2 rows */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="box box1">Header (Spans 3)</div>
+        <div class="box box2">Sidebar (Spans 2 rows)</div>
+        <div class="box">Content A</div>
+        <div class="box">Content B</div>
+        <div class="box">Content C</div>
+        <div class="box">Content D</div>
+    </div>
+</body>
+
+</html>

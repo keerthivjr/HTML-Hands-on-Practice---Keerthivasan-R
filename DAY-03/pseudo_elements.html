@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pseudo Elements</title>
+    <style>
+        /* Pseudo-class */
+        button:hover {
+            background-color: yellow;
+            cursor: pointer;
+        }
+
+        /* Pseudo-element */
+        li::before {
+            content: "👉 ";
+            /* Adds emoji before every list item */
+        }
+
+        p::first-line {
+            font-weight: bold;
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <button>Hover Me</button>
+    <ul>
+        <li>Item One</li>
+        <li>Item Two</li>
+    </ul>
+    <p>This is a paragraph.<br>The first line is styled differently.</p>
+</body>
+
+</html>

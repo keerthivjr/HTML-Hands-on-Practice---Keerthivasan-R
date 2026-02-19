@@ -1,0 +1,174 @@
+/* Universal Selector */
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    /* Applies default font to entire page */
+
+    box-sizing: border-box;
+    /* Includes padding & border inside element's total width/height
+       Makes layout easier to control */
+}
+
+/* ---------------- TEXT STYLES ---------------- */
+
+/* h1 - Main Heading */
+h1 {
+    font-family: 'Arial', sans-serif;
+    /* Sets font type */
+
+    color: #54a9fd;
+    /* Sets text color */
+
+    font-size: 36px;
+    /* Controls size of heading */
+
+    text-align: center;
+    /* Aligns text to center */
+}
+
+/* h2 - Subheading */
+h2 {
+    font-family: 'Verdana', sans-serif;
+    color: #41e0c0;
+    font-size: 28px;
+    text-align: center;
+}
+
+/* h3 - Section Heading */
+h3 {
+    font-family: 'Georgia', serif;
+    /* Serif font gives different style look */
+
+    color: #ca65f5;
+}
+
+/* Paragraph Styling */
+p {
+    font-family: 'Tahoma', sans-serif;
+    color: #8aaccf;
+    font-size: 16px;
+
+    line-height: 1.6;
+    /* Controls spacing between lines for readability */
+}
+
+
+/* ---------------- SECTION STYLING ---------------- */
+
+.styled-section {
+    background-color: #ffcc00;
+    /* Adds background color */
+
+    border: 2px solid #ff8d2a;
+    /* Adds border around section */
+
+    padding: 20px;
+    /* Space inside the section */
+
+    margin: 20px 0;
+    /* Space outside section (top & bottom only) */
+}
+
+
+/* ---------------- BOX MODEL DEMO ---------------- */
+
+.box-model-demo {
+    background-color: #ecf0f186;
+    /* Light background */
+
+    border: 2px dashed #48b6ff;
+    /* Dashed border style */
+
+    padding: 30px;
+    /* Space inside div (content to border) */
+
+    margin: 40px;
+    /* Space outside div (between elements) */
+
+    text-align: center;
+    /* Centers text inside box */
+}
+
+
+/* ---------------- FORM STYLING ---------------- */
+
+.signup-form {
+    background-color: #bdc3c7;
+    /* Background for form container */
+
+    padding: 20px;
+    /* Inner spacing */
+
+    border-radius: 8px;
+    /* Rounds the corners */
+
+    max-width: 400px;
+    /* Limits form width */
+
+    margin: 0 auto;
+    /* Centers form horizontally */
+}
+
+
+/* Label Styling */
+.signup-form label {
+    display: block;
+    /* Makes label take full width */
+
+    margin-top: 10px;
+    /* Adds spacing above label */
+
+    font-weight: bold;
+    /* Makes text bold */
+}
+
+
+/* Input and Select Styling */
+.signup-form input,
+.signup-form select {
+    width: 100%;
+    /* Makes input full width of container */
+
+    padding: 8px;
+    /* Inner spacing */
+
+    margin-top: 5px;
+    /* Space above input */
+
+    border: 1px solid #bebebe;
+    /* Adds border */
+
+    border-radius: 4px;
+    /* Slight rounded corners */
+}
+
+
+/* Submit Button */
+.signup-form button {
+    margin-top: 15px;
+    /* Space above button */
+
+    padding: 10px 20px;
+    /* Vertical & horizontal spacing inside button */
+
+    background-color: #4bff96;
+    /* Button background */
+
+    color: white;
+    /* Text color */
+
+    border: none;
+    /* Removes default border */
+
+    border-radius: 4px;
+    /* Rounded corners */
+
+    cursor: pointer;
+    /* Changes cursor to hand icon on hover */
+}
+
+
+/* Hover Effect */
+.signup-form button:hover {
+    background-color: #1c9950;
+    /* Changes color when mouse hovers over button */
+}

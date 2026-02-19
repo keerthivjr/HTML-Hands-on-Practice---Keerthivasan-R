@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<!-- Declares HTML5 document type -->
+
+<html>
+<!-- Root element of the webpage -->
+
+<head>
+    <title>Profile Card</title>
+    <!-- Title displayed in browser tab -->
+
+    <style>
+        /* Internal CSS styling (used for small projects or demos) */
+
+        body {
+            background-color: #f4f4f4;
+            /* Light gray background for page */
+
+            font-family: Arial, sans-serif;
+            /* Sets default font */
+
+            margin: 0;
+            /* Removes default browser margin */
+
+            padding: 50px;
+            /* Adds spacing around content */
+
+            text-align: center;
+            /* Centers inline content horizontally */
+        }
+
+        .card {
+            background-color: white;
+            /* Card background */
+
+            width: 300px;
+            /* Fixed width for card */
+
+            margin: 0 auto;
+            /* Centers card horizontally */
+
+            padding: 25px;
+            /* Space inside card */
+
+            border: 2px solid #ddd;
+            /* Light border around card */
+
+            border-radius: 12px;
+            /* Rounded corners */
+        }
+
+        .card h2 {
+            margin-bottom: 5px;
+            /* Space below name */
+
+            font-size: 24px;
+            /* Heading size */
+
+            font-weight: bold;
+            /* Bold text */
+
+            letter-spacing: 1px;
+            /* Adds spacing between letters */
+        }
+
+        .role {
+            color: #555;
+            /* Gray color for role */
+
+            font-size: 16px;
+
+            font-weight: 600;
+            /* Semi-bold text */
+
+            margin-bottom: 15px;
+        }
+
+        .bio {
+            font-size: 14px;
+
+            line-height: 1.6;
+            /* Improves readability */
+
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            /* Allows padding & margin like block element */
+
+            padding: 10px 20px;
+            /* Button spacing */
+
+            background-color: #007BFF;
+            /* Blue button background */
+
+            color: white;
+            /* Text color */
+
+            text-decoration: none;
+            /* Removes underline from link */
+
+            border-radius: 6px;
+            /* Rounded corners */
+
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+            /* Darker blue on hover */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Contains visible webpage content -->
+
+    <div class="card">
+        <!-- div used as container for profile card component -->
+
+        <h2>keerthivasan</h2>
+        <!-- Main name heading -->
+
+        <div class="role">
+            Frontend Developer
+        </div>
+        <!-- Role description (separate div for styling control) -->
+
+        <p class="bio">
+            <!-- Paragraph for profile description -->
+            Passionate about creating clean and responsive web designs.
+            Loves building modern UI experiences.
+        </p>
+
+        <a href="#" class="btn">
+            Contact
+        </a>
+        <!-- Anchor styled as button -->
+    </div>
+
+</body>
+
+</html>

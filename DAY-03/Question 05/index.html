@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<!-- HTML5 document declaration -->
+
+<html>
+<head>
+
+    <!-- Makes layout responsive on mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Responsive Dashboard with Toggle</title>
+
+    <style>
+
+        /* ---------------- Base Styling ---------------- */
+
+        body {
+            margin: 0;
+            /* Removes default browser margin */
+
+            font-family: Arial, sans-serif;
+
+            background-color: #f4f6f9;
+        }
+
+        /* ---------------- Toggle Button ---------------- */
+
+        .menu-toggle {
+            display: none;
+            /* Hides the checkbox (used only for logic) */
+        }
+
+        .menu-icon {
+            display: none;
+            /* Hidden on desktop */
+
+            background-color: #222;
+            color: white;
+
+            padding: 15px;
+
+            font-size: 22px;
+
+            cursor: pointer;
+            /* Changes cursor to hand */
+        }
+
+        /* ---------------- Layout Container ---------------- */
+
+        .dashboard {
+            display: flex;
+            /* Flexbox layout for sidebar + main */
+
+            min-height: 100vh;
+            /* Full viewport height */
+        }
+
+        /* ---------------- Sidebar ---------------- */
+
+        .sidebar {
+            background-color: #222;
+
+            color: white;
+
+            padding: 2rem 1.5rem;
+
+            width: 240px;
+
+            box-sizing: border-box;
+
+            transition: 0.3s;
+            /* Smooth slide animation */
+        }
+
+        .sidebar h2 {
+            margin-top: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            /* Removes bullets */
+
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 1rem;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .sidebar ul li:hover {
+            color: #ff7300;
+            /* Highlight menu item on hover */
+        }
+
+        /* ---------------- Main Content ---------------- */
+
+        .main {
+            flex: 1;
+            /* Takes remaining space */
+
+            padding: 2rem;
+
+            display: flex;
+
+            flex-wrap: wrap;
+            /* Cards wrap on smaller screens */
+
+            gap: 1.5rem;
+        }
+
+        .card {
+            background-color: white;
+
+            padding: 1.5rem;
+
+            border-radius: 10px;
+
+            border: 1px solid #ddd;
+
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+
+            flex: 1 1 250px;
+            /* Responsive card width */
+        }
+
+        /* ---------------- Mobile Styles ---------------- */
+
+        @media (max-width: 768px) {
+
+            .menu-icon {
+                display: block;
+                /* Show hamburger icon on mobile */
+            }
+
+            .dashboard {
+                flex-direction: column;
+                /* Stack sidebar + main vertically */
+            }
+
+            .sidebar {
+                position: absolute;
+
+                top: 55px;
+
+                left: -100%;
+                /* Hide sidebar off screen */
+
+                width: 200px;
+
+                height: 100%;
+            }
+
+            /* 
+            When checkbox is checked,
+            move sidebar into view
+            */
+            .menu-toggle:checked ~ .dashboard .sidebar {
+                left: 0;
+            }
+
+            .main {
+                padding: 1rem;
+            }
+
+            .card {
+                flex: 1 1 100%;
+                /* Cards full width on mobile */
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Hidden Checkbox (Controls Sidebar Visibility) -->
+    <input type="checkbox" id="menu-toggle" class="menu-toggle">
+
+    <!-- Label acts as toggle button -->
+    <label for="menu-toggle" class="menu-icon">
+        &#9776; Menu
+        <!-- Unicode hamburger icon -->
+    </label>
+
+    <!-- Main Dashboard Layout -->
+    <div class="dashboard">
+
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <h2>Admin Panel</h2>
+
+            <ul>
+                <li>Dashboard</li>
+                <li>Users</li>
+                <li>Reports</li>
+                <li>Settings</li>
+            </ul>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main">
+
+            <div class="card">Total Users: 1200</div>
+            <div class="card">Revenue: $8,500</div>
+            <div class="card">New Orders: 75</div>
+            <div class="card">Active Sessions: 320</div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

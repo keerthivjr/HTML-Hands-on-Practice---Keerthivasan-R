@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<!-- Declares HTML5 document -->
+
+<html>
+
+<head>
+
+    <!-- Makes website responsive on mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Product Features</title>
+
+    <style>
+        /* Body Styling */
+        body {
+            font-family: Verdana, sans-serif;
+            /* Sets default font */
+
+            background-color: #f4f6f9;
+            /* Light background */
+
+            margin: 0;
+            /* Removes default browser margin */
+
+            padding: 2rem;
+            /* Adds spacing around page content */
+        }
+
+        /* Main Section Container */
+        section {
+            max-width: 900px;
+            /* Limits content width for better readability */
+
+            margin: auto;
+            /* Centers section horizontally */
+        }
+
+        /* Heading Style */
+        h2 {
+            text-align: center;
+            /* Centers heading */
+
+            margin-bottom: 2rem;
+            /* Space below heading */
+
+            font-size: 2rem;
+            /* Responsive font size using rem */
+
+            letter-spacing: 1px;
+            /* Adds spacing between letters */
+        }
+
+        /* Unordered List Layout */
+        ul {
+            list-style: none;
+            /* Removes default bullets */
+
+            padding: 0;
+            margin: 0;
+
+            display: flex;
+            /* Enables flexbox layout */
+
+            flex-wrap: wrap;
+            /* Allows items to wrap to next line */
+
+            gap: 20px;
+            /* Space between flex items */
+        }
+
+        /* List Item Styling */
+        ul li {
+            background-color: #ffffff;
+
+            flex: 1 1 250px;
+            /* 
+            flex-grow: 1 → Can grow
+            flex-shrink: 1 → Can shrink
+            flex-basis: 250px → Default width
+            */
+
+            padding: 20px;
+
+            border: 2px solid #ddd;
+
+            border-radius: 10px;
+
+            color: #333;
+
+            font-size: 1rem;
+
+            line-height: 1.6;
+
+            transition: 0.3s ease;
+            /* Smooth animation effect */
+
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            /* Soft shadow effect */
+        }
+
+        /* Hover Effect */
+        ul li:hover {
+            background-color: #007BFF;
+
+            color: white;
+
+            border-color: #007BFF;
+
+            transform: translateY(-5px);
+            /* Moves card slightly upward */
+
+            /* Creates interactive feel */
+        }
+
+        /* ---------------- Responsive Design ---------------- */
+
+        /* Tablet View */
+        @media (max-width: 768px) {
+            h2 {
+                font-size: 1.6rem;
+                /* Smaller heading for tablets */
+            }
+        }
+
+        /* Mobile View */
+        @media (max-width: 500px) {
+
+            body {
+                padding: 1rem;
+                /* Reduce outer spacing */
+            }
+
+            ul {
+                flex-direction: column;
+                /* Stack items vertically */
+            }
+
+            ul li {
+                flex: 1 1 100%;
+                /* Each item takes full width */
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <section>
+        <!-- Groups related feature content -->
+
+        <h2>Product Features</h2>
+
+        <ul>
+            <!-- List used to represent feature items -->
+
+            <li>Fast Performance with optimized loading speed.</li>
+            <li>Fully Responsive Design across all devices.</li>
+            <li>User-Friendly Interface with intuitive navigation.</li>
+            <li>Secure Authentication system with encryption.</li>
+            <li>Cloud Integration for seamless data access.</li>
+        </ul>
+
+    </section>
+
+</body>
+
+</html>

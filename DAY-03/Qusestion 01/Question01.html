@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!-- Declares the document type and tells the browser this is HTML5 -->
+
+<html lang="en">
+<!-- Root element of the webpage. 
+     lang="en" helps with accessibility and SEO -->
+
+<head>
+    <meta charset="UTF-8">
+    <!-- Sets character encoding to UTF-8 
+         so special characters display correctly -->
+
+    <title>Styled Webpage Example</title>
+    <!-- Title shown in the browser tab -->
+
+    <!-- Link external CSS file to separate styling from structure -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Contains all visible content of the webpage -->
+
+    <!-- Header Section -->
+    <header>
+        <!-- Semantic tag used for introductory content or headings -->
+
+        <h1>Welcome to My Styled Page</h1>
+        <!-- Main heading (most important heading on page) -->
+
+        <h2>Subheading with Styling</h2>
+        <!-- Secondary heading for structured content -->
+
+        <p>This paragraph introduces the webpage and demonstrates text styling.</p>
+        <!-- Paragraph tag used for normal text content -->
+    </header>
+
+    <!-- Main Section with Background and Borders -->
+    <section class="styled-section">
+        <!-- Section groups related content together.
+             class is used to apply CSS styling -->
+
+        <h3>Section Title</h3>
+        <!-- Third-level heading inside section -->
+
+        <p>This section has a background color, border, and padding to show styling effects.</p>
+    </section>
+
+    <!-- Box Model Demonstration -->
+    <div class="box-model-demo">
+        <!-- div is a generic container used mainly for styling and layout -->
+
+        <p>
+            This div demonstrates
+            <strong>margin</strong>
+            <!-- strong tag makes text bold and adds importance -->
+
+            and
+            <strong>padding</strong>.
+        </p>
+    </div>
+
+    <!-- Form Section -->
+    <section>
+        <!-- Section groups form-related content -->
+
+        <h3>Sign Up Form</h3>
+
+        <form class="signup-form">
+            <!-- form is used to collect user input.
+                 class allows CSS styling -->
+
+            <label for="name">Name:</label>
+            <!-- label improves accessibility.
+                 for attribute connects label to input id -->
+
+            <input type="text" id="name" name="name" placeholder="Enter your name">
+            <!-- input field for text entry.
+                 id links to label.
+                 name used when submitting data.
+                 placeholder shows hint text -->
+
+            <label for="email">Email:</label>
+
+            <input type="email" id="email" name="email" placeholder="Enter your email">
+            <!-- type="email" ensures proper email format validation -->
+
+            <label for="course">Course:</label>
+
+            <select id="course" name="course">
+                <!-- select creates dropdown list -->
+
+                <option value="">
+                    Select a course
+                </option>
+                <!-- option defines selectable item -->
+
+                <option value="java">Java</option>
+                <option value="python">Python</option>
+                <option value="web">Web Development</option>
+            </select>
+
+            <button type="submit">Submit</button>
+            <!-- button submits the form data -->
+        </form>
+    </section>
+
+</body>
+
+</html>
