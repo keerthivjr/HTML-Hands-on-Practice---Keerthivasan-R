@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Title shown in browser tab -->
+    <title>Location Logger</title>
+</head>
+
+<!-- loadHistory() runs automatically when page loads -->
+<body onload="loadHistory()">
+
+    <h2>Location Logger</h2>
+
+    <!-- Button to get current location -->
+    <button onclick="getLocation()">Get My Location</button>
+
+    <!-- Paragraph to display current location or error -->
+    <p id="output"></p>
+
+    <h3>Location History</h3>
+
+    <!-- List to display previous locations -->
+    <ul id="history"></ul>
+
+    <script>
+
+        // Function called when button is clicked
+        function getLocation() {
+
+            /*
+              navigator.geolocation is a browser API
+              getCurrentPosition() gets the user's current location.
+              It takes two callbacks:
+              1. success → if location is retrieved
+              2. error → if permission denied or failed
+            */
+            navigator.geolocation.getCurrentPosition(success, error);
+        }
+
+        // Runs if location is successfully retrieved
+        function success(position) {
+
+            // Extract latitude and longitude from position object
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
+
+            // Display current coordinates on screen
+            document.getElementById("output").innerText =
+                "Latitude: " + lat + " | Longitude: " + lon;
+
+            /*
+              Get stored locations from localStorage.
+              JSON.parse converts string back to array.
+              If no data exists, use empty array [].
+            */
+            let locations = JSON.parse(localStorage.getItem("locations")) || [];
+
+            // Add new location object to array
+            locations.push({
+                lat,
+                lon,
+                time: new Date().toLocaleString()  // store current date & time
+            });
+
+            // Keep only last 5 locations
+            if (locations.length > 5) {
+                locations.shift(); // removes oldest entry
+            }
+
+            // Convert array to string and store in localStorage
+            localStorage.setItem("locations", JSON.stringify(locations));
+
+            // Reload history list on screen
+            loadHistory();
+        }
+
+        // Runs if there is an error (e.g., permission denied)
+        function error(err) {
+
+            // Display error message
+            document.getElementById("output").innerText =
+                "Error: " + err.message;
+        }
+
+        // Loads and displays saved location history
+        function loadHistory() {
+
+            // Retrieve saved locations from storage
+            let locations = JSON.parse(localStorage.getItem("locations")) || [];
+
+            let historyList = document.getElementById("history");
+
+            // Clear existing list before reloading
+            historyList.innerHTML = "";
+
+            // Loop through each saved location
+            locations.forEach(loc => {
+
+                // Create new list item
+                let li = document.createElement("li");
+
+                // Display latitude, longitude and time
+                li.innerText = `${loc.lat}, ${loc.lon} (${loc.time})`;
+
+                // Add item to unordered list
+                historyList.appendChild(li);
+            });
+        }
+
+    </script>
+
+</body>
+
+</html>

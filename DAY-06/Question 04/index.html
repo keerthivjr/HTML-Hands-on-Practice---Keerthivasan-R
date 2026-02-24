@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Title shown in browser tab -->
+    <title>Mini Expense Tracker (IndexedDB)</title>
+
+    <!-- Basic styling for better UI appearance -->
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f4f4f4;
+            padding: 30px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 6px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 80%;
+            background: white;
+        }
+
+        th,
+        td {
+            border: 1px solid #999;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Mini Expense Tracker (IndexedDB)</h2>
+
+    <!-- Input fields to collect expense details -->
+    <input type="text" id="title" placeholder="Expense Title">
+    <input type="number" id="amount" placeholder="Amount">
+    <input type="date" id="date">
+
+    <br><br>
+
+    <!-- Buttons to trigger add and view operations -->
+    <button onclick="addExpense()">Add Expense</button>
+    <button onclick="viewExpenses()">View Expenses</button>
+
+    <h3>Expense List</h3>
+
+    <!-- Table to display expenses -->
+    <table id="expenseTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+
+        // Variable to store database reference
+        let db;
+
+        /*
+          Open IndexedDB database
+          "ExpenseDB" → database name
+          1 → version number
+        */
+        let request = indexedDB.open("ExpenseDB", 1);
+
+        /*
+          onupgradeneeded runs only when:
+          - Database is created first time
+          - Version number changes
+          Used to create objectStore (like table)
+        */
+        request.onupgradeneeded = function (event) {
+            db = event.target.result;
+
+            // Create objectStore if it doesn't exist
+            if (!db.objectStoreNames.contains("expenses")) {
+                db.createObjectStore("expenses", {
+                    keyPath: "id",        // Primary key
+                    autoIncrement: true  // Automatically increment ID
+                });
+            }
+        };
+
+        // Runs when database opens successfully
+        request.onsuccess = function (event) {
+            db = event.target.result;
+            viewExpenses(); // Automatically load stored data
+        };
+
+        // Runs if database fails to open
+        request.onerror = function (event) {
+            alert("Database Error: " + event.target.errorCode);
+        };
+
+        /*
+          INSERT Operation
+          Adds new expense record
+        */
+        function addExpense() {
+
+            // Get input values
+            let title = document.getElementById("title").value;
+            let amount = document.getElementById("amount").value;
+            let date = document.getElementById("date").value;
+
+            // Basic validation
+            if (title === "" || amount === "" || date === "") {
+                alert("Please fill all fields");
+                return;
+            }
+
+            // Create transaction (readwrite required for insert)
+            let transaction = db.transaction(["expenses"], "readwrite");
+
+            // Access objectStore
+            let store = transaction.objectStore("expenses");
+
+            // Create expense object
+            let expense = {
+                title: title,
+                amount: amount,
+                date: date
+            };
+
+            // Add record to store
+            let addRequest = store.add(expense);
+
+            // If insertion successful
+            addRequest.onsuccess = function () {
+                alert("Expense Added Successfully!");
+
+                // Clear input fields
+                document.getElementById("title").value = "";
+                document.getElementById("amount").value = "";
+                document.getElementById("date").value = "";
+
+                viewExpenses(); // Refresh table
+            };
+
+            // If insertion fails
+            addRequest.onerror = function (event) {
+                alert("Insert Error: " + event.target.error);
+            };
+        }
+
+        /*
+          SELECT Operation
+          Fetch all records using getAll()
+        */
+        function viewExpenses() {
+
+            // readonly transaction for fetching data
+            let transaction = db.transaction(["expenses"], "readonly");
+            let store = transaction.objectStore("expenses");
+
+            let getRequest = store.getAll();
+
+            getRequest.onsuccess = function (event) {
+
+                let expenses = event.target.result;
+                let tableBody = document.querySelector("#expenseTable tbody");
+
+                // Clear existing rows before reloading
+                tableBody.innerHTML = "";
+
+                // Loop through each expense
+                expenses.forEach(function (expense) {
+
+                    // Create table row dynamically
+                    let row = `
+                <tr>
+                    <td>${expense.id}</td>
+                    <td>${expense.title}</td>
+                    <td>${expense.amount}</td>
+                    <td>${expense.date}</td>
+                    <td>
+                        <button onclick="deleteExpense(${expense.id})">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            `;
+
+                    tableBody.innerHTML += row;
+                });
+            };
+
+            getRequest.onerror = function (event) {
+                alert("Select Error: " + event.target.error);
+            };
+        }
+
+        /*
+          DELETE Operation
+          Deletes record using ID
+        */
+        function deleteExpense(id) {
+
+            let transaction = db.transaction(["expenses"], "readwrite");
+            let store = transaction.objectStore("expenses");
+
+            let deleteRequest = store.delete(id);
+
+            deleteRequest.onsuccess = function () {
+                viewExpenses(); // Refresh table after deletion
+            };
+
+            deleteRequest.onerror = function (event) {
+                alert("Delete Error: " + event.target.error);
+            };
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Title shown in the browser tab -->
+    <title>Registration Form</title>
+</head>
+
+<body>
+
+    <!-- Form heading -->
+    <h2>Registration Form</h2>
+
+    <!-- Name input field -->
+    <!-- onchange triggers validation when user leaves the field -->
+    Name: <input type="text" id="name" onchange="validateName()"><br><br>
+
+    <!-- Email input field -->
+    Email: <input type="text" id="email" onchange="validateEmail()"><br><br>
+
+    <!-- Age input field -->
+    Age: <input type="number" id="age" onchange="validateAge()"><br><br>
+
+    <!-- Submit button -->
+    <!-- Calls submitForm() when clicked -->
+    <button onclick="submitForm()">Submit</button>
+
+    <!-- Paragraph to show validation error messages -->
+    <p id="message" style="color:red;"></p>
+
+    <script>
+
+        /* 
+           Boolean flags to track whether each field is valid.
+           These help ensure form is submitted ONLY when all fields are correct.
+        */
+        let isValidName = false;
+        let isValidEmail = false;
+        let isValidAge = false;
+
+        // Function to validate Name field
+        function validateName() {
+
+            // Get value entered in name input
+            let name = document.getElementById("name").value;
+
+            // trim() removes extra spaces
+            if (name.trim() === "") {
+                // Show error if empty
+                document.getElementById("message").innerText = "Name cannot be empty";
+                isValidName = false;
+            } else {
+                // Clear error if valid
+                document.getElementById("message").innerText = "";
+                isValidName = true;
+            }
+        }
+
+        // Function to validate Email field
+        function validateEmail() {
+
+            // Get email input value
+            let email = document.getElementById("email").value;
+
+            // Simple validation: email must contain '@'
+            if (!email.includes("@")) {
+                document.getElementById("message").innerText = "Invalid email";
+                isValidEmail = false;
+            } else {
+                document.getElementById("message").innerText = "";
+                isValidEmail = true;
+            }
+        }
+
+        // Function to validate Age field
+        function validateAge() {
+
+            // Get age value
+            let age = document.getElementById("age").value;
+
+            // Age condition check
+            if (age <= 18) {
+                document.getElementById("message").innerText = "Age must be greater than 18";
+                isValidAge = false;
+            } else {
+                document.getElementById("message").innerText = "";
+                isValidAge = true;
+            }
+        }
+
+        // Function executed when Submit button is clicked
+        function submitForm() {
+
+            // Check if all validations passed
+            if (isValidName && isValidEmail && isValidAge) {
+
+                // Fetch values from input fields
+                let nameValue = document.getElementById("name").value;
+                let emailValue = document.getElementById("email").value;
+                let ageValue = document.getElementById("age").value;
+
+                // Create object to store user data
+                let user = {
+                    name: nameValue,
+                    email: emailValue,
+                    age: ageValue
+                };
+
+                /*
+                   sessionStorage stores data temporarily.
+                   Data is removed when browser tab is closed.
+                   JSON.stringify converts object into string format.
+                */
+                sessionStorage.setItem("userData", JSON.stringify(user));
+
+                // Success message
+                alert("Data Saved in Session Storage!");
+
+            } else {
+                // Show error if validation failed
+                document.getElementById("message").innerText =
+                    "Please fix errors before submitting.";
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

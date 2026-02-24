@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Title shown in browser tab -->
+    <title>Personal Notes Saver</title>
+</head>
+
+<!-- onload calls loadNote() automatically when page opens -->
+
+<body onload="loadNote()">
+
+    <!-- Page Heading -->
+    <h2>Daily Notes</h2>
+
+    <!-- Textarea where user writes notes -->
+    <!-- id is used to access this element in JavaScript -->
+    <textarea id="noteArea" rows="8" cols="40"></textarea>
+    <br><br>
+
+    <!-- Button to save note (calls saveNote function) -->
+    <button onclick="saveNote()">Save</button>
+
+    <!-- Button to clear note (calls clearNote function) -->
+    <button onclick="clearNote()">Clear</button>
+
+    <script>
+
+        // Function to save note in browser storage
+        function saveNote() {
+
+            // Get the text entered in textarea
+            let note = document.getElementById("noteArea").value;
+
+            // localStorage stores data in browser permanently
+            // "dailyNote" is the key, note is the value
+            localStorage.setItem("dailyNote", note);
+
+            // Show confirmation message
+            alert("Note Saved!");
+        }
+
+        // Function runs automatically when page loads
+        function loadNote() {
+
+            // Retrieve saved note using the same key
+            let savedNote = localStorage.getItem("dailyNote");
+
+            // If there is a saved note, display it in textarea
+            if (savedNote) {
+                document.getElementById("noteArea").value = savedNote;
+            }
+        }
+
+        // Function to delete saved note
+        function clearNote() {
+
+            // Remove note from localStorage
+            localStorage.removeItem("dailyNote");
+
+            // Clear textarea content
+            document.getElementById("noteArea").value = "";
+
+            // Show confirmation message
+            alert("Note Cleared!");
+        }
+
+    </script>
+
+</body>
+
+</html>

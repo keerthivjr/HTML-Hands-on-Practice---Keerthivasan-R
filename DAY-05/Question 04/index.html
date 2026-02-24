@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Student Profile Manager</title>
+</head>
+
+<body>
+
+    <h2>Student Profile Manager</h2>
+
+    <!-- Button to display profile -->
+    <button onclick="updateStudentProfile(student)">Show Profile</button>
+    <br>
+
+    <!-- Input to update marks -->
+    <input type="number" id="newMarks" placeholder="Enter new marks">
+
+    <!-- Button to change marks -->
+    <button onclick="changeMarks()">Update Marks</button>
+
+    <!-- Profile display box -->
+    <div id="profileBox"></div>
+
+    <script>
+
+        // Global object
+        var student = {
+            name: "Amit",
+            rollNo: 101,
+            marks: 85
+        };
+
+        // Function to display student data
+        function updateStudentProfile(studentObj) {
+
+            var content =
+                "<p><strong>Name:</strong> " + studentObj.name + "</p>" +
+                "<p><strong>Roll No:</strong> " + studentObj.rollNo + "</p>" +
+                "<p><strong>Marks:</strong> " + studentObj.marks + "</p>";
+
+            document.getElementById("profileBox").innerHTML = content;
+        }
+
+        // Function to update marks
+        function updateMarks(newMarks) {
+
+            // Modify global object property
+            student.marks = newMarks;
+
+            // Refresh UI after update
+            updateStudentProfile(student);
+        }
+
+        // Get value from input and pass as argument
+        function changeMarks() {
+
+            var marksValue = document.getElementById("newMarks").value;
+
+            if (marksValue === "") {
+                alert("Please enter marks");
+                return;
+            }
+
+            updateMarks(marksValue);
+        }
+
+        // Automatically display profile when page loads
+        window.onload = function () {
+            updateStudentProfile(student);
+        };
+
+    </script>
+
+</body>
+</html>
