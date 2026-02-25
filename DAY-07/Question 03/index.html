@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Weather Data Fetcher</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f4f4f4;
+            padding: 30px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+
+        pre {
+            background: white;
+            padding: 15px;
+            width: 60%;
+            border: 1px solid #999;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Weather Data Fetcher</h2>
+
+    <button onclick="fetchWeather()">Get Weather</button>
+
+    <pre id="weatherOutput"></pre>
+
+    <script>
+        // API endpoint (Hyderabad location)
+        const API_URL =
+            "https://api.open-meteo.com/v1/forecast?latitude=17.3850&longitude=78.4867&current_weather=true";
+
+        /*
+          Async function allows use of await
+          await pauses execution until Promise resolves
+        */
+        const fetchWeather = async () => {
+            try {
+
+                // Fetch data from API
+                const response = await fetch(API_URL);
+
+                // Check if response is successful
+                if (!response.ok) {
+                    throw new Error("Failed to fetch data");
+                }
+
+                // Convert response to JSON
+                const data = await response.json();
+
+                // Display weather details
+                document.getElementById("weatherOutput").textContent = `
+Temperature: ${data.current_weather.temperature}°C
+Wind Speed: ${data.current_weather.windspeed} km/h
+`;
+
+            } catch (error) {
+                // Handle errors
+                document.getElementById("weatherOutput").textContent =
+                    "Error: " + error.message;
+            }
+        };
+    </script>
+
+</body>
+
+</html>

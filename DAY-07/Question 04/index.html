@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Task Manager</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f4f4f4;
+            padding: 30px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 6px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 6px 12px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 60%;
+            background: white;
+        }
+
+        th,
+        td {
+            border: 1px solid #999;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Task Manager (Async Storage)</h2>
+
+    <input type="text" id="taskInput" placeholder="Enter task">
+    <button onclick="addTask()">Add Task</button>
+    <button onclick="listTasks()">List Tasks</button>
+
+    <h3>Task List</h3>
+
+    <table id="taskTable">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Task</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+
+        // Array to store tasks in memory
+        let tasks = [];
+
+        /*
+          Add task (simulated async using setTimeout)
+          Mimics database delay
+        */
+        const addTask = () => {
+
+            const task = document.getElementById("taskInput").value;
+
+            if (!task) {
+                alert("Please enter a task");
+                return;
+            }
+
+            setTimeout(() => {
+                tasks.push(task);  // Add task to array
+                alert("Task is added successfully!");
+                document.getElementById("taskInput").value = "";
+            }, 500);
+        };
+
+        /*
+          Delete task using index
+          splice() removes element from array
+        */
+        const deleteTask = (index) => {
+
+            setTimeout(() => {
+                tasks.splice(index, 1);
+                alert("Task deleted successfully!");
+                listTasks(); // Refresh UI
+            }, 500);
+        };
+
+        /*
+          Display tasks in table
+        */
+        const listTasks = () => {
+
+            const tbody = document.querySelector("#taskTable tbody");
+            tbody.innerHTML = "";
+
+            // If no tasks available
+            if (tasks.length === 0) {
+                tbody.innerHTML = `
+            <tr>
+                <td colspan="3">No tasks available</td>
+            </tr>
+        `;
+                return;
+            }
+
+            // Loop through tasks using forEach
+            tasks.forEach((task, index) => {
+
+                tbody.innerHTML += `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${task}</td>
+                <td>
+                    <button onclick="deleteTask(${index})">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        `;
+            });
+        };
+
+    </script>
+
+</body>
+
+</html>

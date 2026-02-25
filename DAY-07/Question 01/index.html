@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Student Marks Analyzer</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f4f4f4;
+            padding: 30px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+
+        pre {
+            background: white;
+            padding: 15px;
+            width: 60%;
+            border: 1px solid #999;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Student Marks Analyzer</h2>
+
+    <button onclick="analyzeMarks()">Analyze Marks</button>
+
+    <pre id="output"></pre>
+
+    <script>
+        // Array storing student marks
+        const marks = [78, 85, 90, 67, 88];
+
+        /*
+          Arrow function to calculate total marks
+          reduce() loops through array and accumulates sum
+          sum → accumulator
+          mark → current value
+          0 → initial value
+        */
+        const calculateTotal = arr =>
+            arr.reduce((sum, mark) => sum + mark, 0);
+
+        // Calculates average using total / length
+        const calculateAverage = arr =>
+            calculateTotal(arr) / arr.length;
+
+        // Ternary operator to determine pass/fail
+        const getResult = avg =>
+            avg >= 50 ? "Pass" : "Fail";
+
+        // Main function triggered by button click
+        const analyzeMarks = () => {
+
+            const total = calculateTotal(marks);
+            const average = calculateAverage(marks);
+            const result = getResult(average);
+
+            // Display output using template literals
+            document.getElementById("output").textContent = `
+Marks: ${marks.join(", ")}
+Total: ${total}
+Average: ${average.toFixed(2)}
+Result: ${result}
+`;
+        };
+    </script>
+
+</body>
+
+</html>

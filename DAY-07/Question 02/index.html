@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Product Cart Summary</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f4f4f4;
+            padding: 30px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+
+        pre {
+            background: white;
+            padding: 15px;
+            width: 60%;
+            border: 1px solid #999;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Shopping Cart Summary</h2>
+
+    <button onclick="generateInvoice()">Generate Invoice</button>
+
+    <pre id="invoice"></pre>
+
+    <script>
+        // Array of product objects
+        const products = [
+            { name: "Laptop", price: 50000, quantity: 1 },
+            { name: "Mouse", price: 500, quantity: 2 },
+            { name: "Keyboard", price: 1500, quantity: 1 }
+        ];
+
+        /*
+          Calculate total cart value
+          price * quantity for each product
+        */
+        const calculateCartTotal = items =>
+            items.reduce((total, item) =>
+                total + item.price * item.quantity, 0);
+
+        const generateInvoice = () => {
+
+            const total = calculateCartTotal(products);
+
+            // map() creates formatted product list
+            document.getElementById("invoice").textContent = `
+${products.map(p =>
+                `${p.name} - ₹${p.price} x ${p.quantity}`
+            ).join("\n")}
+
+Total Amount: ₹${total}
+`;
+        };
+    </script>
+
+</body>
+
+</html>
