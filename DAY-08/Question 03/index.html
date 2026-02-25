@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dynamic To-Do List</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h2>Dynamic To-Do List</h2>
+
+    <input type="text" id="taskInput" placeholder="Enter task">
+    <button id="addBtn">Add Task</button>
+
+    <ul id="taskList"></ul>
+
+    <script>
+
+        // Create empty array to store tasks
+        // Each task will be an object with text & completed status
+        let tasks = [];
+
+        // Select input, button, and list elements
+        const taskInput = document.getElementById("taskInput");
+        const addBtn = document.getElementById("addBtn");
+        const taskList = document.getElementById("taskList");
+
+        // Function to add a task
+        const addTask = () => {
+
+            // Get input value and remove extra spaces
+            const text = taskInput.value.trim();
+
+            // If input is empty → stop function
+            if (!text) return;
+
+            // Push new task object into array
+            // completed: false means task is not done initially
+            tasks.push({ text, completed: false });
+
+            // Re-render task list after adding
+            renderTasks();
+
+            // Clear input field after adding task
+            taskInput.value = "";
+        };
+
+        // Function to display tasks on screen
+        const renderTasks = () => {
+
+            // Clear existing list before re-rendering
+            taskList.innerHTML = "";
+
+            // Loop through tasks array
+            tasks.forEach((task, index) => {
+
+                // Create new <li> element
+                const li = document.createElement("li");
+
+                // Store index as data attribute
+                // Helps us identify which task was clicked
+                li.dataset.index = index;
+
+                // Insert task text and delete button inside li
+                li.innerHTML = `
+            <span class="${task.completed ? "completed" : ""}">
+                ${task.text}
+            </span>
+            <button class="delete-btn">Delete</button>
+        `;
+
+                // Add li to ul
+                taskList.appendChild(li);
+            });
+        };
+
+        // Event delegation
+        // Instead of adding event to each button separately
+        taskList.addEventListener("click", (e) => {
+
+            // Get task index from parent <li>
+            const index = e.target.parentElement.dataset.index;
+
+            // If delete button clicked
+            if (e.target.classList.contains("delete-btn")) {
+
+                // Remove task from array
+                tasks.splice(index, 1);
+
+                // Re-render updated list
+                renderTasks();
+            }
+            // If task text clicked → toggle completed
+            else if (e.target.tagName === "SPAN") {
+
+                // Change completed status (true ↔ false)
+                tasks[index].completed = !tasks[index].completed;
+
+                // Re-render list
+                renderTasks();
+            }
+        });
+
+        // Add event listener to Add button
+        addBtn.addEventListener("click", addTask);
+
+    </script>
+
+</body>
+
+</html>

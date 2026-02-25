@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Theme Toggle App</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h2>Theme Toggle Application</h2>
+    <button id="themeToggle">Switch Theme</button>
+
+    <p>
+        This a sample blog content area. The theme preference will ber saved
+        even after refershing the page.
+    </p>
+
+    <script>
+        // Select the theme toggle button
+        // We need this to switch between light and dark mode
+        const toggleBtn = document.getElementById("themeToggle");
+
+        // Function to apply saved theme when page loads
+        // This ensures theme preference remains after refresh
+        const applySavedTheme = () => {
+
+            // Get saved theme value from localStorage
+            // localStorage stores data permanently in browser
+            const savedTheme = localStorage.getItem("theme");
+
+            if (savedTheme) {
+
+                // If theme exists → apply that class to body
+                document.body.classList.add(savedTheme);
+            }
+            else {
+
+                // If no saved theme → default to light mode
+                document.body.classList.add("light-mode");
+            }
+        };
+
+        // Function to toggle between light and dark mode
+        const toggleTheme = () => {
+
+            // Check if body currently has light-mode class
+            if (document.body.classList.contains("light-mode")) {
+
+                // Remove light mode
+                document.body.classList.remove("light-mode");
+
+                // Add dark mode
+                document.body.classList.add("dark-mode");
+
+                // Save dark mode preference in localStorage
+                localStorage.setItem("theme", "dark-mode");
+            }
+            else {
+
+                // Remove dark mode
+                document.body.classList.remove("dark-mode");
+
+                // Add light mode
+                document.body.classList.add("light-mode");
+
+                // Save light mode preference
+                localStorage.setItem("theme", "light-mode");
+            }
+        };
+
+        // Add click event listener to button
+        // So theme changes when button is clicked
+        toggleBtn.addEventListener("click", toggleTheme);
+
+        // Call function immediately when page loads
+        // This applies previously saved theme
+        applySavedTheme();
+    </script>
+</body>
+
+</html>

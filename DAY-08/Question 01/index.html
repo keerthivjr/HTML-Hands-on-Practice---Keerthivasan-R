@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>FeedBack Trigger</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h2>Customer Feedback</h2>
+
+    <textarea id="feedbackInput" placeholder="Enter Feedback"></textarea>
+    <br>
+    <button id="feedbackBtn">Submit Feedback</button>
+
+    <div id="message"></div>
+
+    <script>
+        // Select the submit button element from the DOM
+        // We store it in a variable so we can attach an event listener to it
+        const button = document.getElementById("feedbackBtn");
+
+        // Select the textarea where user types feedback
+        // We need this to read user input value
+        const feedbackInput = document.getElementById("feedbackInput");
+
+        // Select the div where messages (error/success) will be shown
+        // This allows us to dynamically update feedback messages
+        const messageDiv = document.getElementById("message");
+
+        // Add a click event listener to the button
+        // This runs the function every time the button is clicked
+        button.addEventListener("click", function () {
+
+            // Get the value entered by the user
+            // trim() removes extra spaces from beginning and end
+            const feedbackText = feedbackInput.value.trim();
+
+            // Check if the textarea is empty
+            if (feedbackText === "") {
+
+                // If empty → show error message
+                messageDiv.textContent = "Please Enter Feedback!";
+
+                // Apply CSS class to style the message as error
+                messageDiv.classList = "error";
+            }
+            else {
+
+                // If feedback is valid → show success message
+                messageDiv.textContent = "✅ Thank you! Your feedback has been submitted successfully";
+
+                // Apply success styling class
+                messageDiv.classList = "success";
+
+                // Clear textarea after successful submission
+                feedbackInput.value = "";
+            }
+        });
+    </script>
+</body>
+
+</html>

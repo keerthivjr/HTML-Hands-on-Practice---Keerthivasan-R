@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Mini Product Search</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h2>Mini Product Search</h2>
+
+    <input type="text" id="searchInput" placeholder="Search product...">
+
+    <ul id="productList"></ul>
+    <p id="noResult" class="no-result"></p>
+
+    <script>
+
+        // Array of product names
+        // This acts as our data source
+        const products = [
+            "Laptop",
+            "Mobile",
+            "Keyboard",
+            "Mouse",
+            "Monitor",
+            "Headphones"
+        ];
+
+        // Select DOM elements
+        const searchInput = document.getElementById("searchInput");
+        const productList = document.getElementById("productList");
+        const noResult = document.getElementById("noResult");
+
+        // Function to display products
+        const renderProducts = (filteredProducts) => {
+
+            // Clear existing list before rendering
+            productList.innerHTML = "";
+
+            // If no products found
+            if (filteredProducts.length === 0) {
+
+                // Show "No Results" message
+                noResult.textContent = "No Results Found";
+                return;
+            }
+
+            // Clear message if results exist
+            noResult.textContent = "";
+
+            // Loop through filtered products
+            filteredProducts.forEach(product => {
+
+                // Create new list item
+                const li = document.createElement("li");
+
+                // Insert product name
+                li.textContent = product;
+
+                // Add to UI
+                productList.appendChild(li);
+            });
+        };
+
+        // Function to filter products based on keyword
+        const filterProducts = (keyword) => {
+
+            // Return products that include search keyword
+            // toLowerCase() makes search case-insensitive
+            return products.filter(product =>
+                product.toLowerCase().includes(keyword.toLowerCase())
+            );
+        };
+
+        // Listen for typing inside search input
+        searchInput.addEventListener("input", (e) => {
+
+            // Get current input value
+            const filtered = filterProducts(e.target.value);
+
+            // Render filtered results
+            renderProducts(filtered);
+        });
+
+        // Display all products when page loads
+        renderProducts(products);
+
+    </script>
+
+</body>
+
+</html>
