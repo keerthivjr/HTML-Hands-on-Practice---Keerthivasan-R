@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern E-Commerce</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Minimal Custom Theming / Overrides */
+        :root {
+            --bs-primary: #ff6b6b;
+            /* Themed Primary Color */
+        }
+
+        .btn-primary {
+            background-color: var(--bs-primary);
+            border-color: var(--bs-primary);
+        }
+
+        .btn-primary:hover {
+            background-color: #ff5252;
+            border-color: #ff5252;
+        }
+
+        .text-theme {
+            color: var(--bs-primary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3 text-theme" href="#">Shopify</a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+                aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header bg-light">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
+                        <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Men</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Women</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Sale</a></li>
+                    </ul>
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-outline-dark me-2">Log In</button>
+                        <button class="btn btn-primary">Cart (0)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active" style="height: 60vh; background-color: #f8f9fa;">
+                <div class="container h-100 d-flex align-items-center justify-content-center text-center">
+                    <div>
+                        <h1 class="display-3 fw-bold">Summer Collection</h1>
+                        <p class="lead mb-4">Up to 50% off on selected items.</p>
+                        <a href="#" class="btn btn-primary btn-lg px-5 rounded-pill">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item" style="height: 60vh; background-color: #e9ecef;">
+                <div class="container h-100 d-flex align-items-center justify-content-center text-center">
+                    <div>
+                        <h1 class="display-3 fw-bold">New Arrivals</h1>
+                        <p class="lead mb-4">Discover the latest trends in fashion.</p>
+                        <a href="#" class="btn btn-dark btn-lg px-5 rounded-pill">Explore</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon text-dark" aria-hidden="true"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </button>
+    </header>
+
+    <section class="container py-5 mt-4">
+        <h2 class="text-center fw-bold mb-5">Trending Now</h2>
+        <div class="row g-4">
+            <div class="col-12 col-md-4">
+                <div class="card border-0 shadow-sm">
+                    <img src="https://via.placeholder.com/400x400" class="card-img-top rounded-top" alt="Item">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Classic T-Shirt</h5>
+                        <p class="text-theme fw-bold">$25.00</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="card border-0 shadow-sm">
+                    <img src="https://via.placeholder.com/400x400" class="card-img-top rounded-top" alt="Item">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Denim Jacket</h5>
+                        <p class="text-theme fw-bold">$89.00</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="card border-0 shadow-sm">
+                    <img src="https://via.placeholder.com/400x400" class="card-img-top rounded-top" alt="Item">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Running Sneakers</h5>
+                        <p class="text-theme fw-bold">$120.00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-dark text-white py-5 text-center">
+        <div class="container py-4">
+            <h3 class="mb-3">Subscribe to our Newsletter</h3>
+            <p class="mb-4 text-light">Get the latest updates on new products and upcoming sales.</p>
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-6">
+                    <form class="input-group input-group-lg">
+                        <input type="email" class="form-control border-0" placeholder="Enter your email address"
+                            required>
+                        <button class="btn btn-primary px-4" type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
