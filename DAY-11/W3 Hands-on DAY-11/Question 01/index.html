@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+
+    <body>
+
+        <div class="container">
+            <h2>Student Feedback Form</h2>
+
+            <form id="feedbackform">
+                <input type="text" id="name" placeholder="Enter your name">
+                <input type="email" id="email" placeholder="Enter your email">
+
+                <select id="rating">
+                    <option value="">Select Rating</option>
+                    <option value="Excellent">Excellent</option>
+                    <option value="Good">Good</option>
+                    <option value="Average">Average</option>
+                </select>
+
+                <textarea id="comments" placeholder="Enter your comments"></textarea>
+
+                <button type="button" id="submitBtn">Submit Feedback</button>
+            </form>
+
+            <div id="message"></div>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+
+</html>

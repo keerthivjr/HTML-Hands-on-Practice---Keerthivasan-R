@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>jQuery Dynamic Button</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+
+    <h2>Dynamic Button Example</h2>
+
+    <button id="createBtn">Create New Button</button>
+
+    <div id="buttonContainer"></div>
+
+    <script>
+        $(document).ready(function () {
+
+            $("#createBtn").click(function () {
+
+                // Create new button
+                var newButton = $("<button>Click Me</button>");
+
+                // Add click event to new button
+                newButton.click(function () {
+                    alert("Dynamic Button Clicked!");
+                });
+
+                // Append to container
+                $("#buttonContainer").append(newButton);
+                $("#buttonContainer").append("<br><br>");
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

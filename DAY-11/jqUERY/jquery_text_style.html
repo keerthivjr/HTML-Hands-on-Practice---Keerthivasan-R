@@ -1,0 +1,25 @@
+<!--This is a sample HTML file for jQuery text change and text styling-->
+<!DOCTYPE html>
+<html>
+<head>
+   <title>DOM Manipulation</title>
+   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+
+<h2 id="title">Welcome</h2>
+<button id="changeBtn">Change Text</button>
+
+<script>
+$(function () {
+   $("#changeBtn").click(function () {
+       $("#title")
+           .text("Text Changed Using jQuery")
+           .css("color", "green")
+           .css("font-size", "30px");
+   });
+});
+</script>
+
+</body>
+</html>

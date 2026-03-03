@@ -1,0 +1,26 @@
+<!--This is a sample HTML file for jQuery training-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery Sample</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .highlight {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to jQuery Training</h1>
+    <p>This is a sample paragraph. Click the button to highlight this text.</p>
+    <button id="highlightBtn">Highlight Text</button>
+
+    <script>
+        $(document).ready(function() {
+            $('#highlightBtn').click(function() {
+                $('p').toggleClass('highlight');
+            });
+        });
+    </script>
+</body>
+</html>

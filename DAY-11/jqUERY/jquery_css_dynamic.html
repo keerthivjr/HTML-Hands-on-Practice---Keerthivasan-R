@@ -1,0 +1,29 @@
+<!--change CSS dynamically using jQuery-->
+<!--on button click, change CSS of a div element -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery CSS Dynamic Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>jQuery CSS Dynamic Example</h1>
+    <button id="changeStyleBtn">Change Style</button>
+
+    <div id="dynamicDiv" style="width: 200px; height: 200px; background-color: lightblue;">
+        <p>This div's style will be changed dynamically.</p>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#changeStyleBtn').click(function() {
+                $('#dynamicDiv').css({
+                    'background-color': 'lightcoral',
+                    'border': '2px solid black',
+                    'border-radius': '10px'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!-- This sample demonstrates jQuery event delegation -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery Event Delegation Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>jQuery Event Delegation Example</h1>
+    <button id="addItemBtn">Add Item</button>
+    <ul id="itemList">
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+    </ul>
+
+    <script>
+        $(document).ready(function() {
+            // Event delegation: Attach a click event handler to the parent element (ul)
+            $('#itemList').on('click', 'li', function() {
+                alert('You clicked on: ' + $(this).text());
+            });
+
+            // Dynamically add new items to the list
+            $('#addItemBtn').click(function() {
+                var newItem = $('<li>New Item</li>');
+                $('#itemList').append(newItem);
+            });
+        });
+    </script>

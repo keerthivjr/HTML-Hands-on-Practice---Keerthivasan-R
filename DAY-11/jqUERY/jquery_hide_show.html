@@ -1,0 +1,30 @@
+<!-- This sample demonstrates jQuery hide and show functionality -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery Hide and Show Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>jQuery Hide and Show Example</h1>
+    <button id="hideBtn">Hide Content</button>
+    <button id="showBtn">Show Content</button>
+
+    <div id="content">
+        <p>This content can be hidden or shown using jQuery.</p>
+        <p>Try clicking the buttons above!</p>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#hideBtn').click(function() {
+                $('#content').hide();
+            });
+
+            $('#showBtn').click(function() {
+                $('#content').show();
+            });
+        });
+    </script>
+</body>
+</html>

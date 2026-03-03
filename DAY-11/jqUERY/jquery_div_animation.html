@@ -1,0 +1,45 @@
+<!-- This sample demonstrates jQuery div animation functionality -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery Div Animation Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        #animateDiv {
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <h1>jQuery Div Animation Example</h1>
+    <button id="animateBtn">Animate Div</button>
+
+    <div id="animateDiv"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#animateBtn').click(function() {
+                $('#animateDiv').animate({
+                    left: '250px',
+                    height: '150px',
+                    width: '150px',
+                    opacity: 0.5
+                }, 1000, function() {
+                    // Animation complete callback
+                    alert('Animation completed!');
+
+                    // Reset the div to its original state
+                    $('#animateDiv').animate({
+                        left: '0px',
+                        height: '100px',
+                        width: '100px',
+                        opacity: 1
+                    }, 1000);
+                });
+            });
+        });
+    </script>
+</body>

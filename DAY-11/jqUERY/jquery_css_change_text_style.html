@@ -1,0 +1,24 @@
+<!-- to change text style using jQuery -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery Change Text Style Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>jQuery Change Text Style Example</h1>
+    <p>This is a sample paragraph to demonstrate changing text style using jQuery.</p>
+    <button id="changeStyleBtn">Change Text Style</button>
+
+    <script>
+        $(document).ready(function() {
+            $('#changeStyleBtn').click(function() {
+                // Change the color of the text
+                $('p').css('color', 'red');
+                // Change the font size of the text
+                $('p').css('font-size', '18px');
+                // Change the font weight of the text
+                $('p').css('font-weight', 'bold');
+            });
+        });
+    </script>

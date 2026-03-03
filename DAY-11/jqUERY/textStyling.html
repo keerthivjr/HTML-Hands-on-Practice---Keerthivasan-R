@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>jQuery Text Styling</title>
+
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        .styled {
+            font-size: 20px;
+            color: blue;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>jQuery Text Styling Example</h1>
+    <p>This is a paragraph that will be styled using jQuery.</p>
+    <button id="styleBtn">Style Text</button>
+
+    <script>
+        $(document).ready(function () {
+            $("#styleBtn").click(function () {
+                $("p").addClass("styled");
+            });
+        });
+    </script>
+
+</body>
+
+</html>

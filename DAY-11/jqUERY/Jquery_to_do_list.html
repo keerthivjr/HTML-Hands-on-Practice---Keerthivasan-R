@@ -1,0 +1,42 @@
+<!-- This sample demonstrates a simple interactive dynamic to-do list using jQuery -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery To-Do List</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <h1>jQuery To-Do List</h1>
+    <input type="text" id="taskInput" placeholder="Enter a new task">
+    <button id="addTaskBtn">Add Task</button>
+    <ul id="taskList"></ul>
+
+    <script>
+        $(document).ready(function() {
+            $('#addTaskBtn').click(function() {
+                var task = $('#taskInput').val();
+                if (task) {
+                    $('#taskList').append('<li>' + task + ' <button class="completeBtn">Complete</button></li>');
+                    $('#taskInput').val('');
+                }
+            });
+
+            // Use event delegation to handle click events for dynamically added complete buttons
+            $('#taskList').on('click', '.completeBtn', function() {
+                $(this).parent().toggleClass('completed');
+            });
+            // Optional: Add functionality to remove completed tasks
+            $('#taskList').on('click', '.completed', function() {
+                $(this).remove();
+            });
+        });
+    </script>
+
+</body>
+</html>

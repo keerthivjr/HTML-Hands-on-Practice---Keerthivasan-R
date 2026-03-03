@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>jQuery AJAX Public API</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        .user {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Fetch Users from Public API</h2>
+    <button id="fetchBtn">Fetch Users</button>
+
+    <div id="userContainer"></div>
+
+    <script>
+        $(document).ready(function () {
+
+            $("#fetchBtn").click(function () {
+
+                $.ajax({
+                    url: "https://jsonplaceholder.typicode.com/users",
+                    method: "GET",
+                    success: function (response) {
+
+                        $("#userContainer").empty();
+
+                        response.forEach(function (user) {
+                            $("#userContainer").append(
+                                "<div class='user'>" +
+                                "<h4>" + user.name + "</h4>" +
+                                "<p>Email: " + user.email + "</p>" +
+                                "<p>City: " + user.address.city + "</p>" +
+                                "</div>"
+                            );
+                        });
+
+                    },
+                    error: function () {
+                        alert("Error fetching data!");
+                    }
+                });
+
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

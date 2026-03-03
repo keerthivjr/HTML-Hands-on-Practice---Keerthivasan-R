@@ -1,0 +1,31 @@
+<!-- to get user input and display an alert with the input value  on button click-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery User Input Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>jQuery User Input Example</h1>
+    <input type="text" id="userInput" placeholder="Enter your name">
+    <button id="showAlertBtn">Show Alert</button>
+
+    <script>
+        $(document).ready(function() {
+            $('#showAlertBtn').click(function() {
+                var userInput = $('#userInput').val();
+                /*(userInput) {
+                alert('You entered: ' + userInput);
+                } else {
+                    alert('Please enter your name.');
+                }*/
+                if (userInput.trim() !== '') {
+                    alert('You entered: ' + userInput);
+                } else {
+                    alert('Please enter your name.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

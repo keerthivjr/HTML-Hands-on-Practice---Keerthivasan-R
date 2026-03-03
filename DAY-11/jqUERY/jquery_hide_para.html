@@ -1,0 +1,19 @@
+<!-- This sample demonstrates jQuery hide functionality -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery Hide Paragraph Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>jQuery Hide Paragraph Example</h1>
+    <p id="p">This is a sample paragraph that will be hidden using jQuery.</p>
+    <button id="hideBtn">Hide Paragraph</button>
+ 
+    <script>
+        $(document).ready(function() {
+            $('#hideBtn').click(function() {
+                $('#p').hide();
+            });
+        });
+    </script>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Product List with Cart Counter</title>
+
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="header">
+        <h2>Electronics Store</h2>
+        <div class="cart">
+            Cart Items: <span id="cart-count">0</span>
+        </div>
+    </div>
+
+    <div id="product-list">
+
+        <div class="product">
+            <h4>Laptop</h4>
+            <p>Price: $800</p>
+            <button class="add-to-cart" data-product="Laptop">Add to Cart</button>
+            <span class="added-msg"></span>
+        </div>
+
+        <div class="product">
+            <h4>Mobile</h4>
+            <p>Price: $500</p>
+            <button class="add-to-cart" data-product="Mobile">Add to Cart</button>
+            <span class="added-msg"></span>
+        </div>
+
+        <div class="product">
+            <h4>Headphones</h4>
+            <p>Price: $100</p>
+            <button class="add-to-cart" data-product="Headphones">Add to Cart</button>
+            <span class="added-msg"></span>
+        </div>
+
+        <div class="product">
+            <h4>Smartwatch</h4>
+            <p>Price: $150</p>
+            <button class="add-to-cart" data-product="Smartwatch">Add to Cart</button>
+            <span class="added-msg"></span>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

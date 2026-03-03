@@ -1,0 +1,53 @@
+<!-- This sample demonstrates a jQuery AJAX POST request to submit user data to a server -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery AJAX POST User Data</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>jQuery AJAX POST User Data Example</h1>
+    <input type="text" id="username" placeholder="Enter your username">
+    <button id="submitBtn">Submit</button>
+    <button id="loadDataBtn">Load Data</button>
+
+    <div id="response"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#submitBtn').click(function() {
+                var username = $('#username').val();
+                if (username.trim() !== '') {
+                    $.ajax({
+                        url: 'https://jsonplaceholder.typicode.com/users',
+                        method: 'POST',
+                        data: { name: username },
+                        success: function(data) {
+                            $('#response').html('<p>User "' + data.name + '" submitted successfully!</p>');
+                        },
+                        error: function() {
+                            $('#response').html('<p>An error occurred while submitting data.</p>');
+                        }
+                    });
+                } else {
+                    alert('Please enter a username.');
+                }
+            });
+        });
+        $(document).ready(function() {
+            $('#loadDataBtn').click(function() {
+                $.ajax({
+                    url: 'https://jsonplaceholder.typicode.com/users/1',
+                    method: 'GET',
+                    success: function(data) {
+                        $('#response').html('<h2>' + data.name + '</h2><p>Email: ' + data.email + '</p>');
+                    },
+                    error: function() {
+                        $('#response').html('<p>An error occurred while loading data.</p>');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

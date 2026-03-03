@@ -1,0 +1,37 @@
+ body {
+     font-family: Arial, sans-serif;
+     background-color: #f4f4f4;
+     padding: 40px;
+ }
+
+ .faq-container {
+     max-width: 700px;
+     margin: auto;
+ }
+
+ .faq-item {
+     background: #ffffff;
+     margin-bottom: 10px;
+     border-radius: 5px;
+     overflow: hidden;
+     border: 1px solid #ddd;
+ }
+
+ .question {
+     padding: 15px;
+     cursor: pointer;
+     font-weight: bold;
+     background-color: #f8f9fa;
+ }
+
+ .question.active {
+     background-color: #ff1100;
+     color: white;
+ }
+
+ .answer {
+     display: none;
+     padding: 15px;
+     border-top: 1px solid #ddd;
+     background-color: #ffffff;
+ }

@@ -1,0 +1,29 @@
+<!-- This sample demonstrates handling form submit events using jQuery -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery Form Submit Event</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>jQuery Form Submit Event Example</h1>
+    <form id="myForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        $(document).ready(function() {
+            $('#myForm').submit(function(event) {
+                // Prevent the default form submission behavior
+                event.preventDefault(); // Prevents the form from being submitted to the server
+                // Get the value of the name input field
+                var name = $('#name').val();
+                // Display an alert with the entered name
+                alert('Form submitted! Name: ' + name);
+            });
+        });
+    </script>
+</body>
+</html>

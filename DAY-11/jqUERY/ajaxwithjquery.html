@@ -1,0 +1,29 @@
+<!--This is a sample HTML file for jQuery AJAX operations-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery AJAX Sample</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>jQuery AJAX Example</h1>
+    <button id="loadDataBtn">Load Data</button>
+    <div id="result"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#loadDataBtn').click(function() {
+                $.ajax({
+                    url: 'https://jsonplaceholder.typicode.com/posts/1',
+                    method: 'GET',
+                    success: function(data) {
+                        $('#result').html('<h2>' + data.title + '</h2><p>' + data.body + '</p>');
+                    },
+                    error: function() {
+                        $('#result').html('<p>An error occurred while loading data.</p>');
+                    }
+                });
+            });
+        });
+    </script>
+</html>

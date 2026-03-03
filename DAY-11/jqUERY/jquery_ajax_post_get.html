@@ -1,0 +1,60 @@
+<!-- This sample demonstrates a jQuery AJAX POST and GET request to submit and retrieve user data from a server -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery AJAX POST and GET User Data</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>jQuery AJAX POST and GET User Data Example</h1>
+    <h2> Add user -Submit User Data (POST Request)</h2>
+    <input type="text" id="username" placeholder="Enter your username">
+    <input type="text" id="email" placeholder="Enter your email">
+    <button id="submitBtn">Submit</button>
+    <button id="loadDataBtn">Load Data</button>
+
+    <div id="response"></div>
+    <h3>Saved User Data</h3
+        <ul id="userList"></ul>
+
+    <script>
+        $(document).ready(function() {
+            $('#submitBtn').click(function() {
+                var username = $('#username').val();
+                var email = $('#email').val();
+                if (username.trim() !== '' && email.trim() !== '') {
+                    $.ajax({
+                        url: 'https://jsonplaceholder.typicode.com/users',
+                        method: 'POST',
+                        data: { name: username, email: email },
+                        success: function(data) {
+                            $('#response').html('<p>User "' + data.name + '" with email "' + data.email + '" submitted successfully!</p>');
+                            // Add the new user to the user list
+                            $('#userList').append('<li>' + data.name + ' (' + data.email + ')</li>');
+                        },
+                        error: function() {
+                            $('#response').html('<p>An error occurred while submitting data.</p>');
+                        }
+                    });
+                } else {
+                    alert('Please enter both username and email.');
+                }
+            });
+
+            $('#loadDataBtn').click(function() {
+                $.ajax({
+                    url: 'https://jsonplaceholder.typicode.com/users/1',
+                    method: 'GET',
+                    success: function(data) {
+                        $('#response').html('<h2>' + data.name + '</h2><p>Email: ' + data.email + '</p>');
+                    },
+                    error: function() {
+                        $('#response').html('<p>An error occurred while loading data.</p>');
+                    }
+                });
+            });
+        });
+        
+    </script>
+</body>
+</html>

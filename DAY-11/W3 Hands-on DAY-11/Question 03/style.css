@@ -1,0 +1,42 @@
+ body {
+     font-family: Arial, sans-serif;
+     background-color: #f4f4f4;
+     padding: 30px;
+ }
+
+ .header {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     margin-bottom: 30px;
+ }
+
+ .cart {
+     font-weight: bold;
+     font-size: 18px;
+ }
+
+ .product {
+     background: white;
+     padding: 15px;
+     margin-bottom: 15px;
+     border-radius: 5px;
+     border: 1px solid #ddd;
+ }
+
+ button {
+     padding: 6px 12px;
+     cursor: pointer;
+ }
+
+ .added-msg {
+     color: green;
+     margin-left: 10px;
+     font-size: 14px;
+ }
+
+ .disabled-btn {
+     background-color: gray;
+     color: white;
+     cursor: not-allowed;
+ }

@@ -1,0 +1,32 @@
+<!-- This sample demonstrates adding and removing elements using jQuery -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery Add and Remove Elements</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>jQuery Add and Remove Elements Example</h1>
+    <button id="addBtn">Add Item</button>
+    <button id="removeBtn">Remove Item</button>
+    <ul id="itemList">
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+    </ul>
+
+    <script>
+        // document ready function to ensure the DOM is fully loaded before executing jQuery code
+        $(document).ready(function() {
+            $('#addBtn').click(function() {
+                // Add a new item to the list
+                $('#itemList').append('<li>New Item</li>');
+            });
+
+            $('#removeBtn').click(function() {
+                // Remove the last item from the list
+                $('#itemList li:last').remove();
+            });
+        });
+    </script>
+</body>

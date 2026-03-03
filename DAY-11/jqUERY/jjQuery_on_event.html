@@ -1,0 +1,30 @@
+<!-- This sample demonstrates using the jQuery on() method to handle events as an advanced event handling technique -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery on() Method Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>jQuery on() Method Example</h1>
+    <button id="dynamicBtn">Click Me</button>
+    <button id="addButton">Add New Button</button>
+    <script>
+        $(document).ready(function() {
+            // Using the on() method to handle click events for the button
+            $('#dynamicBtn').on('click', function() {
+                alert('Button clicked!');
+            });
+
+            // Dynamically adding a new button and attaching an event handler using on()
+            $('#addButton').on('click', function() {
+                var newButton = $('<button>New Button</button>');
+                $('body').append(newButton);
+                newButton.on('click', function() {
+                    alert('New Button clicked!');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

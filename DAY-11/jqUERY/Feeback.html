@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Feedback Form</title>
+
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        .form-container {
+            width: 400px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+        }
+
+        button {
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .success {
+            color: green;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="form-container">
+        <h2>Student Feedback Form</h2>
+
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" id="name">
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="email">
+        </div>
+
+        <div class="form-group">
+            <label>Course Rating</label>
+            <select id="rating">
+                <option value="">-- Select Rating --</option>
+                <option value="Excellent">Excellent</option>
+                <option value="Good">Good</option>
+                <option value="Average">Average</option>
+                <option value="Poor">Poor</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Comments</label>
+            <textarea id="comments"></textarea>
+        </div>
+
+        <button id="submitBtn">Submit</button>
+
+        <!-- Message Area -->
+        <div id="message"></div>
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            $("#submitBtn").click(function () {
+
+                // Capture values using jQuery selectors
+                var name = $("#name").val().trim();
+                var email = $("#email").val().trim();
+                var rating = $("#rating").val();
+                var comments = $("#comments").val().trim();
+
+                // Clear previous messages
+                $("#message").removeClass("error success").html("");
+
+                // Validation
+                if (name === "" || email === "") {
+                    $("#message")
+                        .addClass("error")
+                        .html("⚠ Please enter both Name and Email.");
+                    return;
+                }
+
+                // Success message
+                $("#message")
+                    .addClass("success")
+                    .html("✅ Thank you, " + name + "! Your feedback has been submitted successfully.");
+
+                // Clear form fields
+                $("#name").val("");
+                $("#email").val("");
+                $("#rating").val("");
+                $("#comments").val("");
+
+            });
+
+        });
+    </script>
+
+</body>
+</html>
