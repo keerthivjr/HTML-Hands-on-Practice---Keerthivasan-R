@@ -1,0 +1,15 @@
+***Please follow below instructions to restore sample database in SQL Server Management Studio.
+
+1.Create new database with the name (EcommDb).
+
+2.Open Script File (Sample Database - create objects) from SQL-Server-Sample Database Folder.
+
+3.Copy entire script from above mentioned file and paste in SqlServer Management Studio query window.
+
+4.Execute script-This will create sample database structure.
+
+5.Open Script File (Sample Database - load data) from SQL-Server-Sample Database Folder.
+
+6.Copy entire script from above mentioned file and paste in SqlServer Management Studio query window.
+
+7.Execute script-This will load sample data into (EcommDb) Database.
