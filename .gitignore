@@ -1,0 +1,11 @@
+# Visual Studio temporary files
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+
+# Office temporary files
+~$*.docx
+
+# Node modules
+node_modules/

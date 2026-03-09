@@ -1,0 +1,15 @@
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-16\HandsOnDay16\HandsOnDay16\obj\Debug\net10.0\HandsOnDay16.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-16\HandsOnDay16\HandsOnDay16\obj\Debug\net10.0\HandsOnDay16.AssemblyInfoInputs.cache
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-16\HandsOnDay16\HandsOnDay16\obj\Debug\net10.0\HandsOnDay16.AssemblyInfo.cs
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-16\HandsOnDay16\HandsOnDay16\obj\Debug\net10.0\HandsOnDay16.csproj.CoreCompileInputs.cache
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-16\HandsOnDay16\HandsOnDay16\obj\Debug\net10.0\HandsOnDay16.sourcelink.json
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-16\HandsOnDay16\HandsOnDay16\bin\Debug\net10.0\HandsOnDay16.exe
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-16\HandsOnDay16\HandsOnDay16\bin\Debug\net10.0\HandsOnDay16.deps.json
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-16\HandsOnDay16\HandsOnDay16\bin\Debug\net10.0\HandsOnDay16.runtimeconfig.json
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-16\HandsOnDay16\HandsOnDay16\bin\Debug\net10.0\HandsOnDay16.dll
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-16\HandsOnDay16\HandsOnDay16\bin\Debug\net10.0\HandsOnDay16.pdb
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-16\HandsOnDay16\HandsOnDay16\obj\Debug\net10.0\HandsOnDay16.dll
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-16\HandsOnDay16\HandsOnDay16\obj\Debug\net10.0\refint\HandsOnDay16.dll
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-16\HandsOnDay16\HandsOnDay16\obj\Debug\net10.0\HandsOnDay16.pdb
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-16\HandsOnDay16\HandsOnDay16\obj\Debug\net10.0\HandsOnDay16.genruntimeconfig.cache
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-16\HandsOnDay16\HandsOnDay16\obj\Debug\net10.0\ref\HandsOnDay16.dll
