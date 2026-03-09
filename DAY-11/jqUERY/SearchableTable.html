@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+</style>
+
+<body>
+    <h3>Search student</h3>
+    <input type="text" id="search" placeholder="search here...">
+    <br><br>
+    <table id="studentTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Department</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>John Doe</td>
+                <td>Computer Science</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Jane Smith</td>
+                <td>Mathematics</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Emily Johnson</td>
+                <td>Physics</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Michael Brown</td>
+                <td>Chemistry</td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        // Search functionality using jQuery
+        $(document).ready(function () {
+            // Listen for keyup event on the search input
+            $("#search").on("keyup", function () {
+                // Get the search value and convert it to lowercase
+                var value = $(this).val().toLowerCase();
+                // Filter the table rows based on the search value
+                $("#studentTable tbody tr").filter(function () {
+                    // Toggle the visibility of the row based on whether it contains the search value
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

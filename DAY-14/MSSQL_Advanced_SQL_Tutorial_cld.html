@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced T-SQL — Microsoft SQL Server Tutorial</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0e14;
+    --surface: #13161f;
+    --surface2: #1a1e2b;
+    --surface3: #202536;
+    --border: #2a2f42;
+    --border2: #353b54;
+    --accent:   #4f9cf9;   /* MSSQL blue */
+    --accent2:  #f97b4f;   /* warm orange */
+    --accent3:  #4fd98e;   /* mint green */
+    --accent4:  #e8c84f;   /* yellow */
+    --accent5:  #c07ef7;   /* purple */
+    --text:     #e2e8f7;
+    --muted:    #7d86a0;
+    --code-bg:  #080a10;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.72;
+    font-size: 15px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: 72px 40px 60px;
+    text-align: center;
+    background: linear-gradient(160deg, #0c0e14 0%, #111526 45%, #0c0e14 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 50%, rgba(79,156,249,0.10) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 80% 50%, rgba(249,123,79,0.09) 0%, transparent 70%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .hero-tag {
+    position: relative;
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(79,156,249,0.12);
+    border: 1px solid rgba(79,156,249,0.35);
+    color: var(--accent);
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    padding: 5px 16px;
+    border-radius: 30px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .hero-tag::before { content: '▶'; font-size: 8px; }
+  .hero h1 {
+    position: relative;
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 14px;
+    background: linear-gradient(135deg, #e2e8f7 20%, #4f9cf9 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    position: relative;
+    color: var(--muted);
+    font-size: 1.05rem;
+    font-weight: 300;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+  .hero-chips {
+    position: relative;
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+    margin-top: 24px;
+  }
+  .chip {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    padding: 4px 12px;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1020px; margin: 0 auto; padding: 48px 24px; }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 26px 28px;
+    margin-bottom: 56px;
+  }
+  .toc-label {
+    font-family: 'Fira Code', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 18px;
+  }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 6px 24px; }
+  .toc-item {
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 5px 0;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 0.9rem;
+    transition: color 0.2s;
+    border-bottom: 1px dashed transparent;
+  }
+  .toc-item:hover { color: var(--text); }
+  .toc-n {
+    font-family: 'Fira Code', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    background: rgba(79,156,249,0.1);
+    padding: 2px 7px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 72px; }
+  .section-header {
+    display: flex; align-items: center; gap: 18px;
+    margin-bottom: 28px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sec-badge {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 6px 14px;
+    border-radius: 7px;
+    flex-shrink: 0;
+  }
+  .sec-badge.blue   { background: rgba(79,156,249,0.15); color: var(--accent);  border: 1px solid rgba(79,156,249,0.3); }
+  .sec-badge.orange { background: rgba(249,123,79,0.15);  color: var(--accent2); border: 1px solid rgba(249,123,79,0.3); }
+  .sec-badge.green  { background: rgba(79,217,142,0.15);  color: var(--accent3); border: 1px solid rgba(79,217,142,0.3); }
+  .sec-badge.yellow { background: rgba(232,200,79,0.15);  color: var(--accent4); border: 1px solid rgba(232,200,79,0.3); }
+  .sec-badge.purple { background: rgba(192,126,247,0.15); color: var(--accent5); border: 1px solid rgba(192,126,247,0.3); }
+  .section h2 { font-family: 'DM Serif Display', serif; font-size: 1.9rem; font-weight: 400; color: var(--text); }
+
+  /* ── SUBSECTION ── */
+  .subsection { margin-bottom: 44px; }
+  .sub-heading {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--accent3);
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 9px;
+  }
+  .sub-heading::before { content: '◆'; color: var(--accent4); font-size: 9px; flex-shrink: 0; }
+
+  p.body { color: #b8c2da; font-size: 0.94rem; margin-bottom: 14px; line-height: 1.75; }
+
+  /* ── CODE BLOCK ── */
+  .code-block { border-radius: 12px; overflow: hidden; margin: 18px 0; border: 1px solid var(--border); }
+  .code-head {
+    background: var(--surface3);
+    border-bottom: 1px solid var(--border);
+    padding: 11px 18px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .code-title {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.8px;
+  }
+  .code-badge {
+    font-family: 'Fira Code', monospace;
+    font-size: 10px;
+    padding: 2px 9px;
+    border-radius: 4px;
+    background: rgba(79,156,249,0.12);
+    color: var(--accent);
+    border: 1px solid rgba(79,156,249,0.25);
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 22px 22px;
+    overflow-x: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #c9d4ef;
+  }
+
+  /* T-SQL syntax colours */
+  .kw  { color: #569cd6; font-weight: 600; }   /* keywords */
+  .fn  { color: #dcdcaa; }                       /* functions */
+  .str { color: #ce9178; }                       /* strings */
+  .num { color: #b5cea8; }                       /* numbers */
+  .cmt { color: #5a6482; font-style: italic; }  /* comments */
+  .op  { color: #f97b4f; }                       /* operators */
+  .col { color: #9cdcfe; }                       /* columns/aliases */
+  .tbl { color: #4ec9b0; }                       /* table names */
+  .agg { color: #c586c0; }                       /* aggregate / set ops */
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-radius: 0 9px 9px 0;
+    padding: 13px 18px;
+    margin: 14px 0 18px;
+    font-size: 0.89rem;
+    color: #b8c2da;
+    line-height: 1.65;
+  }
+  .callout.blue   { background: rgba(79,156,249,0.07);  border-left: 4px solid var(--accent); }
+  .callout.orange { background: rgba(249,123,79,0.07);  border-left: 4px solid var(--accent2); }
+  .callout.green  { background: rgba(79,217,142,0.07);  border-left: 4px solid var(--accent3); }
+  .callout.yellow { background: rgba(232,200,79,0.07);  border-left: 4px solid var(--accent4); }
+  .callout.purple { background: rgba(192,126,247,0.07); border-left: 4px solid var(--accent5); }
+  .callout strong { color: var(--text); }
+
+  /* ── TABLE ── */
+  .ref-table { width: 100%; border-collapse: collapse; margin: 14px 0 20px; font-size: 0.88rem; }
+  .ref-table th {
+    background: var(--surface3);
+    color: var(--accent);
+    font-family: 'Fira Code', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.5px;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border2);
+  }
+  .ref-table td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: #b8c2da; vertical-align: top; }
+  .ref-table tr:hover td { background: var(--surface2); }
+  .ref-table code { font-family: 'Fira Code', monospace; font-size: 12px; background: var(--surface3); color: var(--accent2); padding: 2px 7px; border-radius: 4px; }
+
+  /* ── TYPE CARDS ── */
+  .card-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 16px; margin: 16px 0; }
+  .info-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .info-card-head {
+    padding: 10px 16px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .info-card-head.blue   { background: rgba(79,156,249,0.1);  color: var(--accent); }
+  .info-card-head.orange { background: rgba(249,123,79,0.1);  color: var(--accent2); }
+  .info-card-head.green  { background: rgba(79,217,142,0.1);  color: var(--accent3); }
+  .info-card-head.yellow { background: rgba(232,200,79,0.1);  color: var(--accent4); }
+  .info-card-head.purple { background: rgba(192,126,247,0.1); color: var(--accent5); }
+  .info-card-body { padding: 12px 16px; }
+  .card-row-item {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 5px 0; border-bottom: 1px solid var(--border);
+    font-family: 'Fira Code', monospace; font-size: 12px;
+  }
+  .card-row-item:last-child { border-bottom: none; }
+  .ci-name { color: var(--accent2); }
+  .ci-desc { color: var(--muted); font-size: 11px; text-align: right; }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px;
+    text-align: center;
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* Inline code */
+  code { font-family: 'Fira Code', monospace; font-size: 12px; background: var(--surface3); color: var(--accent2); padding: 2px 7px; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-tag">Microsoft SQL Server · T-SQL</div>
+  <h1>Advanced SQL Techniques</h1>
+  <p>Subqueries, Set Operators, Data Modification, Expressions — with real T-SQL examples for SQL Server.</p>
+  <div class="hero-chips">
+    <span class="chip">Subqueries</span>
+    <span class="chip">SET Operators</span>
+    <span class="chip">INSERT / UPDATE / DELETE</span>
+    <span class="chip">Calculations</span>
+    <span class="chip">String Functions</span>
+    <span class="chip">Conditional Logic</span>
+    <span class="chip">MSSQL Server</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ══ TOC ══ -->
+  <div class="toc">
+    <div class="toc-label">📋 &nbsp;Table of Contents</div>
+    <div class="toc-grid">
+      <a class="toc-item" href="#subqueries"><span class="toc-n">01</span>Subqueries</a>
+      <a class="toc-item" href="#set-ops"><span class="toc-n">02</span>Set Operators</a>
+      <a class="toc-item" href="#modifying"><span class="toc-n">03</span>Modifying Data</a>
+      <a class="toc-item" href="#calculations"><span class="toc-n">04</span>Calculation Expressions</a>
+      <a class="toc-item" href="#strings"><span class="toc-n">05</span>String Manipulation</a>
+      <a class="toc-item" href="#conditional"><span class="toc-n">06</span>Conditional Logic</a>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 1: SUBQUERIES                      -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="section" id="subqueries">
+    <div class="section-header">
+      <span class="sec-badge blue">01</span>
+      <h2>Subqueries</h2>
+    </div>
+
+    <p class="body">A <strong>subquery</strong> (also called an inner query or nested query) is a SELECT statement embedded inside another SQL statement. Subqueries run first; their result is passed to the outer query. In T-SQL, subqueries can appear in the <code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>, and <code>HAVING</code> clauses.</p>
+
+    <div class="callout blue"><strong>Key Principle:</strong> The inner query executes first. Its result is then used by the outer query — like passing the answer to one question as an input to the next question.</div>
+
+    <!-- 1.1 Scalar subquery -->
+    <div class="subsection">
+      <div class="sub-heading">1.1 — Scalar Subquery (returns a single value)</div>
+      <p class="body">A scalar subquery returns exactly one row and one column. It can be used anywhere a single value is expected — in SELECT lists, WHERE conditions, or as a calculated column.</p>
+      <div class="code-block">
+        <div class="code-head">
+          <span class="code-title">▸ T-SQL — Scalar Subquery Examples</span>
+          <span class="code-badge">MSSQL</span>
+        </div>
+<pre><span class="cmt">-- ── Sample tables used throughout this tutorial ──────────────────────────
+--  Employees(EmployeeID, FirstName, LastName, Salary, DeptID, HireDate)
+--  Departments(DeptID, DeptName, ManagerID)
+--  Orders(OrderID, CustomerID, OrderDate, TotalAmount, Status)
+--  Products(ProductID, ProductName, CategoryID, Price, StockQty)
+--  Customers(CustomerID, FirstName, LastName, City, Email)</span>
+
+<span class="cmt">-- 1. Scalar subquery in WHERE — find employees earning above average</span>
+<span class="kw">SELECT</span> <span class="col">FirstName</span>, <span class="col">LastName</span>, <span class="col">Salary</span>
+<span class="kw">FROM</span>   <span class="tbl">Employees</span>
+<span class="kw">WHERE</span>  <span class="col">Salary</span> <span class="op">&gt;</span> (
+           <span class="kw">SELECT</span> <span class="fn">AVG</span>(<span class="col">Salary</span>)   <span class="cmt">-- returns ONE number e.g. 62000.00</span>
+           <span class="kw">FROM</span>   <span class="tbl">Employees</span>
+       );
+
+<span class="cmt">-- 2. Scalar subquery in SELECT — show each employee's salary vs. company average</span>
+<span class="kw">SELECT</span>
+    <span class="col">FirstName</span>,
+    <span class="col">Salary</span>,
+    (<span class="kw">SELECT</span> <span class="fn">AVG</span>(<span class="col">Salary</span>) <span class="kw">FROM</span> <span class="tbl">Employees</span>) <span class="kw">AS</span> <span class="col">CompanyAvgSalary</span>,
+    <span class="col">Salary</span> <span class="op">-</span> (<span class="kw">SELECT</span> <span class="fn">AVG</span>(<span class="col">Salary</span>) <span class="kw">FROM</span> <span class="tbl">Employees</span>) <span class="kw">AS</span> <span class="col">DiffFromAvg</span>
+<span class="kw">FROM</span> <span class="tbl">Employees</span>;
+
+<span class="cmt">-- 3. Scalar subquery — find the most expensive product</span>
+<span class="kw">SELECT</span> <span class="col">ProductName</span>, <span class="col">Price</span>
+<span class="kw">FROM</span>   <span class="tbl">Products</span>
+<span class="kw">WHERE</span>  <span class="col">Price</span> <span class="op">=</span> (<span class="kw">SELECT</span> <span class="fn">MAX</span>(<span class="col">Price</span>) <span class="kw">FROM</span> <span class="tbl">Products</span>);</pre>
+      </div>
+    </div>
+
+    <!-- 1.2 Multi-row subquery -->
+    <div class="subsection">
+      <div class="sub-heading">1.2 — Multi-Row Subquery with IN / ANY / ALL</div>
+      <p class="body">A multi-row subquery returns multiple rows. Use <code>IN</code>, <code>NOT IN</code>, <code>ANY</code>, or <code>ALL</code> to compare against the returned list.</p>
+      <div class="code-block">
+        <div class="code-head">
+          <span class="code-title">▸ T-SQL — IN / NOT IN / ANY / ALL</span>
+          <span class="code-badge">MSSQL</span>
+        </div>
+<pre><span class="cmt">-- IN: employees who work in departments located in 'London' or 'New York'</span>
+<span class="kw">SELECT</span> <span class="col">FirstName</span>, <span class="col">LastName</span>, <span class="col">DeptID</span>
+<span class="kw">FROM</span>   <span class="tbl">Employees</span>
+<span class="kw">WHERE</span>  <span class="col">DeptID</span> <span class="kw">IN</span> (
+           <span class="kw">SELECT</span> <span class="col">DeptID</span>
+           <span class="kw">FROM</span>   <span class="tbl">Departments</span>
+           <span class="kw">WHERE</span>  <span class="col">Location</span> <span class="kw">IN</span> (<span class="str">'London'</span>, <span class="str">'New York'</span>)
+       );
+
+<span class="cmt">-- NOT IN: customers who have NEVER placed an order</span>
+<span class="kw">SELECT</span> <span class="col">CustomerID</span>, <span class="col">FirstName</span>, <span class="col">Email</span>
+<span class="kw">FROM</span>   <span class="tbl">Customers</span>
+<span class="kw">WHERE</span>  <span class="col">CustomerID</span> <span class="kw">NOT IN</span> (
+           <span class="kw">SELECT</span> <span class="kw">DISTINCT</span> <span class="col">CustomerID</span>
+           <span class="kw">FROM</span>   <span class="tbl">Orders</span>
+           <span class="kw">WHERE</span>  <span class="col">CustomerID</span> <span class="kw">IS NOT NULL</span>   <span class="cmt">-- always guard NULLs with NOT IN!</span>
+       );
+
+<span class="cmt">-- ANY: employees earning more than ANY employee in DeptID = 3</span>
+<span class="cmt">-- (i.e. earning more than at least one person in that dept)</span>
+<span class="kw">SELECT</span> <span class="col">FirstName</span>, <span class="col">Salary</span>
+<span class="kw">FROM</span>   <span class="tbl">Employees</span>
+<span class="kw">WHERE</span>  <span class="col">Salary</span> <span class="op">&gt;</span> <span class="kw">ANY</span> (
+           <span class="kw">SELECT</span> <span class="col">Salary</span> <span class="kw">FROM</span> <span class="tbl">Employees</span> <span class="kw">WHERE</span> <span class="col">DeptID</span> <span class="op">=</span> <span class="num">3</span>
+       );
+
+<span class="cmt">-- ALL: employees earning more than ALL employees in DeptID = 3</span>
+<span class="cmt">-- (i.e. earning more than the highest salary in that dept)</span>
+<span class="kw">SELECT</span> <span class="col">FirstName</span>, <span class="col">Salary</span>
+<span class="kw">FROM</span>   <span class="tbl">Employees</span>
+<span class="kw">WHERE</span>  <span class="col">Salary</span> <span class="op">&gt;</span> <span class="kw">ALL</span> (
+           <span class="kw">SELECT</span> <span class="col">Salary</span> <span class="kw">FROM</span> <span class="tbl">Employees</span> <span class="kw">WHERE</span> <span class="col">DeptID</span> <span class="op">=</span> <span class="num">3</span>
+       );</pre>
+      </div>
+    </div>
+
+    <!-- 1.3 Correlated subquery -->
+    <div class="subsection">
+      <div class="sub-heading">1.3 — Correlated Subquery</div>
+      <p class="body">A correlated subquery references a column from the outer query. Unlike a regular subquery (runs once), a correlated subquery runs once <em>per row</em> of the outer query.</p>
+      <div class="code-block">
+        <div class="code-head">
+          <span class="code-title">▸ T-SQL — Correlated Subquery (references outer query)</span>
+          <span class="code-badge">MSSQL</span>
+        </div>
+<pre><span class="cmt">-- Find employees who earn more than the average salary of their OWN department</span>
+<span class="cmt">-- The inner query re-runs for EACH employee row using their DeptID</span>
+<span class="kw">SELECT</span> <span class="col">e.FirstName</span>, <span class="col">e.LastName</span>, <span class="col">e.Salary</span>, <span class="col">e.DeptID</span>
+<span class="kw">FROM</span>   <span class="tbl">Employees</span> <span class="col">e</span>
+<span class="kw">WHERE</span>  <span class="col">e.Salary</span> <span class="op">&gt;</span> (
+           <span class="kw">SELECT</span> <span class="fn">AVG</span>(<span class="col">e2.Salary</span>)
+           <span class="kw">FROM</span>   <span class="tbl">Employees</span> <span class="col">e2</span>
+           <span class="kw">WHERE</span>  <span class="col">e2.DeptID</span> <span class="op">=</span> <span class="col">e.DeptID</span>  <span class="cmt">-- ← references outer query alias 'e'</span>
+       );
+
+<span class="cmt">-- Find each customer's most recent order date using correlated subquery</span>
+<span class="kw">SELECT</span>
+    <span class="col">c.CustomerID</span>,
+    <span class="col">c.FirstName</span>,
+    (<span class="kw">SELECT</span> <span class="fn">MAX</span>(<span class="col">o.OrderDate</span>)
+     <span class="kw">FROM</span>   <span class="tbl">Orders</span> <span class="col">o</span>
+     <span class="kw">WHERE</span>  <span class="col">o.CustomerID</span> <span class="op">=</span> <span class="col">c.CustomerID</span>) <span class="kw">AS</span> <span class="col">LastOrderDate</span>
+<span class="kw">FROM</span> <span class="tbl">Customers</span> <span class="col">c</span>;</pre>
+      </div>
+    </div>
+
+    <!-- 1.4 EXISTS -->
+    <div class="subsection">
+      <div class="sub-heading">1.4 — EXISTS and NOT EXISTS</div>
+      <p class="body"><code>EXISTS</code> returns <code>TRUE</code> if the subquery returns at least one row. It is often faster than <code>IN</code> for large datasets because SQL Server stops scanning as soon as it finds the first match.</p>
+      <div class="code-block">
+        <div class="code-head">
+          <span class="code-title">▸ T-SQL — EXISTS / NOT EXISTS</span>
+          <span class="code-badge">MSSQL</span>
+        </div>
+<pre><span class="cmt">-- EXISTS: find customers who HAVE placed at least one order</span>
+<span class="kw">SELECT</span> <span class="col">c.CustomerID</span>, <span class="col">c.FirstName</span>, <span class="col">c.Email</span>
+<span class="kw">FROM</span>   <span class="tbl">Customers</span> <span class="col">c</span>
+<span class="kw">WHERE</span>  <span class="kw">EXISTS</span> (
+           <span class="kw">SELECT</span> <span class="num">1</span>             <span class="cmt">-- SELECT 1 (or *) is idiomatic — only checking existence</span>
+           <span class="kw">FROM</span>   <span class="tbl">Orders</span> <span class="col">o</span>
+           <span class="kw">WHERE</span>  <span class="col">o.CustomerID</span> <span class="op">=</span> <span class="col">c.CustomerID</span>
+       );
+
+<span class="cmt">-- NOT EXISTS: find products that have NEVER been ordered</span>
+<span class="kw">SELECT</span> <span class="col">p.ProductID</span>, <span class="col">p.ProductName</span>, <span class="col">p.Price</span>
+<span class="kw">FROM</span>   <span class="tbl">Products</span> <span class="col">p</span>
+<span class="kw">WHERE</span>  <span class="kw">NOT EXISTS</span> (
+           <span class="kw">SELECT</span> <span class="num">1</span>
+           <span class="kw">FROM</span>   <span class="tbl">OrderItems</span> <span class="col">oi</span>
+           <span class="kw">WHERE</span>  <span class="col">oi.ProductID</span> <span class="op">=</span> <span class="col">p.ProductID</span>
+       );</pre>
+      </div>
+    </div>
+
+    <!-- 1.5 Derived Table -->
+    <div class="subsection">
+      <div class="sub-heading">1.5 — Derived Table (Subquery in FROM)</div>
+      <p class="body">A derived table is a subquery used in the <code>FROM</code> clause — it acts like a temporary inline table. It must be given an alias.</p>
+      <div class="code-block">
+        <div class="code-head">
+          <span class="code-title">▸ T-SQL — Derived Table (inline view)</span>
+          <span class="code-badge">MSSQL</span>
+        </div>
+<pre><span class="cmt">-- Derived table: first calculate per-department salary stats, then filter</span>
+<span class="kw">SELECT</span>
+    <span class="col">dept_stats.DeptID</span>,
+    <span class="col">dept_stats.AvgSalary</span>,
+    <span class="col">dept_stats.MaxSalary</span>,
+    <span class="col">dept_stats.HeadCount</span>
+<span class="kw">FROM</span> (
+    <span class="kw">SELECT</span>
+        <span class="col">DeptID</span>,
+        <span class="fn">AVG</span>(<span class="col">Salary</span>)   <span class="kw">AS</span> <span class="col">AvgSalary</span>,
+        <span class="fn">MAX</span>(<span class="col">Salary</span>)   <span class="kw">AS</span> <span class="col">MaxSalary</span>,
+        <span class="fn">COUNT</span>(<span class="op">*</span>)      <span class="kw">AS</span> <span class="col">HeadCount</span>
+    <span class="kw">FROM</span>  <span class="tbl">Employees</span>
+    <span class="kw">GROUP BY</span> <span class="col">DeptID</span>
+) <span class="kw">AS</span> <span class="col">dept_stats</span>         <span class="cmt">-- alias is mandatory for derived tables</span>
+<span class="kw">WHERE</span> <span class="col">dept_stats.HeadCount</span> <span class="op">&gt;</span> <span class="num">5</span>
+<span class="kw">ORDER BY</span> <span class="col">dept_stats.AvgSalary</span> <span class="kw">DESC</span>;</pre>
+      </div>
+      <div class="callout blue"><strong>Tip:</strong> For complex queries, prefer a CTE (WITH clause) over a derived table — it's more readable and can be referenced multiple times. CTEs are covered in the ANSI SQL reference; derived tables and CTEs are functionally equivalent in most cases.</div>
+    </div>
+
+    <!-- Reference table -->
+    <table class="ref-table">
+      <tr><th>Subquery Type</th><th>Returns</th><th>Used With</th><th>Performance Note</th></tr>
+      <tr><td>Scalar</td><td>1 row × 1 col</td><td>= &lt; &gt; in SELECT/WHERE</td><td>Fast; runs once</td></tr>
+      <tr><td>Multi-row</td><td>Many rows × 1 col</td><td><code>IN</code>, <code>NOT IN</code>, <code>ANY</code>, <code>ALL</code></td><td>Avoid <code>NOT IN</code> with NULLs</td></tr>
+      <tr><td>Correlated</td><td>1 row (usually)</td><td>WHERE / SELECT</td><td>Runs per outer row — can be slow</td></tr>
+      <tr><td>EXISTS</td><td>TRUE / FALSE</td><td>WHERE EXISTS (…)</td><td>Fastest — stops at first match</td></tr>
+      <tr><td>Derived Table</td><td>Virtual table</td><td>FROM (…) AS alias</td><td>Use CTE for readability</td></tr>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 2: SET OPERATORS                   -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="section" id="set-ops">
+    <div class="section-header">
+      <span class="sec-badge orange">02</span>
+      <h2>Set Operators</h2>
+    </div>
+
+    <p class="body">Set operators combine the results of two or more SELECT statements into a single result set. The columns in each SELECT must match in <strong>number</strong> and must be <strong>compatible data types</strong>. T-SQL supports four set operators: <code>UNION</code>, <code>UNION ALL</code>, <code>INTERSECT</code>, and <code>EXCEPT</code>.</p>
+
+    <div class="card-row">
+      <div class="info-card">
+        <div class="info-card-head orange">⊔ UNION / UNION ALL</div>
+        <div class="info-card-body">
+          <div class="card-row-item"><span class="ci-name">UNION</span><span class="ci-desc">All rows, duplicates removed</span></div>
+          <div class="card-row-item"><span class="ci-name">UNION ALL</span><span class="ci-desc">All rows including duplicates (faster)</span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-head blue">∩ INTERSECT</div>
+        <div class="info-card-body">
+          <div class="card-row-item"><span class="ci-name">INTERSECT</span><span class="ci-desc">Only rows common to BOTH queries</span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-head purple">∖ EXCEPT</div>
+        <div class="info-card-body">
+          <div class="card-row-item"><span class="ci-name">EXCEPT</span><span class="ci-desc">Rows in first query NOT in second</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="sub-heading">2.1 — UNION and UNION ALL</div>
+      <div class="code-block">
+        <div class="code-head">
+          <span class="code-title">▸ T-SQL — UNION and UNION ALL with Real Examples</span>
+          <span class="code-badge">MSSQL</span>
+        </div>
+<pre><span class="cmt">-- UNION: combine current and former employees into one list (no duplicates)
+-- Column count and types must match across both SELECTs</span>
+<span class="kw">SELECT</span> <span class="col">EmployeeID</span>, <span class="col">FirstName</span>, <span class="col">LastName</span>, <span class="str">'Current'</span>  <span class="kw">AS</span> <span class="col">Status</span>
+<span class="kw">FROM</span>   <span class="tbl">Employees</span>
+<span class="agg">UNION</span>
+<span class="kw">SELECT</span> <span class="col">EmployeeID</span>, <span class="col">FirstName</span>, <span class="col">LastName</span>, <span class="str">'Former'</span>   <span class="kw">AS</span> <span class="col">Status</span>
+<span class="kw">FROM</span>   <span class="tbl">FormerEmployees</span>;
+<span class="cmt">-- UNION removes duplicate rows automatically (slower — must sort/hash to detect dupes)</span>
+
+<span class="cmt">-- UNION ALL: same but keeps ALL rows including duplicates (usually preferred for speed)</span>
+<span class="kw">SELECT</span> <span class="col">ProductID</span>, <span class="col">ProductName</span>, <span class="col">Price</span>, <span class="str">'Online'</span>   <span class="kw">AS</span> <span class="col">Source</span>
+<span class="kw">FROM</span>   <span class="tbl">OnlineProducts</span>
+<span class="agg">UNION ALL</span>
+<span class="kw">SELECT</span> <span class="col">ProductID</span>, <span class="col">ProductName</span>, <span class="col">Price</span>, <span class="str">'InStore'</span>  <span class="kw">AS</span> <span class="col">Source</span>
+<span class="kw">FROM</span>   <span class="tbl">StoreProducts</span>;
+
+<span class="cmt">-- UNION ALL in reporting: combine monthly order totals from different year tables</span>
+<span class="kw">SELECT</span> <span class="col">OrderMonth</span>, <span class="col">TotalSales</span>, <span class="num">2023</span> <span class="kw">AS</span> <span class="col">Year</span> <span class="kw">FROM</span> <span class="tbl">Sales2023</span>
+<span class="agg">UNION ALL</span>
+<span class="kw">SELECT</span> <span class="col">OrderMonth</span>, <span class="col">TotalSales</span>, <span class="num">2024</span> <span class="kw">AS</span> <span class="col">Year</span> <span class="kw">FROM</span> <span class="tbl">Sales2024</span>
+<span class="kw">ORDER BY</span> <span class="col">Year</span>, <span class="col">OrderMonth</span>;   <span class="cmt">-- ORDER BY applies to the ENTIRE combined result</span>
+
+<span class="cmt">-- IMPORTANT: Column names come from the FIRST SELECT only</span>
+<span class="kw">SELECT</span> <span class="col">CustName</span> <span class="kw">AS</span> <span class="col">FullName</span> <span class="kw">FROM</span> <span class="tbl">Customers</span>   <span class="cmt">-- ← column header = "FullName"</span>
+<span class="agg">UNION ALL</span>
+<span class="kw">SELECT</span> <span class="col">EmpName</span>              <span class="kw">FROM</span> <span class="tbl">Employees</span>;   <span class="cmt">-- ← alias here is ignored</span></pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="sub-heading">2.2 — INTERSECT (Common Rows)</div>
+      <div class="code-block">
+        <div class="code-head">
+          <span class="code-title">▸ T-SQL — INTERSECT</span>
+          <span class="code-badge">MSSQL</span>
+        </div>
+<pre><span class="cmt">-- INTERSECT: customers who placed orders in BOTH 2023 AND 2024</span>
+<span class="kw">SELECT</span> <span class="col">CustomerID</span>
+<span class="kw">FROM</span>   <span class="tbl">Orders</span>
+<span class="kw">WHERE</span>  <span class="fn">YEAR</span>(<span class="col">OrderDate</span>) <span class="op">=</span> <span class="num">2023</span>
+<span class="agg">INTERSECT</span>
+<span class="kw">SELECT</span> <span class="col">CustomerID</span>
+<span class="kw">FROM</span>   <span class="tbl">Orders</span>
+<span class="kw">WHERE</span>  <span class="fn">YEAR</span>(<span class="col">OrderDate</span>) <span class="op">=</span> <span class="num">2024</span>;
+
+<span class="cmt">-- INTERSECT: employees who are also registered as customers</span>
+<span class="kw">SELECT</span> <span class="col">Email</span> <span class="kw">FROM</span> <span class="tbl">Employees</span>
+<span class="agg">INTERSECT</span>
+<span class="kw">SELECT</span> <span class="col">Email</span> <span class="kw">FROM</span> <span class="tbl">Customers</span>;
+<span class="cmt">-- Only rows where the Email appears in BOTH tables are returned</span></pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="sub-heading">2.3 — EXCEPT (Set Difference)</div>
+      <div class="code-block">
+        <div class="code-head">
+          <span class="code-title">▸ T-SQL — EXCEPT (rows in first query NOT in second)</span>
+          <span class="code-badge">MSSQL</span>
+        </div>
+<pre><span class="cmt">-- EXCEPT: products that exist in the catalogue but have NEVER been ordered</span>
+<span class="kw">SELECT</span> <span class="col">ProductID</span> <span class="kw">FROM</span> <span class="tbl">Products</span>
+<span class="agg">EXCEPT</span>
+<span class="kw">SELECT</span> <span class="col">ProductID</span> <span class="kw">FROM</span> <span class="tbl">OrderItems</span>;
+
+<span class="cmt">-- EXCEPT: customers from 2023 who did NOT return in 2024 (churned customers)</span>
+<span class="kw">SELECT</span> <span class="col">CustomerID</span> <span class="kw">FROM</span> <span class="tbl">Orders</span> <span class="kw">WHERE</span> <span class="fn">YEAR</span>(<span class="col">OrderDate</span>) <span class="op">=</span> <span class="num">2023</span>
+<span class="agg">EXCEPT</span>
+<span class="kw">SELECT</span> <span class="col">CustomerID</span> <span class="kw">FROM</span> <span class="tbl">Orders</span> <span class="kw">WHERE</span> <span class="fn">YEAR</span>(<span class="col">OrderDate</span>) <span class="op">=</span> <span class="num">2024</span>;
+
+<span class="cmt">-- Note: EXCEPT = left difference (A - B). Order matters!
+-- To get B - A, simply swap the two SELECT statements.</span></pre>
+      </div>
+    </div>
+
+    <table class="ref-table">
+      <tr><th>Operator</th><th>Returns</th><th>Duplicates</th><th>Typical Use Case</th></tr>
+      <tr><td><code>UNION</code></td><td>Rows from A + B</td><td>Removed</td><td>Merge two lists, unique entries only</td></tr>
+      <tr><td><code>UNION ALL</code></td><td>Rows from A + B</td><td>Kept (faster)</td><td>Combine partitioned tables, reports</td></tr>
+      <tr><td><code>INTERSECT</code></td><td>Rows in A AND B</td><td>Removed</td><td>Common customers across periods</td></tr>
+      <tr><td><code>EXCEPT</code></td><td>Rows in A NOT in B</td><td>Removed</td><td>Find gaps, unmatched records, churn</td></tr>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 3: MODIFYING DATA                  -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="section" id="modifying">
+    <div class="section-header">
+      <span class="sec-badge green">03</span>
+      <h2>Modifying Data</h2>
+    </div>
+
+    <p class="body">T-SQL provides <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>TRUNCATE</code>, and the powerful <code>MERGE</code> statement for modifying data. SQL Server also supports <code>OUTPUT</code> clauses to capture affected rows and <code>TOP</code> to limit changes.</p>
+    <div class="callout orange"><strong>Best Practice:</strong> Always wrap data modification in an explicit transaction (<code>BEGIN TRAN</code> / <code>COMMIT</code> / <code>ROLLBACK</code>) and test with a SELECT first. Use a WHERE clause to avoid unintentional full-table updates or deletes.</div>
+
+    <div class="subsection">
+      <div class="sub-heading">3.1 — INSERT</div>
+      <div class="code-block">
+        <div class="code-head">
+          <span class="code-title">▸ T-SQL — INSERT Variations</span>
+          <span class="code-badge">MSSQL</span>
+        </div>
+<pre><span class="cmt">-- Basic single-row INSERT</span>
+<span class="kw">INSERT INTO</span> <span class="tbl">Employees</span> (<span class="col">FirstName</span>, <span class="col">LastName</span>, <span class="col">Salary</span>, <span class="col">DeptID</span>, <span class="col">HireDate</span>)
+<span class="kw">VALUES</span> (<span class="str">'Sarah'</span>, <span class="str">'Connor'</span>, <span class="num">75000.00</span>, <span class="num">2</span>, <span class="str">'2024-03-01'</span>);
+
+<span class="cmt">-- Multi-row INSERT (T-SQL allows multiple value sets)</span>
+<span class="kw">INSERT INTO</span> <span class="tbl">Products</span> (<span class="col">ProductName</span>, <span class="col">Price</span>, <span class="col">StockQty</span>, <span class="col">CategoryID</span>)
+<span class="kw">VALUES</span>
+    (<span class="str">'Wireless Mouse'</span>,    <span class="num">29.99</span>,  <span class="num">150</span>, <span class="num">1</span>),
+    (<span class="str">'USB-C Hub'</span>,         <span class="num">49.99</span>,   <span class="num">80</span>, <span class="num">1</span>),
+    (<span class="str">'Laptop Stand'</span>,      <span class="num">39.99</span>,  <span class="num">200</span>, <span class="num">2</span>);
+
+<span class="cmt">-- INSERT ... SELECT: copy data from another table or query</span>
+<span class="kw">INSERT INTO</span> <span class="tbl">ArchivedOrders</span> (<span class="col">OrderID</span>, <span class="col">CustomerID</span>, <span class="col">OrderDate</span>, <span class="col">TotalAmount</span>)
+<span class="kw">SELECT</span>                      <span class="col">OrderID</span>, <span class="col">CustomerID</span>, <span class="col">OrderDate</span>, <span class="col">TotalAmount</span>
+<span class="kw">FROM</span>   <span class="tbl">Orders</span>
+<span class="kw">WHERE</span>  <span class="col">OrderDate</span> <span class="op">&lt;</span> <span class="str">'2023-01-01'</span>;
+
+<span class="cmt">-- SELECT INTO: create a NEW table and populate it in one step</span>
+<span class="kw">SELECT</span> <span class="col">CustomerID</span>, <span class="col">FirstName</span>, <span class="col">Email</span>
+<span class="kw">INTO</span>   <span class="tbl">PremiumCustomers</span>      <span class="cmt">-- creates the table automatically</span>
+<span class="kw">FROM</span>   <span class="tbl">Customers</span>
+<span class="kw">WHERE</span>  <span class="col">TotalSpend</span> <span class="op">&gt;</span> <span class="num">10000</span>;
+
+<span class="cmt">-- OUTPUT clause: capture the auto-generated identity values after insert</span>
+<span class="kw">INSERT INTO</span> <span class="tbl">Employees</span> (<span class="col">FirstName</span>, <span class="col">LastName</span>, <span class="col">Salary</span>)
+<span class="kw">OUTPUT</span> <span class="col">INSERTED.EmployeeID</span>, <span class="col">INSERTED.FirstName</span>   <span class="cmt">-- returns inserted rows</span>
+<span class="kw">VALUES</span> (<span class="str">'John'</span>, <span class="str">'Doe'</span>, <span class="num">60000</span>);</pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="sub-heading">3.2 — UPDATE</div>
+      <div class="code-block">
+        <div class="code-head">
+          <span class="code-title">▸ T-SQL — UPDATE Variations</span>
+          <span class="code-badge">MSSQL</span>
+        </div>
+<pre><span class="cmt">-- Basic UPDATE with WHERE (always use WHERE to avoid full-table update!)</span>
+<span class="kw">UPDATE</span> <span class="tbl">Employees</span>
+<span class="kw">SET</span>    <span class="col">Salary</span> <span class="op">=</span> <span class="col">Salary</span> <span class="op">*</span> <span class="num">1.10</span>,   <span class="cmt">-- 10% raise</span>
+       <span class="col">UpdatedAt</span> <span class="op">=</span> <span class="fn">GETDATE</span>()
+<span class="kw">WHERE</span>  <span class="col">DeptID</span> <span class="op">=</span> <span class="num">3</span>;
+
+<span class="cmt">-- UPDATE with subquery in SET — set salary to department average</span>
+<span class="kw">UPDATE</span> <span class="tbl">Employees</span>
+<span class="kw">SET</span>    <span class="col">Salary</span> <span class="op">=</span> (
+           <span class="kw">SELECT</span> <span class="fn">AVG</span>(<span class="col">Salary</span>)
+           <span class="kw">FROM</span>   <span class="tbl">Employees</span>
+           <span class="kw">WHERE</span>  <span class="col">DeptID</span> <span class="op">=</span> <span class="num">5</span>
+       )
+<span class="kw">WHERE</span>  <span class="col">EmployeeID</span> <span class="op">=</span> <span class="num">42</span>;
+
+<span class="cmt">-- UPDATE with JOIN (T-SQL specific — update table using data from another table)</span>
+<span class="kw">UPDATE</span> <span class="col">e</span>
+<span class="kw">SET</span>    <span class="col">e.DeptName</span> <span class="op">=</span> <span class="col">d.DeptName</span>
+<span class="kw">FROM</span>   <span class="tbl">Employees</span> <span class="col">e</span>
+<span class="kw">JOIN</span>   <span class="tbl">Departments</span> <span class="col">d</span> <span class="kw">ON</span> <span class="col">e.DeptID</span> <span class="op">=</span> <span class="col">d.DeptID</span>
+<span class="kw">WHERE</span>  <span class="col">d.Location</span> <span class="op">=</span> <span class="str">'London'</span>;
+
+<span class="cmt">-- TOP: update only the first N rows (useful for batch processing)</span>
+<span class="kw">UPDATE TOP</span>(<span class="num">100</span>) <span class="tbl">Orders</span>
+<span class="kw">SET</span>    <span class="col">Status</span> <span class="op">=</span> <span class="str">'Processed'</span>
+<span class="kw">WHERE</span>  <span class="col">Status</span> <span class="op">=</span> <span class="str">'Pending'</span>;
+
+<span class="cmt">-- OUTPUT: capture old and new values during an update (great for auditing)</span>
+<span class="kw">UPDATE</span> <span class="tbl">Products</span>
+<span class="kw">SET</span>    <span class="col">Price</span> <span class="op">=</span> <span class="col">Price</span> <span class="op">*</span> <span class="num">1.05</span>
+<span class="kw">OUTPUT</span>
+    <span class="col">DELETED.ProductID</span>,
+    <span class="col">DELETED.Price</span>  <span class="kw">AS</span> <span class="col">OldPrice</span>,
+    <span class="col">INSERTED.Price</span> <span class="kw">AS</span> <span class="col">NewPrice</span>
+<span class="kw">WHERE</span>  <span class="col">CategoryID</span> <span class="op">=</span> <span class="num">1</span>;</pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="sub-heading">3.3 — DELETE and TRUNCATE</div>
+      <div class="code-block">
+        <div class="code-head">
+          <span class="code-title">▸ T-SQL — DELETE vs TRUNCATE</span>
+          <span class="code-badge">MSSQL</span>
+        </div>
+<pre><span class="cmt">-- DELETE with WHERE — removes specific rows</span>
+<span class="kw">DELETE FROM</span> <span class="tbl">Orders</span>
+<span class="kw">WHERE</span>  <span class="col">OrderDate</span> <span class="op">&lt;</span> <span class="str">'2020-01-01'</span>
+  <span class="kw">AND</span>  <span class="col">Status</span> <span class="op">=</span> <span class="str">'Cancelled'</span>;
+
+<span class="cmt">-- DELETE with JOIN (T-SQL specific)</span>
+<span class="kw">DELETE</span> <span class="col">oi</span>
+<span class="kw">FROM</span>   <span class="tbl">OrderItems</span> <span class="col">oi</span>
+<span class="kw">JOIN</span>   <span class="tbl">Orders</span>     <span class="col">o</span>  <span class="kw">ON</span> <span class="col">oi.OrderID</span> <span class="op">=</span> <span class="col">o.OrderID</span>
+<span class="kw">WHERE</span>  <span class="col">o.Status</span>   <span class="op">=</span> <span class="str">'Cancelled'</span>;
+
+<span class="cmt">-- DELETE with subquery</span>
+<span class="kw">DELETE FROM</span> <span class="tbl">Products</span>
+<span class="kw">WHERE</span>  <span class="col">ProductID</span> <span class="kw">NOT IN</span> (
+           <span class="kw">SELECT</span> <span class="kw">DISTINCT</span> <span class="col">ProductID</span>
+           <span class="kw">FROM</span>   <span class="tbl">OrderItems</span>
+       );   <span class="cmt">-- delete products that have never been ordered</span>
+
+<span class="cmt">-- OUTPUT with DELETE — capture what you deleted (for audit logging)</span>
+<span class="kw">DELETE FROM</span> <span class="tbl">TempLogs</span>
+<span class="kw">OUTPUT</span> <span class="col">DELETED.LogID</span>, <span class="col">DELETED.Message</span>, <span class="col">DELETED.CreatedAt</span>
+<span class="kw">WHERE</span>  <span class="col">CreatedAt</span> <span class="op">&lt;</span> <span class="fn">DATEADD</span>(<span class="col">DAY</span>, <span class="op">-</span><span class="num">30</span>, <span class="fn">GETDATE</span>());
+
+<span class="cmt">-- TRUNCATE TABLE — removes ALL rows; faster than DELETE (no row-level logging)
+-- Cannot use WHERE. Cannot be rolled back easily. Resets IDENTITY counter.</span>
+<span class="kw">TRUNCATE TABLE</span> <span class="tbl">StagingImport</span>;   <span class="cmt">-- fast, non-logged, resets identity</span></pre>
+      </div>
+      <div class="callout orange"><strong>DELETE vs TRUNCATE:</strong> <code>DELETE</code> logs each row removal, fires DELETE triggers, can use WHERE, and can be rolled back. <code>TRUNCATE</code> is minimally logged, is much faster on large tables, resets the identity counter, but cannot be filtered and does not fire DML triggers.</div>
+    </div>
+
+    <div class="subsection">
+      <div class="sub-heading">3.4 — MERGE (Upsert)</div>
+      <p class="body"><code>MERGE</code> performs INSERT, UPDATE, or DELETE in a single statement based on whether rows match between a source and target table.</p>
+      <div class="code-block">
+        <div class="code-head">
+          <span class="code-title">▸ T-SQL — MERGE (Upsert Pattern)</span>
+          <span class="code-badge">MSSQL</span>
+        </div>
+<pre><span class="cmt">-- MERGE: sync Products table from a staging/import table</span>
+<span class="kw">MERGE</span> <span class="tbl">Products</span> <span class="kw">AS</span> <span class="col">target</span>
+<span class="kw">USING</span> <span class="tbl">StagingProducts</span> <span class="kw">AS</span> <span class="col">source</span>
+    <span class="kw">ON</span> (<span class="col">target.ProductID</span> <span class="op">=</span> <span class="col">source.ProductID</span>)
+
+<span class="kw">WHEN MATCHED AND</span> <span class="col">target.Price</span> <span class="op">&lt;&gt;</span> <span class="col">source.Price</span> <span class="kw">THEN</span>
+    <span class="cmt">-- Row exists in both — update price if changed</span>
+    <span class="kw">UPDATE SET</span>
+        <span class="col">target.Price</span>     <span class="op">=</span> <span class="col">source.Price</span>,
+        <span class="col">target.StockQty</span>  <span class="op">=</span> <span class="col">source.StockQty</span>,
+        <span class="col">target.UpdatedAt</span> <span class="op">=</span> <span class="fn">GETDATE</span>()
+
+<span class="kw">WHEN NOT MATCHED BY TARGET THEN</span>
+    <span class="cmt">-- New product in source — insert it</span>
+    <span class="kw">INSERT</span> (<span class="col">ProductID</span>, <span class="col">ProductName</span>, <span class="col">Price</span>, <span class="col">StockQty</span>)
+    <span class="kw">VALUES</span> (<span class="col">source.ProductID</span>, <span class="col">source.ProductName</span>, <span class="col">source.Price</span>, <span class="col">source.StockQty</span>)
+
+<span class="kw">WHEN NOT MATCHED BY SOURCE THEN</span>
+    <span class="cmt">-- Product in target but not in source — delete it (discontinued)</span>
+    <span class="kw">DELETE</span>
+
+<span class="kw">OUTPUT</span>
+    <span class="col">$action</span> <span class="kw">AS</span> <span class="col">ActionTaken</span>,   <span class="cmt">-- 'INSERT', 'UPDATE', or 'DELETE'</span>
+    <span class="col">COALESCE</span>(<span class="col">INSERTED.ProductID</span>, <span class="col">DELETED.ProductID</span>) <span class="kw">AS</span> <span class="col">ProductID</span>;</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 4: CALCULATIONS                    -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="section" id="calculations">
+    <div class="section-header">
+      <span class="sec-badge yellow">04</span>
+      <h2>Writing Expressions — Calculations</h2>
+    </div>
+
+    <p class="body">SQL expressions for calculations include arithmetic operators, math functions, aggregate functions, and window functions. In T-SQL, expressions appear in SELECT lists, WHERE filters, ORDER BY, and computed column definitions.</p>
+
+    <div class="subsection">
+      <div class="sub-heading">4.1 — Arithmetic Operators and Math Functions</div>
+      <div class="code-block">
+        <div class="code-head">
+          <span class="code-title">▸ T-SQL — Arithmetic and Math Functions</span>
+          <span class="code-badge">MSSQL</span>
+        </div>
+<pre><span class="cmt">-- Basic arithmetic operators: + - * / % (modulo)</span>
+<span class="kw">SELECT</span>
+    <span class="col">OrderID</span>,
+    <span class="col">Quantity</span>,
+    <span class="col">UnitPrice</span>,
+    <span class="col">Quantity</span> <span class="op">*</span> <span class="col">UnitPrice</span>                              <span class="kw">AS</span> <span class="col">LineTotal</span>,
+    <span class="col">Quantity</span> <span class="op">*</span> <span class="col">UnitPrice</span> <span class="op">*</span> (<span class="num">1</span> <span class="op">-</span> <span class="col">DiscountPct</span>)          <span class="kw">AS</span> <span class="col">DiscountedTotal</span>,
+    <span class="col">Quantity</span> <span class="op">*</span> <span class="col">UnitPrice</span> <span class="op">*</span> (<span class="num">1</span> <span class="op">+</span> <span class="num">0.20</span>)                 <span class="kw">AS</span> <span class="col">TotalWithVAT</span>,
+    <span class="col">OrderID</span> <span class="op">%</span> <span class="num">2</span>                                         <span class="kw">AS</span> <span class="col">IsEvenOrder</span>  <span class="cmt">-- modulo</span>
+<span class="kw">FROM</span> <span class="tbl">OrderItems</span>;
+
+<span class="cmt">-- Common T-SQL Math Functions</span>
+<span class="kw">SELECT</span>
+    <span class="fn">ROUND</span>(<span class="num">17.567</span>, <span class="num">2</span>)          <span class="kw">AS</span> <span class="col">Rounded</span>,          <span class="cmt">-- 17.57</span>
+    <span class="fn">FLOOR</span>(<span class="num">17.9</span>)               <span class="kw">AS</span> <span class="col">FloorVal</span>,         <span class="cmt">-- 17 (round down)</span>
+    <span class="fn">CEILING</span>(<span class="num">17.1</span>)             <span class="kw">AS</span> <span class="col">CeilVal</span>,          <span class="cmt">-- 18 (round up)</span>
+    <span class="fn">ABS</span>(<span class="op">-</span><span class="num">250.00</span>)              <span class="kw">AS</span> <span class="col">AbsVal</span>,           <span class="cmt">-- 250.00</span>
+    <span class="fn">SQRT</span>(<span class="num">144</span>)                 <span class="kw">AS</span> <span class="col">SqrtVal</span>,          <span class="cmt">-- 12.0</span>
+    <span class="fn">POWER</span>(<span class="num">2</span>, <span class="num">10</span>)              <span class="kw">AS</span> <span class="col">PowerVal</span>,         <span class="cmt">-- 1024</span>
+    <span class="fn">LOG</span>(<span class="num">100</span>)                  <span class="kw">AS</span> <span class="col">LogVal</span>,           <span class="cmt">-- natural log</span>
+    <span class="fn">LOG10</span>(<span class="num">1000</span>)               <span class="kw">AS</span> <span class="col">Log10Val</span>,         <span class="cmt">-- 3.0</span>
+    <span class="fn">PI</span>()                      <span class="kw">AS</span> <span class="col">PiVal</span>,             <span class="cmt">-- 3.14159...</span>
+    <span class="fn">RAND</span>()                    <span class="kw">AS</span> <span class="col">RandomFloat</span>;       <span class="cmt">-- random 0-1</span>
+
+<span class="cmt">-- Integer division vs. decimal division</span>
+<span class="kw">SELECT</span>
+    <span class="num">10</span> <span class="op">/</span> <span class="num">3</span>                     <span class="kw">AS</span> <span class="col">IntDiv</span>,            <span class="cmt">-- 3 (integer!)</span>
+    <span class="num">10</span> <span class="op">/</span> <span class="num">3.0</span>                   <span class="kw">AS</span> <span class="col">DecDiv</span>,            <span class="cmt">-- 3.333... (one decimal literal forces float)</span>
+    <span class="fn">CAST</span>(<span class="num">10</span> <span class="kw">AS</span> <span class="ty">DECIMAL</span>(<span class="num">10</span>,<span class="num">2</span>)) <span class="op">/</span> <span class="num">3</span> <span class="kw">AS</span> <span class="col">CastDiv</span>;          <span class="cmt">-- 3.33</span>
+
+<span class="cmt">-- Real-world: calculate profit margin percentage per product</span>
+<span class="kw">SELECT</span>
+    <span class="col">ProductName</span>,
+    <span class="col">SalePrice</span>,
+    <span class="col">CostPrice</span>,
+    (<span class="col">SalePrice</span> <span class="op">-</span> <span class="col">CostPrice</span>) <span class="op">/</span> <span class="fn">NULLIF</span>(<span class="col">SalePrice</span>, <span class="num">0</span>) <span class="op">*</span> <span class="num">100</span>  <span class="kw">AS</span> <span class="col">MarginPct</span>
+    <span class="cmt">-- NULLIF prevents division-by-zero error when SalePrice = 0</span>
+<span class="kw">FROM</span> <span class="tbl">Products</span>;</pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="sub-heading">4.2 — Aggregate Functions in Expressions</div>
+      <div class="code-block">
+        <div class="code-head">
+          <span class="code-title">▸ T-SQL — Aggregate Calculation Expressions</span>
+          <span class="code-badge">MSSQL</span>
+        </div>
+<pre><span class="cmt">-- Aggregate functions with expressions</span>
+<span class="kw">SELECT</span>
+    <span class="col">DeptID</span>,
+    <span class="fn">COUNT</span>(<span class="op">*</span>)                          <span class="kw">AS</span> <span class="col">TotalEmployees</span>,
+    <span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> <span class="col">JobTitle</span>)          <span class="kw">AS</span> <span class="col">UniqueJobTitles</span>,
+    <span class="fn">SUM</span>(<span class="col">Salary</span>)                       <span class="kw">AS</span> <span class="col">TotalPayroll</span>,
+    <span class="fn">AVG</span>(<span class="col">Salary</span>)                       <span class="kw">AS</span> <span class="col">AvgSalary</span>,
+    <span class="fn">MIN</span>(<span class="col">Salary</span>)                       <span class="kw">AS</span> <span class="col">MinSalary</span>,
+    <span class="fn">MAX</span>(<span class="col">Salary</span>)                       <span class="kw">AS</span> <span class="col">MaxSalary</span>,
+    <span class="fn">MAX</span>(<span class="col">Salary</span>) <span class="op">-</span> <span class="fn">MIN</span>(<span class="col">Salary</span>)        <span class="kw">AS</span> <span class="col">SalaryRange</span>,     <span class="cmt">-- expression on aggregates</span>
+    <span class="fn">SUM</span>(<span class="col">Salary</span>) <span class="op">/</span> <span class="fn">COUNT</span>(<span class="op">*</span>) <span class="op">*</span> <span class="num">12</span>     <span class="kw">AS</span> <span class="col">AnnualPayroll</span>    <span class="cmt">-- combined expression</span>
+<span class="kw">FROM</span>   <span class="tbl">Employees</span>
+<span class="kw">GROUP BY</span> <span class="col">DeptID</span>
+<span class="kw">HAVING</span>   <span class="fn">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="num">3</span>;              <span class="cmt">-- filter on aggregate result</span>
+
+<span class="cmt">-- Date calculations — difference between dates, adding intervals</span>
+<span class="kw">SELECT</span>
+    <span class="col">EmployeeID</span>,
+    <span class="col">HireDate</span>,
+    <span class="fn">DATEDIFF</span>(<span class="col">YEAR</span>,  <span class="col">HireDate</span>, <span class="fn">GETDATE</span>())   <span class="kw">AS</span> <span class="col">YearsOfService</span>,
+    <span class="fn">DATEDIFF</span>(<span class="col">MONTH</span>, <span class="col">HireDate</span>, <span class="fn">GETDATE</span>())   <span class="kw">AS</span> <span class="col">MonthsOfService</span>,
+    <span class="fn">DATEADD</span>(<span class="col">YEAR</span>, <span class="num">1</span>, <span class="col">HireDate</span>)             <span class="kw">AS</span> <span class="col">OneYearAnniversary</span>,
+    <span class="fn">DATEADD</span>(<span class="col">DAY</span>, <span class="num">90</span>, <span class="fn">GETDATE</span>())            <span class="kw">AS</span> <span class="col">ProrationEndDate</span>
+<span class="kw">FROM</span> <span class="tbl">Employees</span>;</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 5: STRING MANIPULATION             -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="section" id="strings">
+    <div class="section-header">
+      <span class="sec-badge purple">05</span>
+      <h2>Writing Expressions — String Manipulation</h2>
+    </div>
+
+    <p class="body">T-SQL provides a rich library of string functions for building, parsing, cleaning, and formatting text data. These are commonly used in data cleaning, reporting, and ETL pipelines.</p>
+
+    <div class="subsection">
+      <div class="sub-heading">5.1 — Core String Functions</div>
+      <div class="code-block">
+        <div class="code-head">
+          <span class="code-title">▸ T-SQL — Essential String Functions with Examples</span>
+          <span class="code-badge">MSSQL</span>
+        </div>
+<pre><span class="cmt">-- ── LENGTH & CASE ────────────────────────────────────────────────</span>
+<span class="kw">SELECT</span>
+    <span class="fn">LEN</span>(<span class="str">'Hello World'</span>)           <span class="kw">AS</span> <span class="col">Len</span>,           <span class="cmt">-- 11 (excludes trailing spaces)</span>
+    <span class="fn">DATALENGTH</span>(<span class="str">'Hello'</span>)          <span class="kw">AS</span> <span class="col">ByteLen</span>,       <span class="cmt">-- bytes (5 for VARCHAR, 10 for NVARCHAR)</span>
+    <span class="fn">UPPER</span>(<span class="str">'hello world'</span>)         <span class="kw">AS</span> <span class="col">UpperCase</span>,     <span class="cmt">-- 'HELLO WORLD'</span>
+    <span class="fn">LOWER</span>(<span class="str">'HELLO WORLD'</span>)         <span class="kw">AS</span> <span class="col">LowerCase</span>,     <span class="cmt">-- 'hello world'</span>
+
+<span class="cmt">-- ── TRIMMING & PADDING ───────────────────────────────────────────</span>
+    <span class="fn">LTRIM</span>(<span class="str">'   hello'</span>)             <span class="kw">AS</span> <span class="col">LTrimmed</span>,      <span class="cmt">-- 'hello'</span>
+    <span class="fn">RTRIM</span>(<span class="str">'hello   '</span>)             <span class="kw">AS</span> <span class="col">RTrimmed</span>,      <span class="cmt">-- 'hello'</span>
+    <span class="fn">TRIM</span>(<span class="str">'  hello  '</span>)             <span class="kw">AS</span> <span class="col">BothTrimmed</span>,   <span class="cmt">-- 'hello' (SQL Server 2017+)</span>
+    <span class="fn">LEFT</span>(<span class="str">'Hello World'</span>, <span class="num">5</span>)       <span class="kw">AS</span> <span class="col">LeftChars</span>,     <span class="cmt">-- 'Hello'</span>
+    <span class="fn">RIGHT</span>(<span class="str">'Hello World'</span>, <span class="num">5</span>)      <span class="kw">AS</span> <span class="col">RightChars</span>,    <span class="cmt">-- 'World'</span>
+
+<span class="cmt">-- ── SUBSTRING, CHARINDEX, PATINDEX ──────────────────────────────</span>
+    <span class="fn">SUBSTRING</span>(<span class="str">'Hello World'</span>, <span class="num">7</span>, <span class="num">5</span>) <span class="kw">AS</span> <span class="col">Mid</span>,          <span class="cmt">-- 'World' (start,length)</span>
+    <span class="fn">CHARINDEX</span>(<span class="str">'World'</span>, <span class="str">'Hello World'</span>) <span class="kw">AS</span> <span class="col">Position</span>,  <span class="cmt">-- 7 (1-based position)</span>
+    <span class="fn">PATINDEX</span>(<span class="str">'%[0-9]%'</span>, <span class="str">'abc123'</span>) <span class="kw">AS</span> <span class="col">FirstDigit</span>,  <span class="cmt">-- 4 (position of first digit)</span>
+
+<span class="cmt">-- ── REPLACE & STUFF ──────────────────────────────────────────────</span>
+    <span class="fn">REPLACE</span>(<span class="str">'Hi World'</span>, <span class="str">'World'</span>, <span class="str">'SQL'</span>) <span class="kw">AS</span> <span class="col">Replaced</span>,<span class="cmt">-- 'Hi SQL'</span>
+    <span class="fn">STUFF</span>(<span class="str">'Hello!'</span>, <span class="num">6</span>, <span class="num">1</span>, <span class="str">' World'</span>)  <span class="kw">AS</span> <span class="col">Stuffed</span>,   <span class="cmt">-- 'Hello World' (pos,del_len,insert)</span>
+
+<span class="cmt">-- ── CONCATENATION ────────────────────────────────────────────────</span>
+    <span class="str">'Hello'</span> <span class="op">+</span> <span class="str">' '</span> <span class="op">+</span> <span class="str">'World'</span>      <span class="kw">AS</span> <span class="col">Concat</span>,       <span class="cmt">-- 'Hello World' (+)</span>
+    <span class="fn">CONCAT</span>(<span class="str">'Hello'</span>, <span class="str">' '</span>, <span class="str">'World'</span>)<span class="kw">AS</span> <span class="col">ConcatFn</span>,     <span class="cmt">-- safer (ignores NULLs)</span>
+    <span class="fn">CONCAT_WS</span>(<span class="str">','</span>, <span class="str">'A'</span>, <span class="str">'B'</span>, <span class="str">'C'</span>)<span class="kw">AS</span> <span class="col">ConcatSep</span>;    <span class="cmt">-- 'A,B,C' (with separator)</span></pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="sub-heading">5.2 — Practical String Manipulation Scenarios</div>
+      <div class="code-block">
+        <div class="code-head">
+          <span class="code-title">▸ T-SQL — Real-World String Expressions</span>
+          <span class="code-badge">MSSQL</span>
+        </div>
+<pre><span class="cmt">-- Build a formatted full name from parts</span>
+<span class="kw">SELECT</span>
+    <span class="fn">CONCAT</span>(<span class="fn">UPPER</span>(<span class="fn">LEFT</span>(<span class="col">FirstName</span>, <span class="num">1</span>)), <span class="fn">LOWER</span>(<span class="fn">SUBSTRING</span>(<span class="col">FirstName</span>, <span class="num">2</span>, <span class="num">100</span>)),
+           <span class="str">' '</span>,
+           <span class="fn">UPPER</span>(<span class="fn">LEFT</span>(<span class="col">LastName</span>, <span class="num">1</span>)),  <span class="fn">LOWER</span>(<span class="fn">SUBSTRING</span>(<span class="col">LastName</span>,  <span class="num">2</span>, <span class="num">100</span>)))
+    <span class="kw">AS</span> <span class="col">FormattedName</span>    <span class="cmt">-- "Sarah Connor" — proper case</span>
+<span class="kw">FROM</span> <span class="tbl">Employees</span>;
+
+<span class="cmt">-- Extract domain from email address</span>
+<span class="kw">SELECT</span>
+    <span class="col">Email</span>,
+    <span class="fn">SUBSTRING</span>(<span class="col">Email</span>,
+              <span class="fn">CHARINDEX</span>(<span class="str">'@'</span>, <span class="col">Email</span>) <span class="op">+</span> <span class="num">1</span>,
+              <span class="fn">LEN</span>(<span class="col">Email</span>))   <span class="kw">AS</span> <span class="col">EmailDomain</span>
+<span class="kw">FROM</span> <span class="tbl">Customers</span>;   <span class="cmt">-- e.g. 'john@gmail.com' → 'gmail.com'</span>
+
+<span class="cmt">-- Mask sensitive data — show only last 4 digits of card number</span>
+<span class="kw">SELECT</span>
+    <span class="fn">REPLICATE</span>(<span class="str">'*'</span>, <span class="fn">LEN</span>(<span class="col">CardNumber</span>) <span class="op">-</span> <span class="num">4</span>) <span class="op">+</span> <span class="fn">RIGHT</span>(<span class="col">CardNumber</span>, <span class="num">4</span>)
+    <span class="kw">AS</span> <span class="col">MaskedCard</span>   <span class="cmt">-- e.g. '************1234'</span>
+<span class="kw">FROM</span> <span class="tbl">PaymentMethods</span>;
+
+<span class="cmt">-- FORMAT function — locale-aware number and date formatting</span>
+<span class="kw">SELECT</span>
+    <span class="fn">FORMAT</span>(<span class="num">1234567.89</span>, <span class="str">'N2'</span>)           <span class="kw">AS</span> <span class="col">FormattedNum</span>,    <span class="cmt">-- '1,234,567.89'</span>
+    <span class="fn">FORMAT</span>(<span class="num">1234567.89</span>, <span class="str">'C2'</span>, <span class="str">'en-US'</span>)  <span class="kw">AS</span> <span class="col">Currency</span>,       <span class="cmt">-- '$1,234,567.89'</span>
+    <span class="fn">FORMAT</span>(<span class="fn">GETDATE</span>(), <span class="str">'dd-MMM-yyyy'</span>)   <span class="kw">AS</span> <span class="col">FormattedDate</span>,  <span class="cmt">-- '04-Mar-2026'</span>
+    <span class="fn">FORMAT</span>(<span class="fn">GETDATE</span>(), <span class="str">'HH:mm:ss'</span>)      <span class="kw">AS</span> <span class="col">TimeOnly</span>;        <span class="cmt">-- '14:30:00'</span>
+
+<span class="cmt">-- Data cleaning: remove extra spaces, standardize format</span>
+<span class="kw">UPDATE</span> <span class="tbl">Customers</span>
+<span class="kw">SET</span>
+    <span class="col">FirstName</span> <span class="op">=</span> <span class="fn">TRIM</span>(<span class="fn">REPLACE</span>(<span class="col">FirstName</span>, <span class="str">'  '</span>, <span class="str">' '</span>)),   <span class="cmt">-- collapse double spaces</span>
+    <span class="col">Email</span>     <span class="op">=</span> <span class="fn">LOWER</span>(<span class="fn">TRIM</span>(<span class="col">Email</span>)),                    <span class="cmt">-- normalize to lowercase</span>
+    <span class="col">Phone</span>     <span class="op">=</span> <span class="fn">REPLACE</span>(<span class="fn">REPLACE</span>(<span class="fn">REPLACE</span>(<span class="col">Phone</span>,<span class="str">' '</span>,<span class="str">''</span>),<span class="str">'-'</span>,<span class="str">''</span>),<span class="str">'('</span>,<span class="str">''</span>)
+<span class="kw">WHERE</span> <span class="col">CustomerID</span> <span class="op">&gt;</span> <span class="num">0</span>;
+
+<span class="cmt">-- STRING_AGG: aggregate multiple rows into a comma-separated string (SQL Server 2017+)</span>
+<span class="kw">SELECT</span>
+    <span class="col">DeptID</span>,
+    <span class="fn">STRING_AGG</span>(<span class="col">FirstName</span>, <span class="str">', '</span>) <span class="kw">WITHIN GROUP</span> (<span class="kw">ORDER BY</span> <span class="col">FirstName</span>)
+    <span class="kw">AS</span> <span class="col">EmployeeList</span>   <span class="cmt">-- 'Alice, Bob, Carol, David'</span>
+<span class="kw">FROM</span> <span class="tbl">Employees</span>
+<span class="kw">GROUP BY</span> <span class="col">DeptID</span>;</pre>
+      </div>
+    </div>
+
+    <table class="ref-table">
+      <tr><th>Function</th><th>Purpose</th><th>Example Result</th></tr>
+      <tr><td><code>LEN(s)</code></td><td>Character count (excluding trailing spaces)</td><td><code>LEN('Hi ')</code> → 2</td></tr>
+      <tr><td><code>CHARINDEX(find, str)</code></td><td>Position of substring (1-based)</td><td><code>CHARINDEX('@','a@b')</code> → 2</td></tr>
+      <tr><td><code>SUBSTRING(str, start, len)</code></td><td>Extract portion of string</td><td><code>SUBSTRING('Hello',2,3)</code> → 'ell'</td></tr>
+      <tr><td><code>REPLACE(str, old, new)</code></td><td>Replace all occurrences</td><td><code>REPLACE('aXa','X','-')</code> → 'a-a'</td></tr>
+      <tr><td><code>STUFF(str, pos, del, ins)</code></td><td>Delete then insert</td><td><code>STUFF('Hello!',6,1,' World')</code> → 'Hello World'</td></tr>
+      <tr><td><code>REPLICATE(str, n)</code></td><td>Repeat string n times</td><td><code>REPLICATE('*',5)</code> → '*****'</td></tr>
+      <tr><td><code>CONCAT_WS(sep, v1, v2…)</code></td><td>Join with separator, skip NULLs</td><td><code>CONCAT_WS(',','A',NULL,'C')</code> → 'A,C'</td></tr>
+      <tr><td><code>STRING_AGG(col, sep)</code></td><td>Aggregate rows into a string</td><td><code>STRING_AGG(Name,', ')</code> → 'Al, Bob'</td></tr>
+      <tr><td><code>FORMAT(val, fmt)</code></td><td>Locale-aware formatting</td><td><code>FORMAT(1234,'N0')</code> → '1,234'</td></tr>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 6: CONDITIONAL LOGIC               -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="section" id="conditional">
+    <div class="section-header">
+      <span class="sec-badge blue">06</span>
+      <h2>Writing Expressions — Conditional Logic</h2>
+    </div>
+
+    <p class="body">T-SQL provides several ways to write conditional logic directly inside a query: the <code>CASE</code> expression, <code>IIF()</code>, <code>CHOOSE()</code>, <code>COALESCE()</code>, <code>NULLIF()</code>, and <code>ISNULL()</code>. These allow branching without procedural code.</p>
+
+    <div class="subsection">
+      <div class="sub-heading">6.1 — CASE Expression</div>
+      <p class="body">The <code>CASE</code> expression is the most powerful and versatile conditional tool in SQL. It comes in two forms: <strong>Simple CASE</strong> (compares one value) and <strong>Searched CASE</strong> (evaluates Boolean conditions).</p>
+      <div class="code-block">
+        <div class="code-head">
+          <span class="code-title">▸ T-SQL — Simple CASE and Searched CASE</span>
+          <span class="code-badge">MSSQL</span>
+        </div>
+<pre><span class="cmt">-- ── SIMPLE CASE: compare one expression against fixed values ─────</span>
+<span class="kw">SELECT</span>
+    <span class="col">OrderID</span>,
+    <span class="col">Status</span>,
+    <span class="kw">CASE</span> <span class="col">Status</span>                          <span class="cmt">-- evaluate Status once</span>
+        <span class="kw">WHEN</span> <span class="str">'P'</span>  <span class="kw">THEN</span> <span class="str">'Pending'</span>
+        <span class="kw">WHEN</span> <span class="str">'S'</span>  <span class="kw">THEN</span> <span class="str">'Shipped'</span>
+        <span class="kw">WHEN</span> <span class="str">'D'</span>  <span class="kw">THEN</span> <span class="str">'Delivered'</span>
+        <span class="kw">WHEN</span> <span class="str">'C'</span>  <span class="kw">THEN</span> <span class="str">'Cancelled'</span>
+        <span class="kw">ELSE</span>           <span class="str">'Unknown'</span>
+    <span class="kw">END</span> <span class="kw">AS</span> <span class="col">StatusDescription</span>
+<span class="kw">FROM</span> <span class="tbl">Orders</span>;
+
+<span class="cmt">-- ── SEARCHED CASE: evaluate different Boolean conditions ──────────</span>
+<span class="kw">SELECT</span>
+    <span class="col">EmployeeID</span>,
+    <span class="col">Salary</span>,
+    <span class="kw">CASE</span>
+        <span class="kw">WHEN</span> <span class="col">Salary</span> <span class="op">&lt;</span>  <span class="num">40000</span>  <span class="kw">THEN</span> <span class="str">'Grade 1 — Entry Level'</span>
+        <span class="kw">WHEN</span> <span class="col">Salary</span> <span class="op">&lt;</span>  <span class="num">70000</span>  <span class="kw">THEN</span> <span class="str">'Grade 2 — Mid Level'</span>
+        <span class="kw">WHEN</span> <span class="col">Salary</span> <span class="op">&lt;</span> <span class="num">100000</span>  <span class="kw">THEN</span> <span class="str">'Grade 3 — Senior Level'</span>
+        <span class="kw">ELSE</span>                        <span class="str">'Grade 4 — Executive'</span>
+    <span class="kw">END</span> <span class="kw">AS</span> <span class="col">SalaryGrade</span>
+<span class="kw">FROM</span> <span class="tbl">Employees</span>;
+
+<span class="cmt">-- ── CASE in ORDER BY — custom sort order ─────────────────────────</span>
+<span class="kw">SELECT</span> <span class="col">OrderID</span>, <span class="col">Status</span>, <span class="col">OrderDate</span>
+<span class="kw">FROM</span>   <span class="tbl">Orders</span>
+<span class="kw">ORDER BY</span>
+    <span class="kw">CASE</span> <span class="col">Status</span>
+        <span class="kw">WHEN</span> <span class="str">'Urgent'</span>    <span class="kw">THEN</span> <span class="num">1</span>
+        <span class="kw">WHEN</span> <span class="str">'Pending'</span>   <span class="kw">THEN</span> <span class="num">2</span>
+        <span class="kw">WHEN</span> <span class="str">'Shipped'</span>   <span class="kw">THEN</span> <span class="num">3</span>
+        <span class="kw">ELSE</span>                  <span class="num">99</span>
+    <span class="kw">END</span>;   <span class="cmt">-- Urgent orders appear at the top</span>
+
+<span class="cmt">-- ── CASE in GROUP BY / aggregation ───────────────────────────────</span>
+<span class="kw">SELECT</span>
+    <span class="kw">CASE</span>
+        <span class="kw">WHEN</span> <span class="col">Salary</span> <span class="op">&lt;</span>  <span class="num">50000</span> <span class="kw">THEN</span> <span class="str">'Low'</span>
+        <span class="kw">WHEN</span> <span class="col">Salary</span> <span class="op">&lt;</span>  <span class="num">90000</span> <span class="kw">THEN</span> <span class="str">'Medium'</span>
+        <span class="kw">ELSE</span>                       <span class="str">'High'</span>
+    <span class="kw">END</span>           <span class="kw">AS</span> <span class="col">SalaryBand</span>,
+    <span class="fn">COUNT</span>(<span class="op">*</span>)      <span class="kw">AS</span> <span class="col">EmployeeCount</span>,
+    <span class="fn">AVG</span>(<span class="col">Salary</span>)   <span class="kw">AS</span> <span class="col">AvgInBand</span>
+<span class="kw">FROM</span>    <span class="tbl">Employees</span>
+<span class="kw">GROUP BY</span>
+    <span class="kw">CASE</span>                          <span class="cmt">-- GROUP BY must repeat the same CASE</span>
+        <span class="kw">WHEN</span> <span class="col">Salary</span> <span class="op">&lt;</span>  <span class="num">50000</span> <span class="kw">THEN</span> <span class="str">'Low'</span>
+        <span class="kw">WHEN</span> <span class="col">Salary</span> <span class="op">&lt;</span>  <span class="num">90000</span> <span class="kw">THEN</span> <span class="str">'Medium'</span>
+        <span class="kw">ELSE</span>                       <span class="str">'High'</span>
+    <span class="kw">END</span>;</pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="sub-heading">6.2 — IIF, CHOOSE, COALESCE, NULLIF, ISNULL</div>
+      <div class="code-block">
+        <div class="code-head">
+          <span class="code-title">▸ T-SQL — Shorthand Conditional Functions</span>
+          <span class="code-badge">MSSQL</span>
+        </div>
+<pre><span class="cmt">-- IIF: inline IF (T-SQL specific — shorthand for a 2-branch CASE)
+-- IIF(condition, true_value, false_value)</span>
+<span class="kw">SELECT</span>
+    <span class="col">OrderID</span>,
+    <span class="col">TotalAmount</span>,
+    <span class="fn">IIF</span>(<span class="col">TotalAmount</span> <span class="op">&gt;=</span> <span class="num">1000</span>, <span class="str">'High Value'</span>, <span class="str">'Standard'</span>) <span class="kw">AS</span> <span class="col">OrderTier</span>,
+    <span class="fn">IIF</span>(<span class="col">StockQty</span> <span class="op">&lt;</span> <span class="num">10</span>,        <span class="str">'Reorder Now'</span>, <span class="str">'OK'</span>)        <span class="kw">AS</span> <span class="col">StockAlert</span>
+<span class="kw">FROM</span> <span class="tbl">Orders</span>;
+
+<span class="cmt">-- CHOOSE: return a value at a 1-based index position from a list</span>
+<span class="kw">SELECT</span>
+    <span class="fn">CHOOSE</span>(<span class="fn">MONTH</span>(<span class="fn">GETDATE</span>()), <span class="str">'Q1'</span>,<span class="str">'Q1'</span>,<span class="str">'Q1'</span>,<span class="str">'Q2'</span>,<span class="str">'Q2'</span>,<span class="str">'Q2'</span>,
+                               <span class="str">'Q3'</span>,<span class="str">'Q3'</span>,<span class="str">'Q3'</span>,<span class="str">'Q4'</span>,<span class="str">'Q4'</span>,<span class="str">'Q4'</span>)
+    <span class="kw">AS</span> <span class="col">CurrentQuarter</span>,
+
+    <span class="fn">CHOOSE</span>(<span class="fn">DATEPART</span>(<span class="col">WEEKDAY</span>, <span class="fn">GETDATE</span>()),
+           <span class="str">'Sunday'</span>,<span class="str">'Monday'</span>,<span class="str">'Tuesday'</span>,<span class="str">'Wednesday'</span>,
+           <span class="str">'Thursday'</span>,<span class="str">'Friday'</span>,<span class="str">'Saturday'</span>)
+    <span class="kw">AS</span> <span class="col">DayName</span>;
+
+<span class="cmt">-- COALESCE: return the first non-NULL value from a list
+-- Standard SQL — preferred over ISNULL for portability</span>
+<span class="kw">SELECT</span>
+    <span class="col">CustomerID</span>,
+    <span class="fn">COALESCE</span>(<span class="col">Phone</span>, <span class="col">Mobile</span>, <span class="col">WorkPhone</span>, <span class="str">'No contact number'</span>)
+    <span class="kw">AS</span> <span class="col">BestPhone</span>   <span class="cmt">-- returns the first non-NULL phone number</span>
+<span class="kw">FROM</span> <span class="tbl">Customers</span>;
+
+<span class="cmt">-- ISNULL: T-SQL specific — replaces NULL with a specified value (2 args only)</span>
+<span class="kw">SELECT</span>
+    <span class="col">ProductName</span>,
+    <span class="fn">ISNULL</span>(<span class="col">Discount</span>, <span class="num">0</span>)    <span class="kw">AS</span> <span class="col">EffectiveDiscount</span>,   <span class="cmt">-- treat NULL as 0</span>
+    <span class="fn">ISNULL</span>(<span class="col">Description</span>, <span class="str">'No description available'</span>)
+                            <span class="kw">AS</span> <span class="col">Description</span>
+<span class="kw">FROM</span> <span class="tbl">Products</span>;
+
+<span class="cmt">-- NULLIF: returns NULL if both arguments are EQUAL; otherwise returns the first
+-- Use to prevent division-by-zero errors</span>
+<span class="kw">SELECT</span>
+    <span class="col">ProductName</span>,
+    <span class="col">Revenue</span>,
+    <span class="col">Units</span>,
+    <span class="col">Revenue</span> <span class="op">/</span> <span class="fn">NULLIF</span>(<span class="col">Units</span>, <span class="num">0</span>)  <span class="kw">AS</span> <span class="col">RevenuePerUnit</span>
+    <span class="cmt">-- When Units = 0: NULLIF returns NULL → division produces NULL (not an error)
+    -- When Units ≠ 0: NULLIF returns Units → normal division proceeds</span>
+<span class="kw">FROM</span> <span class="tbl">SalesData</span>;</pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="sub-heading">6.3 — Combining Conditional Logic — Complete Real-World Example</div>
+      <div class="code-block">
+        <div class="code-head">
+          <span class="code-title">▸ T-SQL — Combined Expressions: Calculations + Strings + Conditionals</span>
+          <span class="code-badge">MSSQL</span>
+        </div>
+<pre><span class="cmt">-- A comprehensive ORDER SUMMARY report combining all expression types</span>
+<span class="kw">SELECT</span>
+    <span class="cmt">-- String manipulation: formatted customer name</span>
+    <span class="fn">CONCAT</span>(<span class="col">c.FirstName</span>, <span class="str">' '</span>, <span class="fn">UPPER</span>(<span class="col">c.LastName</span>))    <span class="kw">AS</span> <span class="col">Customer</span>,
+
+    <span class="cmt">-- Calculation: line total with discount</span>
+    <span class="fn">ROUND</span>(<span class="col">oi.Quantity</span> <span class="op">*</span> <span class="col">oi.UnitPrice</span>
+          <span class="op">*</span> (<span class="num">1</span> <span class="op">-</span> <span class="fn">COALESCE</span>(<span class="col">oi.DiscountPct</span>, <span class="num">0</span>)), <span class="num">2</span>)  <span class="kw">AS</span> <span class="col">LineTotal</span>,
+
+    <span class="cmt">-- Conditional: delivery priority based on order value</span>
+    <span class="kw">CASE</span>
+        <span class="kw">WHEN</span> <span class="col">o.TotalAmount</span> <span class="op">&gt;</span>= <span class="num">500</span>  <span class="kw">THEN</span> <span class="str">'⭐ Express — Free'</span>
+        <span class="kw">WHEN</span> <span class="col">o.TotalAmount</span> <span class="op">&gt;</span>= <span class="num">100</span>  <span class="kw">THEN</span> <span class="str">'Standard — Free'</span>
+        <span class="kw">ELSE</span>                              <span class="str">'Standard — £3.99'</span>
+    <span class="kw">END</span>                                               <span class="kw">AS</span> <span class="col">DeliveryOption</span>,
+
+    <span class="cmt">-- IIF: flag overdue orders</span>
+    <span class="fn">IIF</span>(<span class="col">o.Status</span> <span class="op">&lt;&gt;</span> <span class="str">'Delivered'</span>
+        <span class="kw">AND</span> <span class="col">o.ExpectedDate</span> <span class="op">&lt;</span> <span class="fn">GETDATE</span>(), <span class="str">'OVERDUE'</span>, <span class="str">'On Track'</span>)
+                                                      <span class="kw">AS</span> <span class="col">DeliveryStatus</span>,
+
+    <span class="cmt">-- Date calculation: days until expected delivery</span>
+    <span class="fn">DATEDIFF</span>(<span class="col">DAY</span>, <span class="fn">GETDATE</span>(), <span class="col">o.ExpectedDate</span>)       <span class="kw">AS</span> <span class="col">DaysToDelivery</span>,
+
+    <span class="cmt">-- String: masked order reference</span>
+    <span class="str">'ORD-'</span> <span class="op">+</span> <span class="fn">RIGHT</span>(<span class="str">'0000'</span> <span class="op">+</span> <span class="fn">CAST</span>(<span class="col">o.OrderID</span> <span class="kw">AS</span> <span class="ty">VARCHAR</span>), <span class="num">6</span>)
+                                                      <span class="kw">AS</span> <span class="col">OrderRef</span>,
+
+    <span class="cmt">-- Conditional aggregate: count items and flag large orders</span>
+    <span class="fn">COUNT</span>(<span class="col">oi.ProductID</span>) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> <span class="col">o.OrderID</span>)  <span class="kw">AS</span> <span class="col">ItemCount</span>
+
+<span class="kw">FROM</span>   <span class="tbl">Orders</span> <span class="col">o</span>
+<span class="kw">JOIN</span>   <span class="tbl">Customers</span>  <span class="col">c</span>  <span class="kw">ON</span> <span class="col">o.CustomerID</span>  <span class="op">=</span> <span class="col">c.CustomerID</span>
+<span class="kw">JOIN</span>   <span class="tbl">OrderItems</span> <span class="col">oi</span> <span class="kw">ON</span> <span class="col">o.OrderID</span>     <span class="op">=</span> <span class="col">oi.OrderID</span>
+<span class="kw">WHERE</span>  <span class="col">o.OrderDate</span> <span class="op">&gt;=</span> <span class="fn">DATEADD</span>(<span class="col">MONTH</span>, <span class="op">-</span><span class="num">3</span>, <span class="fn">GETDATE</span>())
+<span class="kw">ORDER BY</span>
+    <span class="fn">IIF</span>(<span class="col">o.Status</span> <span class="op">&lt;&gt;</span> <span class="str">'Delivered'</span> <span class="kw">AND</span> <span class="col">o.ExpectedDate</span> <span class="op">&lt;</span> <span class="fn">GETDATE</span>(), <span class="num">0</span>, <span class="num">1</span>),
+    <span class="col">o.TotalAmount</span> <span class="kw">DESC</span>;   <span class="cmt">-- overdue orders first, then by value</span></pre>
+      </div>
+    </div>
+
+    <table class="ref-table">
+      <tr><th>Function / Syntax</th><th>Purpose</th><th>Standard?</th></tr>
+      <tr><td><code>CASE WHEN … THEN … END</code></td><td>Multi-branch conditional expression</td><td>ANSI SQL ✅</td></tr>
+      <tr><td><code>IIF(cond, true, false)</code></td><td>Inline 2-way IF shorthand</td><td>T-SQL only</td></tr>
+      <tr><td><code>CHOOSE(n, v1, v2, …)</code></td><td>Pick value by 1-based index</td><td>T-SQL only</td></tr>
+      <tr><td><code>COALESCE(v1, v2, …)</code></td><td>First non-NULL value (N args)</td><td>ANSI SQL ✅</td></tr>
+      <tr><td><code>ISNULL(val, replacement)</code></td><td>Replace NULL (2 args)</td><td>T-SQL only</td></tr>
+      <tr><td><code>NULLIF(v1, v2)</code></td><td>Returns NULL if v1 = v2</td><td>ANSI SQL ✅</td></tr>
+    </table>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  <p>Advanced T-SQL Tutorial &nbsp;·&nbsp; Subqueries &nbsp;·&nbsp; Set Operators &nbsp;·&nbsp; Data Modification &nbsp;·&nbsp; Expressions &nbsp;·&nbsp; Microsoft SQL Server</p>
+</footer>
+
+</body>
+</html>
