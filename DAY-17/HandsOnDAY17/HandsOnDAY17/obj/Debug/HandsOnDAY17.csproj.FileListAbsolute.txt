@@ -1,0 +1,7 @@
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-17\HandsOnDAY17\HandsOnDAY17\bin\Debug\HandsOnDAY17.exe.config
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-17\HandsOnDAY17\HandsOnDAY17\bin\Debug\HandsOnDAY17.exe
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-17\HandsOnDAY17\HandsOnDAY17\bin\Debug\HandsOnDAY17.pdb
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-17\HandsOnDAY17\HandsOnDAY17\obj\Debug\HandsOnDAY17.csproj.AssemblyReference.cache
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-17\HandsOnDAY17\HandsOnDAY17\obj\Debug\HandsOnDAY17.csproj.CoreCompileInputs.cache
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-17\HandsOnDAY17\HandsOnDAY17\obj\Debug\HandsOnDAY17.exe
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-17\HandsOnDAY17\HandsOnDAY17\obj\Debug\HandsOnDAY17.pdb
