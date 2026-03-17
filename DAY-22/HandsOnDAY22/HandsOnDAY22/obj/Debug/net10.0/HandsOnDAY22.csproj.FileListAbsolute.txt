@@ -1,0 +1,15 @@
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-22\HandsOnDAY22\HandsOnDAY22\bin\Debug\net10.0\HandsOnDAY22.exe
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-22\HandsOnDAY22\HandsOnDAY22\bin\Debug\net10.0\HandsOnDAY22.deps.json
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-22\HandsOnDAY22\HandsOnDAY22\bin\Debug\net10.0\HandsOnDAY22.runtimeconfig.json
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-22\HandsOnDAY22\HandsOnDAY22\bin\Debug\net10.0\HandsOnDAY22.dll
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-22\HandsOnDAY22\HandsOnDAY22\bin\Debug\net10.0\HandsOnDAY22.pdb
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-22\HandsOnDAY22\HandsOnDAY22\obj\Debug\net10.0\HandsOnDAY22.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-22\HandsOnDAY22\HandsOnDAY22\obj\Debug\net10.0\HandsOnDAY22.AssemblyInfoInputs.cache
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-22\HandsOnDAY22\HandsOnDAY22\obj\Debug\net10.0\HandsOnDAY22.AssemblyInfo.cs
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-22\HandsOnDAY22\HandsOnDAY22\obj\Debug\net10.0\HandsOnDAY22.csproj.CoreCompileInputs.cache
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-22\HandsOnDAY22\HandsOnDAY22\obj\Debug\net10.0\HandsOnDAY22.sourcelink.json
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-22\HandsOnDAY22\HandsOnDAY22\obj\Debug\net10.0\HandsOnDAY22.dll
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-22\HandsOnDAY22\HandsOnDAY22\obj\Debug\net10.0\refint\HandsOnDAY22.dll
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-22\HandsOnDAY22\HandsOnDAY22\obj\Debug\net10.0\HandsOnDAY22.pdb
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-22\HandsOnDAY22\HandsOnDAY22\obj\Debug\net10.0\HandsOnDAY22.genruntimeconfig.cache
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-22\HandsOnDAY22\HandsOnDAY22\obj\Debug\net10.0\ref\HandsOnDAY22.dll

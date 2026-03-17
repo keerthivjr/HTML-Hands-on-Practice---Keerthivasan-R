@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "HandsOnDAY22/1.0.0": {
+        "runtime": {
+          "HandsOnDAY22.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "HandsOnDAY22/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
