@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOLID & Design Patterns — C# Mastery</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --card: #161d2f;
+    --border: #1e2d4a;
+    --accent: #38bdf8;
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --accent4: #fb923c;
+    --accent5: #f472b6;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --highlight: #1e3a5f;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  /* BG mesh */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 10%, rgba(56,189,248,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 80% at 90% 80%, rgba(167,139,250,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative; z-index: 10;
+    padding: 2.5rem 2rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .logo {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; flex-shrink: 0;
+    box-shadow: 0 0 24px rgba(56,189,248,0.3);
+  }
+  header h1 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+  header h1 span { color: var(--accent); }
+  header p { font-size: 0.85rem; color: var(--muted); margin-top: 0.2rem; }
+
+  /* ── NAV TABS ── */
+  .tabs {
+    position: relative; z-index: 10;
+    display: flex; gap: 0.25rem;
+    padding: 1rem 2rem 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    padding: 0.55rem 1.1rem;
+    border-radius: 8px 8px 0 0;
+    border: 1px solid transparent;
+    border-bottom: none;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    color: var(--muted);
+    background: transparent;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .tab:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+  .tab.active {
+    color: var(--text);
+    background: var(--card);
+    border-color: var(--border);
+    position: relative;
+  }
+  .tab.active::after {
+    content: '';
+    position: absolute; bottom: -1px; left: 0; right: 0; height: 1px;
+    background: var(--card);
+  }
+  .tab.solid-s { --tc: var(--accent); }
+  .tab.solid-o { --tc: var(--accent2); }
+  .tab.solid-l { --tc: var(--accent3); }
+  .tab.solid-i { --tc: var(--accent4); }
+  .tab.solid-d { --tc: var(--accent5); }
+  .tab.pat-sing { --tc: #fbbf24; }
+  .tab.pat-fact { --tc: #2dd4bf; }
+  .tab.pat-obs  { --tc: #e879f9; }
+  .tab.pat-repo { --tc: #60a5fa; }
+  .tab.active { border-top: 2px solid var(--tc, var(--accent)); }
+
+  /* ── CONTENT PANEL ── */
+  .panel {
+    position: relative; z-index: 10;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 0 12px 12px 12px;
+    margin: 0 2rem 2rem;
+    padding: 2rem;
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .panel.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  /* ── PRINCIPLE / PATTERN HEADER ── */
+  .pheader {
+    display: flex; gap: 1.2rem; align-items: flex-start;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .badge {
+    padding: 0.35rem 0.85rem;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: 0.25rem;
+  }
+  .pheader h2 { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em; }
+  .pheader p { color: var(--muted); font-size: 0.88rem; margin-top: 0.35rem; line-height: 1.6; }
+
+  /* ── RULE BOX ── */
+  .rule-box {
+    background: var(--highlight);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+  .rule-box strong { color: var(--accent); }
+
+  /* ── CODE SECTION ── */
+  .code-section { margin-bottom: 1.5rem; }
+  .code-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .code-label .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  .dot-bad  { background: #f87171; }
+  .dot-good { background: var(--accent3); }
+  .dot-code { background: var(--accent); }
+
+  pre {
+    background: #07090f;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem 1.4rem;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.75;
+    tab-size: 4;
+  }
+  /* Syntax highlighting */
+  .kw  { color: #c792ea; }
+  .cls { color: #82aaff; }
+  .iface { color: #ffcb6b; }
+  .str { color: #c3e88d; }
+  .cmt { color: #546e7a; font-style: italic; }
+  .num { color: #f78c6c; }
+  .met { color: #89ddff; }
+  .prop { color: #e2e8f0; }
+
+  /* ── HOW IT WORKS ── */
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .how-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+  }
+  .how-card .step {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.35rem;
+  }
+  .how-card p { font-size: 0.8rem; line-height: 1.55; color: var(--text); }
+  .how-card strong { color: var(--accent); }
+
+  /* ── BENEFIT PILLS ── */
+  .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+  .pill {
+    padding: 0.3rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    border: 1px solid currentColor;
+    opacity: 0.85;
+  }
+
+  /* ── MEMORY TIP ── */
+  .tip {
+    background: rgba(52, 211, 153, 0.08);
+    border: 1px solid rgba(52, 211, 153, 0.25);
+    border-radius: 10px;
+    padding: 0.9rem 1.1rem;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    margin-top: 1.2rem;
+  }
+  .tip::before { content: '💡 '; }
+
+  /* ── SECTION DIVIDER ── */
+  .divider {
+    display: flex; align-items: center; gap: 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .divider::before, .divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  /* ── SCROLLBAR ── */
+  pre::-webkit-scrollbar { height: 5px; }
+  pre::-webkit-scrollbar-track { background: transparent; }
+  pre::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ── OVERVIEW GRID ── */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .overview-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .overview-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .ov-letter {
+    font-size: 2rem; font-weight: 800; line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .ov-name { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .ov-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+
+  @media (max-width: 600px) {
+    header { padding: 1.5rem 1rem 1rem; }
+    .tabs { padding: 0.75rem 1rem 0; }
+    .panel { margin: 0 1rem 1.5rem; padding: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">⚡</div>
+  <div>
+    <h1>SOLID & Design Patterns <span>in C#</span></h1>
+    <p>Fresher's practical guide — ready-to-run examples with real-world context</p>
+  </div>
+</header>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab solid-s active" onclick="show('overview')">🗺 Overview</button>
+  <button class="tab solid-s" onclick="show('srp')">S — SRP</button>
+  <button class="tab solid-o" onclick="show('ocp')">O — OCP</button>
+  <button class="tab solid-l" onclick="show('lsp')">L — LSP</button>
+  <button class="tab solid-i" onclick="show('isp')">I — ISP</button>
+  <button class="tab solid-d" onclick="show('dip')">D — DIP</button>
+  <button class="tab pat-sing" onclick="show('singleton')">Singleton</button>
+  <button class="tab pat-fact" onclick="show('factory')">Factory</button>
+  <button class="tab pat-obs"  onclick="show('observer')">Observer</button>
+  <button class="tab pat-repo" onclick="show('repository')">Repository</button>
+</div>
+
+<!-- ══════════════════════════════════ OVERVIEW ══════════════════════════════════ -->
+<div id="overview" class="panel active">
+  <div class="pheader">
+    <div>
+      <h2>SOLID Principles + Design Patterns</h2>
+      <p>These are the foundation every professional C# developer must master. SOLID keeps your code clean; Design Patterns solve recurring architectural problems.</p>
+    </div>
+  </div>
+
+  <div class="divider">SOLID Principles</div>
+  <div class="overview-grid">
+    <div class="overview-card" onclick="show('srp')">
+      <div class="ov-letter" style="color:#38bdf8">S</div>
+      <div class="ov-name">Single Responsibility</div>
+      <div class="ov-desc">A class should have only ONE reason to change. One job, done well.</div>
+    </div>
+    <div class="overview-card" onclick="show('ocp')">
+      <div class="ov-letter" style="color:#a78bfa">O</div>
+      <div class="ov-name">Open / Closed</div>
+      <div class="ov-desc">Open for extension, closed for modification. Add features without breaking existing code.</div>
+    </div>
+    <div class="overview-card" onclick="show('lsp')">
+      <div class="ov-letter" style="color:#34d399">L</div>
+      <div class="ov-name">Liskov Substitution</div>
+      <div class="ov-desc">Subtypes must be substitutable for their base types without altering correctness.</div>
+    </div>
+    <div class="overview-card" onclick="show('isp')">
+      <div class="ov-letter" style="color:#fb923c">I</div>
+      <div class="ov-name">Interface Segregation</div>
+      <div class="ov-desc">Clients should not be forced to implement interfaces they don't use.</div>
+    </div>
+    <div class="overview-card" onclick="show('dip')">
+      <div class="ov-letter" style="color:#f472b6">D</div>
+      <div class="ov-name">Dependency Inversion</div>
+      <div class="ov-desc">Depend on abstractions (interfaces), not concrete implementations.</div>
+    </div>
+  </div>
+
+  <div class="divider">Design Patterns</div>
+  <div class="overview-grid">
+    <div class="overview-card" onclick="show('singleton')">
+      <div class="ov-letter" style="color:#fbbf24">①</div>
+      <div class="ov-name">Singleton Pattern</div>
+      <div class="ov-desc">Ensure only one instance of a class exists — e.g. config manager, logger.</div>
+    </div>
+    <div class="overview-card" onclick="show('factory')">
+      <div class="ov-letter" style="color:#2dd4bf">🏭</div>
+      <div class="ov-name">Factory Pattern</div>
+      <div class="ov-desc">Create objects without specifying the exact class — decouple creation from usage.</div>
+    </div>
+    <div class="overview-card" onclick="show('observer')">
+      <div class="ov-letter" style="color:#e879f9">👁</div>
+      <div class="ov-name">Observer Pattern</div>
+      <div class="ov-desc">Subscribe to events and get notified when state changes — event-driven systems.</div>
+    </div>
+    <div class="overview-card" onclick="show('repository')">
+      <div class="ov-letter" style="color:#60a5fa">🗄</div>
+      <div class="ov-name">Repository Pattern</div>
+      <div class="ov-desc">Abstract data access behind an interface — swap DB without touching business logic.</div>
+    </div>
+  </div>
+
+  <div class="tip">Start with the tabs above, reading EACH principle/pattern's BAD example first, then the GOOD refactor. The "why" sticks better when you feel the pain of the bad code first.</div>
+</div>
+
+<!-- ══════════════════════════════════ SRP ══════════════════════════════════ -->
+<div id="srp" class="panel">
+  <div class="pheader">
+    <div class="badge" style="background:rgba(56,189,248,0.15);color:#38bdf8">S — SRP</div>
+    <div>
+      <h2>Single Responsibility Principle</h2>
+      <p>A class should have <strong>one and only one reason to change</strong>. If a class handles multiple responsibilities, changing one can unexpectedly break others.</p>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <strong>Rule:</strong> Every class/method should do <strong>one thing</strong> and do it well. Split classes that grow too fat.
+  </div>
+
+  <div class="code-section">
+    <div class="code-label"><span class="dot dot-bad"></span> BAD — One class doing too much</div>
+    <pre><span class="kw">public class</span> <span class="cls">Employee</span>
+{
+    <span class="kw">public string</span> <span class="prop">Name</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public decimal</span> <span class="prop">Salary</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+
+    <span class="cmt">// ❌ Responsibility 1: Business logic</span>
+    <span class="kw">public decimal</span> <span class="met">CalculateTax</span>()
+    {
+        <span class="kw">return</span> Salary * <span class="num">0.2m</span>;
+    }
+
+    <span class="cmt">// ❌ Responsibility 2: Database access</span>
+    <span class="kw">public void</span> <span class="met">SaveToDatabase</span>()
+    {
+        <span class="cmt">// SQL INSERT logic here — belongs in a repository!</span>
+        Console.<span class="met">WriteLine</span>(<span class="str">$"INSERT INTO Employees VALUES ('{Name}', {Salary})"</span>);
+    }
+
+    <span class="cmt">// ❌ Responsibility 3: Reporting / formatting</span>
+    <span class="kw">public void</span> <span class="met">GeneratePaySlip</span>()
+    {
+        Console.<span class="met">WriteLine</span>(<span class="str">$"--- Pay Slip for {Name} ---"</span>);
+        Console.<span class="met">WriteLine</span>(<span class="str">$"Net: {Salary - CalculateTax()}"</span>);
+    }
+}</pre>
+  </div>
+
+  <div class="divider">Refactor to GOOD</div>
+
+  <div class="code-section">
+    <div class="code-label"><span class="dot dot-good"></span> GOOD — Each class has ONE job</div>
+    <pre><span class="cmt">// 1️⃣ Pure data model</span>
+<span class="kw">public class</span> <span class="cls">Employee</span>
+{
+    <span class="kw">public string</span> <span class="prop">Name</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public decimal</span> <span class="prop">Salary</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+}
+
+<span class="cmt">// 2️⃣ Business logic only</span>
+<span class="kw">public class</span> <span class="cls">TaxCalculator</span>
+{
+    <span class="kw">public decimal</span> <span class="met">Calculate</span>(<span class="cls">Employee</span> emp) =&gt; emp.Salary * <span class="num">0.2m</span>;
+}
+
+<span class="cmt">// 3️⃣ Data persistence only</span>
+<span class="kw">public class</span> <span class="cls">EmployeeRepository</span>
+{
+    <span class="kw">public void</span> <span class="met">Save</span>(<span class="cls">Employee</span> emp)
+        =&gt; Console.<span class="met">WriteLine</span>(<span class="str">$"Saving {emp.Name} to DB..."</span>);
+}
+
+<span class="cmt">// 4️⃣ Presentation / reporting only</span>
+<span class="kw">public class</span> <span class="cls">PaySlipGenerator</span>
+{
+    <span class="kw">private readonly</span> <span class="cls">TaxCalculator</span> _tax = <span class="kw">new</span>();
+
+    <span class="kw">public void</span> <span class="met">Print</span>(<span class="cls">Employee</span> emp)
+    {
+        <span class="kw">var</span> net = emp.Salary - _tax.<span class="met">Calculate</span>(emp);
+        Console.<span class="met">WriteLine</span>(<span class="str">$"--- Pay Slip for {emp.Name} ---"</span>);
+        Console.<span class="met">WriteLine</span>(<span class="str">$"Gross: {emp.Salary:C} | Tax: {_tax.Calculate(emp):C} | Net: {net:C}"</span>);
+    }
+}
+
+<span class="cmt">// ✅ Usage — clean orchestration</span>
+<span class="kw">var</span> emp  = <span class="kw">new</span> <span class="cls">Employee</span> { Name = <span class="str">"Priya"</span>, Salary = <span class="num">50000m</span> };
+<span class="kw">var</span> repo = <span class="kw">new</span> <span class="cls">EmployeeRepository</span>();
+<span class="kw">var</span> slip = <span class="kw">new</span> <span class="cls">PaySlipGenerator</span>();
+
+repo.<span class="met">Save</span>(emp);
+slip.<span class="met">Print</span>(emp);</pre>
+  </div>
+
+  <div class="how-grid">
+    <div class="how-card"><div class="step">Reason to change</div><p><strong>Employee</strong>: only if data fields change</p></div>
+    <div class="how-card"><div class="step">Reason to change</div><p><strong>TaxCalculator</strong>: only if tax rules change</p></div>
+    <div class="how-card"><div class="step">Reason to change</div><p><strong>EmployeeRepository</strong>: only if DB changes</p></div>
+    <div class="how-card"><div class="step">Reason to change</div><p><strong>PaySlipGenerator</strong>: only if format changes</p></div>
+  </div>
+
+  <div class="pills">
+    <span class="pill" style="color:#38bdf8">Easier to test</span>
+    <span class="pill" style="color:#34d399">Changes are isolated</span>
+    <span class="pill" style="color:#a78bfa">Smaller, focused classes</span>
+    <span class="pill" style="color:#fb923c">Better reusability</span>
+  </div>
+  <div class="tip">Memory trick: If you describe a class and use "AND", it's doing too much. "Employee saves data AND calculates tax AND prints slips" → split it!</div>
+</div>
+
+<!-- ══════════════════════════════════ OCP ══════════════════════════════════ -->
+<div id="ocp" class="panel">
+  <div class="pheader">
+    <div class="badge" style="background:rgba(167,139,250,0.15);color:#a78bfa">O — OCP</div>
+    <div>
+      <h2>Open / Closed Principle</h2>
+      <p>Software entities should be <strong>open for extension</strong> but <strong>closed for modification</strong>. Add new behavior by adding new code, not editing existing code.</p>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <strong>Rule:</strong> Never modify a working class to add new behavior. Instead, <strong>extend it</strong> via inheritance or interfaces.
+  </div>
+
+  <div class="code-section">
+    <div class="code-label"><span class="dot dot-bad"></span> BAD — Every new shape breaks existing code</div>
+    <pre><span class="kw">public class</span> <span class="cls">AreaCalculator</span>
+{
+    <span class="cmt">// ❌ Every new shape requires modifying THIS method</span>
+    <span class="kw">public double</span> <span class="met">Calculate</span>(<span class="kw">object</span> shape)
+    {
+        <span class="kw">if</span> (shape <span class="kw">is</span> <span class="cls">Circle</span> c)
+            <span class="kw">return</span> Math.PI * c.Radius * c.Radius;
+        <span class="kw">else if</span> (shape <span class="kw">is</span> <span class="cls">Rectangle</span> r)
+            <span class="kw">return</span> r.Width * r.Height;
+        <span class="cmt">// Adding Triangle means editing here — risky!</span>
+        <span class="kw">throw new</span> <span class="cls">NotSupportedException</span>(<span class="str">"Unknown shape"</span>);
+    }
+}
+
+<span class="kw">public class</span> <span class="cls">Circle</span>    { <span class="kw">public double</span> <span class="prop">Radius</span> { <span class="kw">get</span>; <span class="kw">set</span>; } }
+<span class="kw">public class</span> <span class="cls">Rectangle</span> { <span class="kw">public double</span> <span class="prop">Width</span>, <span class="prop">Height</span>; }</pre>
+  </div>
+
+  <div class="code-section">
+    <div class="code-label"><span class="dot dot-good"></span> GOOD — Add new shapes without touching AreaCalculator</div>
+    <pre><span class="cmt">// ✅ Abstraction — the contract every shape must fulfill</span>
+<span class="kw">public interface</span> <span class="iface">IShape</span>
+{
+    <span class="kw">double</span> <span class="met">Area</span>();
+}
+
+<span class="cmt">// Each shape owns its own area formula</span>
+<span class="kw">public class</span> <span class="cls">Circle</span> : <span class="iface">IShape</span>
+{
+    <span class="kw">public double</span> <span class="prop">Radius</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public double</span> <span class="met">Area</span>() =&gt; Math.PI * Radius * Radius;
+}
+
+<span class="kw">public class</span> <span class="cls">Rectangle</span> : <span class="iface">IShape</span>
+{
+    <span class="kw">public double</span> <span class="prop">Width</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public double</span> <span class="prop">Height</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public double</span> <span class="met">Area</span>() =&gt; Width * Height;
+}
+
+<span class="cmt">// ➕ New shape added — AreaCalculator NOT touched!</span>
+<span class="kw">public class</span> <span class="cls">Triangle</span> : <span class="iface">IShape</span>
+{
+    <span class="kw">public double</span> <span class="prop">Base</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public double</span> <span class="prop">Height</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public double</span> <span class="met">Area</span>() =&gt; <span class="num">0.5</span> * Base * Height;
+}
+
+<span class="cmt">// ✅ Calculator is CLOSED for modification, open for extension</span>
+<span class="kw">public class</span> <span class="cls">AreaCalculator</span>
+{
+    <span class="kw">public double</span> <span class="met">TotalArea</span>(IEnumerable&lt;<span class="iface">IShape</span>&gt; shapes)
+        =&gt; shapes.<span class="met">Sum</span>(s =&gt; s.<span class="met">Area</span>());
+}
+
+<span class="cmt">// ✅ Usage</span>
+<span class="kw">var</span> shapes = <span class="kw">new</span> List&lt;<span class="iface">IShape</span>&gt;
+{
+    <span class="kw">new</span> <span class="cls">Circle</span>    { Radius = <span class="num">5</span> },
+    <span class="kw">new</span> <span class="cls">Rectangle</span> { Width = <span class="num">4</span>, Height = <span class="num">6</span> },
+    <span class="kw">new</span> <span class="cls">Triangle</span>  { Base = <span class="num">3</span>, Height = <span class="num">8</span> }
+};
+
+<span class="kw">var</span> calc = <span class="kw">new</span> <span class="cls">AreaCalculator</span>();
+Console.<span class="met">WriteLine</span>(<span class="str">$"Total Area: {calc.TotalArea(shapes):F2}"</span>);
+<span class="cmt">// Output: Total Area: 102.54</span></pre>
+  </div>
+
+  <div class="pills">
+    <span class="pill" style="color:#a78bfa">Safe to extend</span>
+    <span class="pill" style="color:#34d399">No regression risk</span>
+    <span class="pill" style="color:#38bdf8">Polymorphism-driven</span>
+  </div>
+  <div class="tip">Key tool: <strong>interfaces and abstract classes</strong>. When you find yourself writing if/switch on types, that's your signal to apply OCP.</div>
+</div>
+
+<!-- ══════════════════════════════════ LSP ══════════════════════════════════ -->
+<div id="lsp" class="panel">
+  <div class="pheader">
+    <div class="badge" style="background:rgba(52,211,153,0.15);color:#34d399">L — LSP</div>
+    <div>
+      <h2>Liskov Substitution Principle</h2>
+      <p>Objects of a subclass should be able to <strong>replace objects of the parent class</strong> without breaking the program. Subtypes must honor the parent's contract.</p>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <strong>Rule:</strong> If <code>S extends B</code>, anywhere you use <code>B</code> you must be able to use <code>S</code> without unexpected behavior or exceptions.
+  </div>
+
+  <div class="code-section">
+    <div class="code-label"><span class="dot dot-bad"></span> BAD — Square "lies" about being a Rectangle</div>
+    <pre><span class="kw">public class</span> <span class="cls">Rectangle</span>
+{
+    <span class="kw">public virtual double</span> <span class="prop">Width</span>  { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public virtual double</span> <span class="prop">Height</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public double</span> <span class="met">Area</span>() =&gt; Width * Height;
+}
+
+<span class="cmt">// ❌ Square overrides both setters — breaks Rectangle's behavior</span>
+<span class="kw">public class</span> <span class="cls">Square</span> : <span class="cls">Rectangle</span>
+{
+    <span class="kw">public override double</span> <span class="prop">Width</span>
+    {
+        <span class="kw">set</span> { <span class="kw">base</span>.Width = <span class="kw">value</span>; <span class="kw">base</span>.Height = <span class="kw">value</span>; }
+    }
+    <span class="kw">public override double</span> <span class="prop">Height</span>
+    {
+        <span class="kw">set</span> { <span class="kw">base</span>.Width = <span class="kw">value</span>; <span class="kw">base</span>.Height = <span class="kw">value</span>; }
+    }
+}
+
+<span class="cmt">// 💥 This works fine for Rectangle but BREAKS for Square!</span>
+<span class="kw">void</span> <span class="met">Resize</span>(<span class="cls">Rectangle</span> r)
+{
+    r.Width  = <span class="num">4</span>;
+    r.Height = <span class="num">5</span>;
+    <span class="cmt">// Expected: 20, Actual for Square: 25 — LSP violated!</span>
+    Console.<span class="met">WriteLine</span>(r.<span class="met">Area</span>());
+}</pre>
+  </div>
+
+  <div class="code-section">
+    <div class="code-label"><span class="dot dot-good"></span> GOOD — Use a common abstraction, no forced inheritance</div>
+    <pre><span class="cmt">// ✅ Both implement the same interface — no faulty inheritance</span>
+<span class="kw">public interface</span> <span class="iface">IShape</span>
+{
+    <span class="kw">double</span> <span class="met">Area</span>();
+}
+
+<span class="kw">public class</span> <span class="cls">Rectangle</span> : <span class="iface">IShape</span>
+{
+    <span class="kw">public double</span> <span class="prop">Width</span>  { <span class="kw">get</span>; }
+    <span class="kw">public double</span> <span class="prop">Height</span> { <span class="kw">get</span>; }
+    <span class="kw">public</span> <span class="cls">Rectangle</span>(<span class="kw">double</span> w, <span class="kw">double</span> h) { Width = w; Height = h; }
+    <span class="kw">public double</span> <span class="met">Area</span>() =&gt; Width * Height;
+}
+
+<span class="kw">public class</span> <span class="cls">Square</span> : <span class="iface">IShape</span>
+{
+    <span class="kw">public double</span> <span class="prop">Side</span> { <span class="kw">get</span>; }
+    <span class="kw">public</span> <span class="cls">Square</span>(<span class="kw">double</span> s) { Side = s; }
+    <span class="kw">public double</span> <span class="met">Area</span>() =&gt; Side * Side;
+}
+
+<span class="cmt">// ✅ Works correctly for ALL shapes — LSP satisfied</span>
+<span class="kw">void</span> <span class="met">PrintArea</span>(<span class="iface">IShape</span> shape)
+    =&gt; Console.<span class="met">WriteLine</span>(<span class="str">$"Area: {shape.Area():F2}"</span>);
+
+<span class="met">PrintArea</span>(<span class="kw">new</span> <span class="cls">Rectangle</span>(<span class="num">4</span>, <span class="num">5</span>)); <span class="cmt">// Area: 20.00</span>
+<span class="met">PrintArea</span>(<span class="kw">new</span> <span class="cls">Square</span>(<span class="num">5</span>));      <span class="cmt">// Area: 25.00</span></pre>
+  </div>
+
+  <div class="pills">
+    <span class="pill" style="color:#34d399">Predictable substitution</span>
+    <span class="pill" style="color:#38bdf8">No surprise exceptions</span>
+    <span class="pill" style="color:#a78bfa">Correct polymorphism</span>
+  </div>
+  <div class="tip">Test: Can you swap a subclass in EVERY place the base is used without changing behavior? If no → LSP violated. Prefer <strong>composition over inheritance</strong> when in doubt.</div>
+</div>
+
+<!-- ══════════════════════════════════ ISP ══════════════════════════════════ -->
+<div id="isp" class="panel">
+  <div class="pheader">
+    <div class="badge" style="background:rgba(251,146,60,0.15);color:#fb923c">I — ISP</div>
+    <div>
+      <h2>Interface Segregation Principle</h2>
+      <p>No client should be forced to implement interfaces it doesn't use. <strong>Prefer many small, specific interfaces</strong> over one large, fat interface.</p>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <strong>Rule:</strong> Split large interfaces into smaller ones. Implement only what you actually need.
+  </div>
+
+  <div class="code-section">
+    <div class="code-label"><span class="dot dot-bad"></span> BAD — One fat interface forces useless implementations</div>
+    <pre><span class="cmt">// ❌ "God interface" — forces all implementors to have ALL methods</span>
+<span class="kw">public interface</span> <span class="iface">IWorker</span>
+{
+    <span class="kw">void</span> <span class="met">Work</span>();
+    <span class="kw">void</span> <span class="met">Eat</span>();
+    <span class="kw">void</span> <span class="met">Sleep</span>();
+    <span class="kw">void</span> <span class="met">AttendMeeting</span>();
+}
+
+<span class="cmt">// ❌ RobotWorker forced to implement Eat/Sleep — makes no sense!</span>
+<span class="kw">public class</span> <span class="cls">RobotWorker</span> : <span class="iface">IWorker</span>
+{
+    <span class="kw">public void</span> <span class="met">Work</span>() =&gt; Console.<span class="met">WriteLine</span>(<span class="str">"Robot working..."</span>);
+    <span class="kw">public void</span> <span class="met">Eat</span>()  =&gt; <span class="kw">throw new</span> <span class="cls">NotImplementedException</span>(); <span class="cmt">// 💥</span>
+    <span class="kw">public void</span> <span class="met">Sleep</span>() =&gt; <span class="kw">throw new</span> <span class="cls">NotImplementedException</span>(); <span class="cmt">// 💥</span>
+    <span class="kw">public void</span> <span class="met">AttendMeeting</span>() =&gt; Console.<span class="met">WriteLine</span>(<span class="str">"Beep boop..."</span>);
+}</pre>
+  </div>
+
+  <div class="code-section">
+    <div class="code-label"><span class="dot dot-good"></span> GOOD — Small, focused interfaces</div>
+    <pre><span class="cmt">// ✅ Segregated interfaces — each does one thing</span>
+<span class="kw">public interface</span> <span class="iface">IWorkable</span>    { <span class="kw">void</span> <span class="met">Work</span>(); }
+<span class="kw">public interface</span> <span class="iface">IEatable</span>     { <span class="kw">void</span> <span class="met">Eat</span>();  }
+<span class="kw">public interface</span> <span class="iface">ISleepable</span>   { <span class="kw">void</span> <span class="met">Sleep</span>(); }
+<span class="kw">public interface</span> <span class="iface">IMeetable</span>    { <span class="kw">void</span> <span class="met">AttendMeeting</span>(); }
+
+<span class="cmt">// Human implements ALL (it can do all these things)</span>
+<span class="kw">public class</span> <span class="cls">HumanWorker</span> : <span class="iface">IWorkable</span>, <span class="iface">IEatable</span>, <span class="iface">ISleepable</span>, <span class="iface">IMeetable</span>
+{
+    <span class="kw">public void</span> <span class="met">Work</span>()          =&gt; Console.<span class="met">WriteLine</span>(<span class="str">"Human working"</span>);
+    <span class="kw">public void</span> <span class="met">Eat</span>()           =&gt; Console.<span class="met">WriteLine</span>(<span class="str">"Human eating"</span>);
+    <span class="kw">public void</span> <span class="met">Sleep</span>()         =&gt; Console.<span class="met">WriteLine</span>(<span class="str">"Human sleeping"</span>);
+    <span class="kw">public void</span> <span class="met">AttendMeeting</span>() =&gt; Console.<span class="met">WriteLine</span>(<span class="str">"Human in meeting"</span>);
+}
+
+<span class="cmt">// ✅ Robot only implements what it actually does — clean!</span>
+<span class="kw">public class</span> <span class="cls">RobotWorker</span> : <span class="iface">IWorkable</span>, <span class="iface">IMeetable</span>
+{
+    <span class="kw">public void</span> <span class="met">Work</span>()          =&gt; Console.<span class="met">WriteLine</span>(<span class="str">"Robot working"</span>);
+    <span class="kw">public void</span> <span class="met">AttendMeeting</span>() =&gt; Console.<span class="met">WriteLine</span>(<span class="str">"Robot attending meeting"</span>);
+}
+
+<span class="cmt">// ✅ Usage — polymorphic, clean</span>
+<span class="kw">var</span> workers = <span class="kw">new</span> List&lt;<span class="iface">IWorkable</span>&gt; { <span class="kw">new</span> <span class="cls">HumanWorker</span>(), <span class="kw">new</span> <span class="cls">RobotWorker</span>() };
+workers.<span class="met">ForEach</span>(w =&gt; w.<span class="met">Work</span>());</pre>
+  </div>
+
+  <div class="pills">
+    <span class="pill" style="color:#fb923c">No forced stubs</span>
+    <span class="pill" style="color:#38bdf8">Focused dependencies</span>
+    <span class="pill" style="color:#34d399">Easier mocking in tests</span>
+  </div>
+  <div class="tip">Watch for the smell: <code>throw new NotImplementedException()</code> in an interface method — that's ISP violated. Time to split!</div>
+</div>
+
+<!-- ══════════════════════════════════ DIP ══════════════════════════════════ -->
+<div id="dip" class="panel">
+  <div class="pheader">
+    <div class="badge" style="background:rgba(244,114,182,0.15);color:#f472b6">D — DIP</div>
+    <div>
+      <h2>Dependency Inversion Principle</h2>
+      <p>High-level modules should <strong>not depend on low-level modules</strong>. Both should depend on abstractions. Details should depend on abstractions, not the other way around.</p>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <strong>Rule:</strong> Inject interfaces/abstractions — never <code>new</code> up concrete classes inside high-level classes. This enables easy swapping and testing.
+  </div>
+
+  <div class="code-section">
+    <div class="code-label"><span class="dot dot-bad"></span> BAD — High-level class tightly coupled to low-level</div>
+    <pre><span class="cmt">// ❌ OrderService creates its own EmailNotifier — tightly coupled</span>
+<span class="kw">public class</span> <span class="cls">EmailNotifier</span>
+{
+    <span class="kw">public void</span> <span class="met">Notify</span>(<span class="kw">string</span> msg)
+        =&gt; Console.<span class="met">WriteLine</span>(<span class="str">$"[EMAIL] {msg}"</span>);
+}
+
+<span class="kw">public class</span> <span class="cls">OrderService</span>
+{
+    <span class="cmt">// ❌ Hard-coded dependency — can't swap to SMS without editing here</span>
+    <span class="kw">private readonly</span> <span class="cls">EmailNotifier</span> _notifier = <span class="kw">new</span> <span class="cls">EmailNotifier</span>();
+
+    <span class="kw">public void</span> <span class="met">PlaceOrder</span>(<span class="kw">string</span> product)
+    {
+        Console.<span class="met">WriteLine</span>(<span class="str">$"Order placed: {product}"</span>);
+        _notifier.<span class="met">Notify</span>(<span class="str">$"Your order for {product} is confirmed!"</span>);
+    }
+}</pre>
+  </div>
+
+  <div class="code-section">
+    <div class="code-label"><span class="dot dot-good"></span> GOOD — Depend on abstraction, inject the detail</div>
+    <pre><span class="cmt">// ✅ Abstraction — the contract</span>
+<span class="kw">public interface</span> <span class="iface">INotifier</span>
+{
+    <span class="kw">void</span> <span class="met">Notify</span>(<span class="kw">string</span> message);
+}
+
+<span class="cmt">// Low-level implementations</span>
+<span class="kw">public class</span> <span class="cls">EmailNotifier</span> : <span class="iface">INotifier</span>
+{
+    <span class="kw">public void</span> <span class="met">Notify</span>(<span class="kw">string</span> msg)
+        =&gt; Console.<span class="met">WriteLine</span>(<span class="str">$"[EMAIL] {msg}"</span>);
+}
+
+<span class="kw">public class</span> <span class="cls">SmsNotifier</span> : <span class="iface">INotifier</span>
+{
+    <span class="kw">public void</span> <span class="met">Notify</span>(<span class="kw">string</span> msg)
+        =&gt; Console.<span class="met">WriteLine</span>(<span class="str">$"[SMS] {msg}"</span>);
+}
+
+<span class="cmt">// ✅ High-level class depends on ABSTRACTION, not concrete class</span>
+<span class="kw">public class</span> <span class="cls">OrderService</span>
+{
+    <span class="kw">private readonly</span> <span class="iface">INotifier</span> _notifier;
+
+    <span class="cmt">// ✅ Dependency injected via constructor</span>
+    <span class="kw">public</span> <span class="cls">OrderService</span>(<span class="iface">INotifier</span> notifier) =&gt; _notifier = notifier;
+
+    <span class="kw">public void</span> <span class="met">PlaceOrder</span>(<span class="kw">string</span> product)
+    {
+        Console.<span class="met">WriteLine</span>(<span class="str">$"Order placed: {product}"</span>);
+        _notifier.<span class="met">Notify</span>(<span class="str">$"Your order for {product} is confirmed!"</span>);
+    }
+}
+
+<span class="cmt">// ✅ Swap notifier without changing OrderService at all!</span>
+<span class="kw">var</span> emailService = <span class="kw">new</span> <span class="cls">OrderService</span>(<span class="kw">new</span> <span class="cls">EmailNotifier</span>());
+emailService.<span class="met">PlaceOrder</span>(<span class="str">"Laptop"</span>);
+<span class="cmt">// [EMAIL] Your order for Laptop is confirmed!</span>
+
+<span class="kw">var</span> smsService = <span class="kw">new</span> <span class="cls">OrderService</span>(<span class="kw">new</span> <span class="cls">SmsNotifier</span>());
+smsService.<span class="met">PlaceOrder</span>(<span class="str">"Phone"</span>);
+<span class="cmt">// [SMS] Your order for Phone is confirmed!</span></pre>
+  </div>
+
+  <div class="pills">
+    <span class="pill" style="color:#f472b6">Easily testable</span>
+    <span class="pill" style="color:#34d399">Swap implementations freely</span>
+    <span class="pill" style="color:#38bdf8">Foundation of DI containers</span>
+  </div>
+  <div class="tip">This is the foundation of ASP.NET Core's built-in <strong>Dependency Injection</strong>. Every time you see <code>services.AddScoped&lt;IRepo, SqlRepo&gt;()</code>, that's DIP in action.</div>
+</div>
+
+<!-- ══════════════════════════════════ SINGLETON ══════════════════════════════════ -->
+<div id="singleton" class="panel">
+  <div class="pheader">
+    <div class="badge" style="background:rgba(251,191,36,0.15);color:#fbbf24">Creational Pattern</div>
+    <div>
+      <h2>Singleton Pattern</h2>
+      <p>Ensures a class has <strong>only one instance</strong> throughout the application lifecycle, and provides a global access point to it.</p>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <strong>Use when:</strong> You need exactly one shared resource — a logger, config manager, connection pool, or cache. <strong>Don't overuse</strong> — it can hide dependencies.
+  </div>
+
+  <div class="code-section">
+    <div class="code-label"><span class="dot dot-code"></span> Thread-safe Singleton with Lazy&lt;T&gt; — recommended C# way</div>
+    <pre><span class="kw">public sealed class</span> <span class="cls">AppLogger</span>
+{
+    <span class="cmt">// ✅ Lazy ensures thread-safe single creation</span>
+    <span class="kw">private static readonly</span> Lazy&lt;<span class="cls">AppLogger</span>&gt; _instance
+        = <span class="kw">new</span>(()  =&gt; <span class="kw">new</span> <span class="cls">AppLogger</span>());
+
+    <span class="cmt">// ✅ Private constructor — no one can do: new AppLogger()</span>
+    <span class="kw">private</span> <span class="cls">AppLogger</span>()
+    {
+        Console.<span class="met">WriteLine</span>(<span class="str">"🔧 AppLogger initialized (happens ONCE)"</span>);
+    }
+
+    <span class="cmt">// ✅ Global access point</span>
+    <span class="kw">public static</span> <span class="cls">AppLogger</span> <span class="prop">Instance</span> =&gt; _instance.Value;
+
+    <span class="kw">private int</span> _logCount = <span class="num">0</span>;
+
+    <span class="kw">public void</span> <span class="met">Log</span>(<span class="kw">string</span> message)
+    {
+        _logCount++;
+        Console.<span class="met">WriteLine</span>(<span class="str">$"[LOG #{_logCount}] {DateTime.Now:HH:mm:ss} — {message}"</span>);
+    }
+
+    <span class="kw">public int</span> <span class="prop">TotalLogs</span> =&gt; _logCount;
+}
+
+<span class="cmt">// ✅ Usage — both variables point to the SAME instance</span>
+<span class="kw">var</span> logger1 = <span class="cls">AppLogger</span>.Instance;
+<span class="kw">var</span> logger2 = <span class="cls">AppLogger</span>.Instance;
+
+logger1.<span class="met">Log</span>(<span class="str">"Application started"</span>);
+logger2.<span class="met">Log</span>(<span class="str">"User logged in"</span>);
+logger1.<span class="met">Log</span>(<span class="str">"Order created"</span>);
+
+Console.<span class="met">WriteLine</span>(<span class="str">$"Same instance? {ReferenceEquals(logger1, logger2)}"</span>);
+Console.<span class="met">WriteLine</span>(<span class="str">$"Total logs: {AppLogger.Instance.TotalLogs}"</span>);
+
+<span class="cmt">/* Output:
+   🔧 AppLogger initialized (happens ONCE)
+   [LOG #1] 10:30:01 — Application started
+   [LOG #2] 10:30:01 — User logged in
+   [LOG #3] 10:30:01 — Order created
+   Same instance? True
+   Total logs: 3
+*/</span></pre>
+  </div>
+
+  <div class="how-grid">
+    <div class="how-card"><div class="step">Step 1</div><p><strong>Private constructor</strong> prevents external instantiation</p></div>
+    <div class="how-card"><div class="step">Step 2</div><p><strong>Lazy&lt;T&gt;</strong> handles thread-safe first-time creation</p></div>
+    <div class="how-card"><div class="step">Step 3</div><p><strong>Static Instance</strong> property gives global access</p></div>
+    <div class="how-card"><div class="step">Step 4</div><p><strong>sealed</strong> prevents subclassing that could break the pattern</p></div>
+  </div>
+
+  <div class="pills">
+    <span class="pill" style="color:#fbbf24">Thread-safe</span>
+    <span class="pill" style="color:#34d399">Single shared state</span>
+    <span class="pill" style="color:#38bdf8">Lazy initialization</span>
+  </div>
+  <div class="tip">In ASP.NET Core, register as <code>services.AddSingleton&lt;ILogger, AppLogger&gt;()</code> instead of hand-rolling Singleton — the DI container manages the lifetime for you.</div>
+</div>
+
+<!-- ══════════════════════════════════ FACTORY ══════════════════════════════════ -->
+<div id="factory" class="panel">
+  <div class="pheader">
+    <div class="badge" style="background:rgba(45,212,191,0.15);color:#2dd4bf">Creational Pattern</div>
+    <div>
+      <h2>Factory Pattern</h2>
+      <p>Define an interface for <strong>creating objects</strong>, but let subclasses or a factory method decide which class to instantiate. Decouples object creation from usage.</p>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <strong>Use when:</strong> The exact type to create depends on runtime conditions, or when you want to centralize and simplify complex object construction.
+  </div>
+
+  <div class="code-section">
+    <div class="code-label"><span class="dot dot-code"></span> Factory Method Pattern — payment gateway example</div>
+    <pre><span class="cmt">// ✅ Common interface all payment providers must implement</span>
+<span class="kw">public interface</span> <span class="iface">IPaymentProcessor</span>
+{
+    <span class="kw">void</span> <span class="met">ProcessPayment</span>(<span class="kw">decimal</span> amount);
+    <span class="kw">string</span> <span class="prop">ProviderName</span> { <span class="kw">get</span>; }
+}
+
+<span class="cmt">// Concrete implementations</span>
+<span class="kw">public class</span> <span class="cls">StripeProcessor</span> : <span class="iface">IPaymentProcessor</span>
+{
+    <span class="kw">public string</span> <span class="prop">ProviderName</span> =&gt; <span class="str">"Stripe"</span>;
+    <span class="kw">public void</span> <span class="met">ProcessPayment</span>(<span class="kw">decimal</span> amount)
+        =&gt; Console.<span class="met">WriteLine</span>(<span class="str">$"[Stripe] 💳 Processing ₹{amount:N0} via Stripe API..."</span>);
+}
+
+<span class="kw">public class</span> <span class="cls">RazorpayProcessor</span> : <span class="iface">IPaymentProcessor</span>
+{
+    <span class="kw">public string</span> <span class="prop">ProviderName</span> =&gt; <span class="str">"Razorpay"</span>;
+    <span class="kw">public void</span> <span class="met">ProcessPayment</span>(<span class="kw">decimal</span> amount)
+        =&gt; Console.<span class="met">WriteLine</span>(<span class="str">$"[Razorpay] 🔐 Processing ₹{amount:N0} via Razorpay..."</span>);
+}
+
+<span class="kw">public class</span> <span class="cls">UpiProcessor</span> : <span class="iface">IPaymentProcessor</span>
+{
+    <span class="kw">public string</span> <span class="prop">ProviderName</span> =&gt; <span class="str">"UPI"</span>;
+    <span class="kw">public void</span> <span class="met">ProcessPayment</span>(<span class="kw">decimal</span> amount)
+        =&gt; Console.<span class="met">WriteLine</span>(<span class="str">$"[UPI] 📱 Processing ₹{amount:N0} via UPI..."</span>);
+}
+
+<span class="cmt">// ✅ Factory — centralizes creation logic</span>
+<span class="kw">public static class</span> <span class="cls">PaymentProcessorFactory</span>
+{
+    <span class="kw">public static</span> <span class="iface">IPaymentProcessor</span> <span class="met">Create</span>(<span class="kw">string</span> provider)
+        =&gt; provider.<span class="met">ToLower</span>() <span class="kw">switch</span>
+        {
+            <span class="str">"stripe"</span>    =&gt; <span class="kw">new</span> <span class="cls">StripeProcessor</span>(),
+            <span class="str">"razorpay"</span>  =&gt; <span class="kw">new</span> <span class="cls">RazorpayProcessor</span>(),
+            <span class="str">"upi"</span>       =&gt; <span class="kw">new</span> <span class="cls">UpiProcessor</span>(),
+            _           =&gt; <span class="kw">throw new</span> <span class="cls">ArgumentException</span>(<span class="str">$"Unknown provider: {provider}"</span>)
+        };
+}
+
+<span class="cmt">// ✅ Client code — never uses 'new' on concrete types</span>
+<span class="kw">string</span>[] providers = { <span class="str">"stripe"</span>, <span class="str">"razorpay"</span>, <span class="str">"upi"</span> };
+<span class="kw">foreach</span> (<span class="kw">var</span> p <span class="kw">in</span> providers)
+{
+    <span class="iface">IPaymentProcessor</span> processor = <span class="cls">PaymentProcessorFactory</span>.<span class="met">Create</span>(p);
+    Console.<span class="met">WriteLine</span>(<span class="str">$"\nUsing: {processor.ProviderName}"</span>);
+    processor.<span class="met">ProcessPayment</span>(<span class="num">5000</span>);
+}
+
+<span class="cmt">/* Output:
+   Using: Stripe
+   [Stripe] 💳 Processing ₹5,000 via Stripe API...
+   Using: Razorpay
+   [Razorpay] 🔐 Processing ₹5,000 via Razorpay...
+   Using: UPI
+   [UPI] 📱 Processing ₹5,000 via UPI...
+*/</span></pre>
+  </div>
+
+  <div class="how-grid">
+    <div class="how-card"><div class="step">Decoupling</div><p>Client uses <strong>IPaymentProcessor</strong>, never concrete classes</p></div>
+    <div class="how-card"><div class="step">Extensibility</div><p>Add PayPal? Create class + add one line to Factory</p></div>
+    <div class="how-card"><div class="step">OCP Bonus</div><p>Client code never changes when new providers are added</p></div>
+    <div class="how-card"><div class="step">Testability</div><p>Inject a <strong>MockProcessor</strong> in tests — no real API calls</p></div>
+  </div>
+
+  <div class="pills">
+    <span class="pill" style="color:#2dd4bf">Centralized creation</span>
+    <span class="pill" style="color:#34d399">Decoupled from concretions</span>
+    <span class="pill" style="color:#fb923c">Easy to extend</span>
+  </div>
+  <div class="tip">Factory + DIP is a power combo. The Factory creates objects, DIP injects the interface — your business logic never touches <code>new ConcreteClass()</code>.</div>
+</div>
+
+<!-- ══════════════════════════════════ OBSERVER ══════════════════════════════════ -->
+<div id="observer" class="panel">
+  <div class="pheader">
+    <div class="badge" style="background:rgba(232,121,249,0.15);color:#e879f9">Behavioral Pattern</div>
+    <div>
+      <h2>Observer Pattern</h2>
+      <p>Defines a <strong>one-to-many dependency</strong> between objects. When one object (Subject) changes state, all its dependents (Observers) are notified automatically.</p>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <strong>Use when:</strong> Multiple objects need to react to state changes — stock price alerts, event systems, UI data binding, notification systems.
+  </div>
+
+  <div class="code-section">
+    <div class="code-label"><span class="dot dot-code"></span> Observer Pattern — stock price alert system</div>
+    <pre><span class="cmt">// ✅ Observer interface — all listeners must implement this</span>
+<span class="kw">public interface</span> <span class="iface">IStockObserver</span>
+{
+    <span class="kw">void</span> <span class="met">Update</span>(<span class="kw">string</span> symbol, <span class="kw">decimal</span> price);
+}
+
+<span class="cmt">// ✅ Subject interface — defines subscription management</span>
+<span class="kw">public interface</span> <span class="iface">IStockSubject</span>
+{
+    <span class="kw">void</span> <span class="met">Subscribe</span>(<span class="iface">IStockObserver</span> observer);
+    <span class="kw">void</span> <span class="met">Unsubscribe</span>(<span class="iface">IStockObserver</span> observer);
+    <span class="kw">void</span> <span class="met">Notify</span>();
+}
+
+<span class="cmt">// ✅ Concrete Subject — holds state and manages observers</span>
+<span class="kw">public class</span> <span class="cls">StockMarket</span> : <span class="iface">IStockSubject</span>
+{
+    <span class="kw">private readonly</span> List&lt;<span class="iface">IStockObserver</span>&gt; _observers = <span class="kw">new</span>();
+    <span class="kw">private string</span> _symbol;
+    <span class="kw">private decimal</span> _price;
+
+    <span class="kw">public void</span> <span class="met">Subscribe</span>(<span class="iface">IStockObserver</span> o)   =&gt; _observers.<span class="met">Add</span>(o);
+    <span class="kw">public void</span> <span class="met">Unsubscribe</span>(<span class="iface">IStockObserver</span> o) =&gt; _observers.<span class="met">Remove</span>(o);
+
+    <span class="kw">public void</span> <span class="met">Notify</span>()
+        =&gt; _observers.<span class="met">ForEach</span>(o =&gt; o.<span class="met">Update</span>(_symbol, _price));
+
+    <span class="cmt">// Triggers notification whenever price changes</span>
+    <span class="kw">public void</span> <span class="met">SetPrice</span>(<span class="kw">string</span> symbol, <span class="kw">decimal</span> price)
+    {
+        _symbol = symbol; _price = price;
+        Console.<span class="met">WriteLine</span>(<span class="str">$"\n📈 {symbol} price updated: ₹{price:N0}"</span>);
+        <span class="met">Notify</span>();
+    }
+}
+
+<span class="cmt">// ✅ Concrete Observers — each reacts differently</span>
+<span class="kw">public class</span> <span class="cls">MobileAlertObserver</span> : <span class="iface">IStockObserver</span>
+{
+    <span class="kw">private readonly</span> <span class="kw">string</span> _user;
+    <span class="kw">private readonly</span> <span class="kw">decimal</span> _threshold;
+
+    <span class="kw">public</span> <span class="cls">MobileAlertObserver</span>(<span class="kw">string</span> user, <span class="kw">decimal</span> threshold)
+        =&gt; (_user, _threshold) = (user, threshold);
+
+    <span class="kw">public void</span> <span class="met">Update</span>(<span class="kw">string</span> symbol, <span class="kw">decimal</span> price)
+    {
+        <span class="kw">if</span> (price &gt;= _threshold)
+            Console.<span class="met">WriteLine</span>(<span class="str">$"  📱 [Mobile] Alert for {_user}: {symbol} hit ₹{price:N0}!"</span>);
+    }
+}
+
+<span class="kw">public class</span> <span class="cls">EmailAlertObserver</span> : <span class="iface">IStockObserver</span>
+{
+    <span class="kw">private readonly</span> <span class="kw">string</span> _email;
+    <span class="kw">public</span> <span class="cls">EmailAlertObserver</span>(<span class="kw">string</span> email) =&gt; _email = email;
+    <span class="kw">public void</span> <span class="met">Update</span>(<span class="kw">string</span> symbol, <span class="kw">decimal</span> price)
+        =&gt; Console.<span class="met">WriteLine</span>(<span class="str">$"  ✉️  [Email → {_email}] {symbol} = ₹{price:N0}"</span>);
+}
+
+<span class="kw">public class</span> <span class="cls">AuditLogObserver</span> : <span class="iface">IStockObserver</span>
+{
+    <span class="kw">public void</span> <span class="met">Update</span>(<span class="kw">string</span> symbol, <span class="kw">decimal</span> price)
+        =&gt; Console.<span class="met">WriteLine</span>(<span class="str">$"  📋 [Audit] Logged: {symbol} @ ₹{price:N0} at {DateTime.Now:HH:mm:ss}"</span>);
+}
+
+<span class="cmt">// ✅ Usage</span>
+<span class="kw">var</span> market  = <span class="kw">new</span> <span class="cls">StockMarket</span>();
+<span class="kw">var</span> mobile  = <span class="kw">new</span> <span class="cls">MobileAlertObserver</span>(<span class="str">"Priya"</span>, <span class="num">1500</span>);
+<span class="kw">var</span> email   = <span class="kw">new</span> <span class="cls">EmailAlertObserver</span>(<span class="str">"priya@example.com"</span>);
+<span class="kw">var</span> audit   = <span class="kw">new</span> <span class="cls">AuditLogObserver</span>();
+
+market.<span class="met">Subscribe</span>(mobile); market.<span class="met">Subscribe</span>(email); market.<span class="met">Subscribe</span>(audit);
+market.<span class="met">SetPrice</span>(<span class="str">"RELIANCE"</span>, <span class="num">1480</span>);
+market.<span class="met">SetPrice</span>(<span class="str">"RELIANCE"</span>, <span class="num">1520</span>);
+
+market.<span class="met">Unsubscribe</span>(email);
+market.<span class="met">SetPrice</span>(<span class="str">"RELIANCE"</span>, <span class="num">1550</span>); <span class="cmt">// Email no longer notified</span></pre>
+  </div>
+
+  <div class="how-grid">
+    <div class="how-card"><div class="step">Subject</div><p><strong>StockMarket</strong> — holds list of observers, calls Notify on change</p></div>
+    <div class="how-card"><div class="step">Observer</div><p>Each alert class — reacts independently to the same event</p></div>
+    <div class="how-card"><div class="step">Loose coupling</div><p>Subject doesn't know WHAT observers do — only that they implement Update()</p></div>
+    <div class="how-card"><div class="step">Dynamic</div><p>Subscribe/Unsubscribe at runtime — add observers without changing subject</p></div>
+  </div>
+
+  <div class="pills">
+    <span class="pill" style="color:#e879f9">Event-driven</span>
+    <span class="pill" style="color:#38bdf8">Loose coupling</span>
+    <span class="pill" style="color:#34d399">Open for new subscribers</span>
+  </div>
+  <div class="tip">C# has this built-in! <strong>event</strong> keyword + <strong>EventHandler</strong> delegate IS the Observer pattern. But understanding the manual pattern first makes the built-in version click instantly.</div>
+</div>
+
+<!-- ══════════════════════════════════ REPOSITORY ══════════════════════════════════ -->
+<div id="repository" class="panel">
+  <div class="pheader">
+    <div class="badge" style="background:rgba(96,165,250,0.15);color:#60a5fa">Architectural Pattern</div>
+    <div>
+      <h2>Repository Pattern</h2>
+      <p>Abstracts the data access layer behind an <strong>interface</strong>. Business logic talks to a repository contract — not directly to the database. Swap SQL ↔ MongoDB without touching your service layer.</p>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <strong>Use when:</strong> You want to decouple business logic from data access, enable unit testing with mock data, and support multiple data sources cleanly.
+  </div>
+
+  <div class="code-section">
+    <div class="code-label"><span class="dot dot-code"></span> Repository Pattern — full product CRUD example</div>
+    <pre><span class="cmt">// ✅ Domain model</span>
+<span class="kw">public class</span> <span class="cls">Product</span>
+{
+    <span class="kw">public int</span>     <span class="prop">Id</span>       { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public string</span>  <span class="prop">Name</span>     { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public decimal</span> <span class="prop">Price</span>    { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public int</span>     <span class="prop">Stock</span>    { <span class="kw">get</span>; <span class="kw">set</span>; }
+}
+
+<span class="cmt">// ✅ Generic repository interface — the contract</span>
+<span class="kw">public interface</span> <span class="iface">IRepository</span>&lt;T&gt;
+{
+    T                <span class="met">GetById</span>(<span class="kw">int</span> id);
+    IEnumerable&lt;T&gt;   <span class="met">GetAll</span>();
+    <span class="kw">void</span>             <span class="met">Add</span>(T entity);
+    <span class="kw">void</span>             <span class="met">Update</span>(T entity);
+    <span class="kw">void</span>             <span class="met">Delete</span>(<span class="kw">int</span> id);
+}
+
+<span class="cmt">// ✅ In-memory implementation (great for testing / prototyping)</span>
+<span class="kw">public class</span> <span class="cls">InMemoryProductRepository</span> : <span class="iface">IRepository</span>&lt;<span class="cls">Product</span>&gt;
+{
+    <span class="kw">private readonly</span> List&lt;<span class="cls">Product</span>&gt; _store = <span class="kw">new</span>()
+    {
+        <span class="kw">new</span>() { Id=<span class="num">1</span>, Name=<span class="str">"Laptop"</span>,  Price=<span class="num">65000m</span>, Stock=<span class="num">10</span> },
+        <span class="kw">new</span>() { Id=<span class="num">2</span>, Name=<span class="str">"Mouse"</span>,   Price=<span class="num">800m</span>,   Stock=<span class="num">50</span> },
+        <span class="kw">new</span>() { Id=<span class="num">3</span>, Name=<span class="str">"Keyboard"</span>,Price=<span class="num">2500m</span>,  Stock=<span class="num">30</span> },
+    };
+
+    <span class="kw">public</span> <span class="cls">Product</span> <span class="met">GetById</span>(<span class="kw">int</span> id)
+        =&gt; _store.<span class="met">FirstOrDefault</span>(p =&gt; p.Id == id);
+
+    <span class="kw">public</span> IEnumerable&lt;<span class="cls">Product</span>&gt; <span class="met">GetAll</span>() =&gt; _store;
+
+    <span class="kw">public void</span> <span class="met">Add</span>(<span class="cls">Product</span> p)
+    {
+        p.Id = _store.<span class="met">Max</span>(x =&gt; x.Id) + <span class="num">1</span>;
+        _store.<span class="met">Add</span>(p);
+        Console.<span class="met">WriteLine</span>(<span class="str">$"➕ Added: {p.Name} (ID: {p.Id})"</span>);
+    }
+
+    <span class="kw">public void</span> <span class="met">Update</span>(<span class="cls">Product</span> updated)
+    {
+        <span class="kw">var</span> existing = <span class="met">GetById</span>(updated.Id);
+        <span class="kw">if</span> (existing != <span class="kw">null</span>) { existing.Name = updated.Name; existing.Price = updated.Price; }
+        Console.<span class="met">WriteLine</span>(<span class="str">$"✏️  Updated: {updated.Name}"</span>);
+    }
+
+    <span class="kw">public void</span> <span class="met">Delete</span>(<span class="kw">int</span> id)
+    {
+        <span class="kw">var</span> item = <span class="met">GetById</span>(id);
+        <span class="kw">if</span> (item != <span class="kw">null</span>) { _store.<span class="met">Remove</span>(item); Console.<span class="met">WriteLine</span>(<span class="str">$"🗑️  Deleted ID: {id}"</span>); }
+    }
+}
+
+<span class="cmt">// ✅ Business/Service layer — depends only on IRepository, not the DB!</span>
+<span class="kw">public class</span> <span class="cls">ProductService</span>
+{
+    <span class="kw">private readonly</span> <span class="iface">IRepository</span>&lt;<span class="cls">Product</span>&gt; _repo;
+
+    <span class="kw">public</span> <span class="cls">ProductService</span>(<span class="iface">IRepository</span>&lt;<span class="cls">Product</span>&gt; repo) =&gt; _repo = repo;
+
+    <span class="kw">public void</span> <span class="met">ShowCatalog</span>()
+    {
+        Console.<span class="met">WriteLine</span>(<span class="str">"\n📦 === Product Catalog ==="</span>);
+        <span class="kw">foreach</span> (<span class="kw">var</span> p <span class="kw">in</span> _repo.<span class="met">GetAll</span>())
+            Console.<span class="met">WriteLine</span>(<span class="str">$"  [{p.Id}] {p.Name,-12} ₹{p.Price,8:N0}  Stock: {p.Stock}"</span>);
+    }
+
+    <span class="kw">public void</span> <span class="met">AddProduct</span>(<span class="kw">string</span> name, <span class="kw">decimal</span> price, <span class="kw">int</span> stock)
+        =&gt; _repo.<span class="met">Add</span>(<span class="kw">new</span> <span class="cls">Product</span> { Name = name, Price = price, Stock = stock });
+
+    <span class="kw">public void</span> <span class="met">ApplyDiscount</span>(<span class="kw">int</span> id, <span class="kw">decimal</span> pct)
+    {
+        <span class="kw">var</span> p = _repo.<span class="met">GetById</span>(id);
+        <span class="kw">if</span> (p == <span class="kw">null</span>) { Console.<span class="met">WriteLine</span>(<span class="str">"Product not found"</span>); <span class="kw">return</span>; }
+        p.Price = Math.<span class="met">Round</span>(p.Price * (<span class="num">1</span> - pct / <span class="num">100</span>), <span class="num">2</span>);
+        _repo.<span class="met">Update</span>(p);
+    }
+}
+
+<span class="cmt">// ✅ Wire everything up (in real app, use DI container)</span>
+<span class="iface">IRepository</span>&lt;<span class="cls">Product</span>&gt; repo    = <span class="kw">new</span> <span class="cls">InMemoryProductRepository</span>();
+<span class="cls">ProductService</span>         service = <span class="kw">new</span>(repo);
+
+service.<span class="met">ShowCatalog</span>();
+service.<span class="met">AddProduct</span>(<span class="str">"Headphones"</span>, <span class="num">3500m</span>, <span class="num">20</span>);
+service.<span class="met">ApplyDiscount</span>(<span class="num">1</span>, <span class="num">10</span>); <span class="cmt">// 10% off Laptop</span>
+repo.<span class="met">Delete</span>(<span class="num">2</span>);
+service.<span class="met">ShowCatalog</span>();
+
+<span class="cmt">// To switch to SQL Server: just swap InMemoryProductRepository
+// with SqlProductRepository — ProductService doesn't change at all!</span></pre>
+  </div>
+
+  <div class="how-grid">
+    <div class="how-card"><div class="step">Abstraction</div><p><strong>IRepository&lt;T&gt;</strong> is the contract — business logic only sees this</p></div>
+    <div class="how-card"><div class="step">Implementation</div><p>InMemory, SQL, Mongo — each implements the same interface</p></div>
+    <div class="how-card"><div class="step">Testability</div><p>Unit test <strong>ProductService</strong> with InMemory repo — no DB needed</p></div>
+    <div class="how-card"><div class="step">Swap</div><p>Change data source by injecting a different repo — zero code changes in service</p></div>
+  </div>
+
+  <div class="pills">
+    <span class="pill" style="color:#60a5fa">DB-agnostic</span>
+    <span class="pill" style="color:#34d399">Testable business logic</span>
+    <span class="pill" style="color:#a78bfa">Clean separation</span>
+    <span class="pill" style="color:#fb923c">Works with EF Core</span>
+  </div>
+  <div class="tip">Entity Framework Core already implements Repository-like behavior internally via <code>DbSet&lt;T&gt;</code>. In real projects, add a thin repo layer on top to keep your domain services DB-ignorant and testable.</div>
+</div>
+
+<script>
+  function show(id) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    // Find the tab that calls show(id)
+    document.querySelectorAll('.tab').forEach(t => {
+      if (t.getAttribute('onclick') === `show('${id}')`) t.classList.add('active');
+    });
+  }
+</script>
+</body>
+</html>

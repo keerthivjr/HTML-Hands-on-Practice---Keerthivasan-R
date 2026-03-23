@@ -1,0 +1,15 @@
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-26\HandsOnDAY26\HandsOnDAY26\bin\Debug\net8.0\HandsOnDAY26.exe
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-26\HandsOnDAY26\HandsOnDAY26\bin\Debug\net8.0\HandsOnDAY26.deps.json
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-26\HandsOnDAY26\HandsOnDAY26\bin\Debug\net8.0\HandsOnDAY26.runtimeconfig.json
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-26\HandsOnDAY26\HandsOnDAY26\bin\Debug\net8.0\HandsOnDAY26.dll
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-26\HandsOnDAY26\HandsOnDAY26\bin\Debug\net8.0\HandsOnDAY26.pdb
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-26\HandsOnDAY26\HandsOnDAY26\obj\Debug\net8.0\HandsOnDAY26.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-26\HandsOnDAY26\HandsOnDAY26\obj\Debug\net8.0\HandsOnDAY26.AssemblyInfoInputs.cache
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-26\HandsOnDAY26\HandsOnDAY26\obj\Debug\net8.0\HandsOnDAY26.AssemblyInfo.cs
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-26\HandsOnDAY26\HandsOnDAY26\obj\Debug\net8.0\HandsOnDAY26.csproj.CoreCompileInputs.cache
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-26\HandsOnDAY26\HandsOnDAY26\obj\Debug\net8.0\HandsOnDAY26.sourcelink.json
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-26\HandsOnDAY26\HandsOnDAY26\obj\Debug\net8.0\HandsOnDAY26.dll
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-26\HandsOnDAY26\HandsOnDAY26\obj\Debug\net8.0\refint\HandsOnDAY26.dll
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-26\HandsOnDAY26\HandsOnDAY26\obj\Debug\net8.0\HandsOnDAY26.pdb
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-26\HandsOnDAY26\HandsOnDAY26\obj\Debug\net8.0\HandsOnDAY26.genruntimeconfig.cache
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-26\HandsOnDAY26\HandsOnDAY26\obj\Debug\net8.0\ref\HandsOnDAY26.dll
