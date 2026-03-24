@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "dgSpecHash": "BRHigQcyCq0=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\keerthi\\OneDrive\\Desktop\\upGrad\\DAY-27\\HandsOnDAY-27\\MyFirstMvcApp\\MyFirstMvcApp\\MyFirstMvcApp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\keerthi\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.24\\microsoft.windowsdesktop.app.ref.8.0.24.nupkg.sha512",
+    "C:\\Users\\keerthi\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.24\\microsoft.netcore.app.ref.8.0.24.nupkg.sha512",
+    "C:\\Users\\keerthi\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.24\\microsoft.aspnetcore.app.ref.8.0.24.nupkg.sha512",
+    "C:\\Users\\keerthi\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\8.0.24\\microsoft.netcore.app.host.win-x64.8.0.24.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json.",
+      "projectPath": "C:\\Users\\keerthi\\OneDrive\\Desktop\\upGrad\\DAY-27\\HandsOnDAY-27\\MyFirstMvcApp\\MyFirstMvcApp\\MyFirstMvcApp.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\keerthi\\OneDrive\\Desktop\\upGrad\\DAY-27\\HandsOnDAY-27\\MyFirstMvcApp\\MyFirstMvcApp\\MyFirstMvcApp.csproj",
+      "targetGraphs": []
+    }
+  ]
+}
