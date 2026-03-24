@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>.NET 8 & C# 12 — Engineering Excellence Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e17;
+    --surface: #111827;
+    --surface2: #1a2236;
+    --border: #1e2d45;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #10b981;
+    --accent4: #f59e0b;
+    --accent5: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --code-bg: #0d1117;
+    --keyword: #ff79c6;
+    --type: #8be9fd;
+    --string: #f1fa8c;
+    --comment: #6272a4;
+    --number: #bd93f9;
+    --method: #50fa7b;
+    --attr: #ffb86c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── GRID NOISE BACKGROUND ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    padding: 80px 60px 60px;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(124,58,237,.35) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,212,255,.08);
+    border: 1px solid rgba(0,212,255,.25);
+    border-radius: 4px;
+    padding: 5px 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .badge::before { content: '◆'; font-size: 8px; }
+
+  h1 {
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -.02em;
+    max-width: 780px;
+    margin-bottom: 20px;
+  }
+  h1 span { color: var(--accent); }
+  .subtitle {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 560px;
+    font-weight: 400;
+    font-family: 'Space Mono', monospace;
+    font-size: .85rem;
+    line-height: 1.7;
+  }
+  .meta-pills {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-top: 32px;
+  }
+  .pill {
+    padding: 4px 14px;
+    border-radius: 2px;
+    font-size: .75rem;
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    letter-spacing: .05em;
+  }
+  .pill-blue { background: rgba(0,212,255,.12); color: var(--accent); border: 1px solid rgba(0,212,255,.3); }
+  .pill-purple { background: rgba(124,58,237,.12); color: #a78bfa; border: 1px solid rgba(124,58,237,.3); }
+  .pill-green { background: rgba(16,185,129,.12); color: var(--accent3); border: 1px solid rgba(16,185,129,.3); }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,14,23,.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 60px;
+    display: flex; gap: 0; overflow-x: auto;
+  }
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: .8rem;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: .06em;
+    padding: 16px 20px;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: color .2s, border-color .2s;
+  }
+  nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* ── LAYOUT ── */
+  main {
+    position: relative; z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 60px 100px;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    padding: 70px 0 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: .7rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    margin-bottom: 10px;
+    line-height: 1.15;
+  }
+  .section-intro {
+    color: var(--muted);
+    font-size: .9rem;
+    max-width: 700px;
+    margin-bottom: 48px;
+    line-height: 1.75;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* ── TOPIC BLOCK ── */
+  .topic {
+    margin-bottom: 56px;
+  }
+  .topic-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+  .topic-icon {
+    width: 36px; height: 36px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .icon-blue { background: rgba(0,212,255,.12); border: 1px solid rgba(0,212,255,.25); }
+  .icon-purple { background: rgba(124,58,237,.12); border: 1px solid rgba(124,58,237,.25); }
+  .icon-green { background: rgba(16,185,129,.12); border: 1px solid rgba(16,185,129,.25); }
+  .icon-amber { background: rgba(245,158,11,.12); border: 1px solid rgba(245,158,11,.25); }
+  .icon-red { background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.25); }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    margin-bottom: 6px;
+  }
+  .topic-desc {
+    color: var(--muted);
+    font-size: .85rem;
+    font-family: 'Space Mono', monospace;
+    line-height: 1.7;
+    max-width: 680px;
+    margin-bottom: 22px;
+  }
+
+  /* ── CODE BLOCK ── */
+  .code-wrap {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 18px;
+    background: rgba(255,255,255,.03);
+    border-bottom: 1px solid var(--border);
+  }
+  .code-title {
+    font-family: 'Space Mono', monospace;
+    font-size: .7rem;
+    color: var(--muted);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .code-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: .65rem;
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+  .tag-bad { background: rgba(239,68,68,.15); color: #fca5a5; border: 1px solid rgba(239,68,68,.3); }
+  .tag-good { background: rgba(16,185,129,.15); color: #6ee7b7; border: 1px solid rgba(16,185,129,.3); }
+  .tag-note { background: rgba(245,158,11,.15); color: #fcd34d; border: 1px solid rgba(245,158,11,.3); }
+
+  pre {
+    padding: 22px 24px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .82rem;
+    line-height: 1.75;
+    color: #cdd6f4;
+  }
+
+  /* Syntax colors */
+  .kw { color: var(--keyword); font-weight: 600; }
+  .tp { color: var(--type); }
+  .st { color: var(--string); }
+  .cm { color: var(--comment); font-style: italic; }
+  .nm { color: var(--number); }
+  .mt { color: var(--method); }
+  .at { color: var(--attr); }
+  .pu { color: #cdd6f4; }
+
+  /* ── TWO COL CODE ── */
+  .code-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 10px;
+  }
+  @media(max-width: 768px) {
+    .code-grid { grid-template-columns: 1fr; }
+    main { padding: 0 24px 60px; }
+    header { padding: 48px 24px 40px; }
+    nav { padding: 0 24px; }
+    h1 { font-size: 2rem; }
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 18px 0;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    font-size: .84rem;
+    font-family: 'Space Mono', monospace;
+    line-height: 1.7;
+  }
+  .callout-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+  .callout-info { background: rgba(0,212,255,.06); border: 1px solid rgba(0,212,255,.2); color: #93c5fd; }
+  .callout-warn { background: rgba(245,158,11,.06); border: 1px solid rgba(245,158,11,.2); color: #fcd34d; }
+  .callout-tip  { background: rgba(16,185,129,.06); border: 1px solid rgba(16,185,129,.2); color: #6ee7b7; }
+
+  /* ── RULES TABLE ── */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .rule-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color .2s;
+  }
+  .rule-card:hover { border-color: var(--accent); }
+  .rule-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%;
+  }
+  .rule-blue::before { background: var(--accent); }
+  .rule-purple::before { background: #7c3aed; }
+  .rule-green::before { background: var(--accent3); }
+  .rule-amber::before { background: var(--accent4); }
+  .rule-title {
+    font-size: .9rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    padding-left: 10px;
+  }
+  .rule-body {
+    font-size: .78rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    line-height: 1.6;
+    padding-left: 10px;
+  }
+
+  /* ── CHECKLIST ── */
+  .checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 18px 0;
+  }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: .84rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .checklist li::before {
+    content: '✓';
+    color: var(--accent3);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .checklist li.warn::before { content: '⚠'; color: var(--accent4); }
+  .checklist li.no::before   { content: '✗'; color: var(--accent5); }
+
+  /* ── PERF METERS ── */
+  .perf-table {
+    width: 100%; border-collapse: collapse;
+    font-family: 'Space Mono', monospace;
+    font-size: .78rem;
+    margin: 18px 0;
+  }
+  .perf-table th {
+    text-align: left;
+    padding: 10px 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    font-size: .7rem;
+  }
+  .perf-table td {
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .perf-table tr:hover td { background: rgba(255,255,255,.02); }
+  .tag-fast { color: var(--accent3); font-weight: 700; }
+  .tag-slow { color: var(--accent5); }
+  .tag-mid  { color: var(--accent4); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Space Mono', monospace;
+    font-size: .75rem;
+    color: var(--muted);
+  }
+  .footer-brand { color: var(--accent); font-weight: 700; }
+
+  /* ── SCROLL ANIMATION ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .55s ease, transform .55s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header>
+  <div class="badge">.NET 8 &amp; C# 12 Engineering Guide</div>
+  <h1>Coding Standards,<br>Performance &amp; <span>Code Reviews</span></h1>
+  <p class="subtitle">
+    A comprehensive technical reference for building robust, high-performance<br>
+    applications with modern .NET 8 and C# 12 features.
+  </p>
+  <div class="meta-pills">
+    <span class="pill pill-blue">.NET 8 LTS</span>
+    <span class="pill pill-purple">C# 12</span>
+    <span class="pill pill-green">Production Grade</span>
+  </div>
+</header>
+
+<!-- ═══════════════════ NAV ═══════════════════ -->
+<nav>
+  <a href="#coding-standards">Coding Standards</a>
+  <a href="#naming">Naming Conventions</a>
+  <a href="#nullability">Nullability</a>
+  <a href="#records">Records &amp; Types</a>
+  <a href="#performance">Performance</a>
+  <a href="#async">Async / Await</a>
+  <a href="#spans">Spans &amp; Memory</a>
+  <a href="#code-review">Code Reviews</a>
+  <a href="#checklist">Review Checklist</a>
+</nav>
+
+<!-- ═══════════════════ MAIN ═══════════════════ -->
+<main>
+
+<!-- ─────────────── SECTION 1: CODING STANDARDS ─────────────── -->
+<section class="section" id="coding-standards">
+  <div class="reveal">
+    <div class="section-label">01 — Foundation</div>
+    <h2>Coding Standards</h2>
+    <p class="section-intro">
+      Consistent standards reduce cognitive load during reviews, onboarding, and maintenance.
+      C# 12 introduces features that allow more expressive, concise, and safe code.
+    </p>
+  </div>
+
+  <!-- Primary Constructors -->
+  <div class="topic reveal">
+    <div class="topic-header">
+      <div class="topic-icon icon-blue">🏗</div>
+      <div>
+        <h3>Primary Constructors (C# 12)</h3>
+        <p class="topic-desc">
+          Primary constructors let you declare constructor parameters directly on the class declaration.
+          Use them for simple dependency injection and record-like classes to reduce boilerplate.
+        </p>
+      </div>
+    </div>
+    <div class="code-grid">
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-title">Before — C# 11</span>
+          <span class="code-tag tag-bad">VERBOSE</span>
+        </div>
+        <pre><span class="kw">public class</span> <span class="tp">OrderService</span>
+{
+    <span class="kw">private readonly</span> <span class="tp">IOrderRepository</span> _repo;
+    <span class="kw">private readonly</span> <span class="tp">ILogger</span>&lt;<span class="tp">OrderService</span>&gt; _logger;
+
+    <span class="kw">public</span> <span class="mt">OrderService</span>(
+        <span class="tp">IOrderRepository</span> repo,
+        <span class="tp">ILogger</span>&lt;<span class="tp">OrderService</span>&gt; logger)
+    {
+        _repo   = repo;
+        _logger = logger;
+    }
+}</pre>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-title">After — C# 12 Primary Constructor</span>
+          <span class="code-tag tag-good">CLEAN</span>
+        </div>
+        <pre><span class="kw">public class</span> <span class="tp">OrderService</span>(
+    <span class="tp">IOrderRepository</span> repo,
+    <span class="tp">ILogger</span>&lt;<span class="tp">OrderService</span>&gt; logger)
+{
+    <span class="kw">public async</span> <span class="tp">Task</span>&lt;<span class="tp">Order</span>&gt; <span class="mt">GetAsync</span>(<span class="tp">Guid</span> id)
+    {
+        logger.<span class="mt">LogInformation</span>(<span class="st">"Fetching {Id}"</span>, id);
+        <span class="kw">return await</span> repo.<span class="mt">FindAsync</span>(id);
+    }
+}</pre>
+      </div>
+    </div>
+    <div class="callout callout-warn">
+      <span class="callout-icon">⚠</span>
+      <span>Primary constructor parameters are captured by the class — avoid mutating them. If mutation is needed, assign them to a private field explicitly.</span>
+    </div>
+  </div>
+
+  <!-- Collection Expressions -->
+  <div class="topic reveal">
+    <div class="topic-header">
+      <div class="topic-icon icon-purple">📦</div>
+      <div>
+        <h3>Collection Expressions (C# 12)</h3>
+        <p class="topic-desc">
+          A unified, concise syntax for creating arrays, lists, spans, and other collections using bracket notation.
+          The compiler selects the most efficient representation.
+        </p>
+      </div>
+    </div>
+    <div class="code-grid">
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-title">Before</span>
+          <span class="code-tag tag-bad">OLD STYLE</span>
+        </div>
+        <pre><span class="tp">int</span>[] nums = <span class="kw">new int</span>[] { <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span> };
+<span class="tp">List</span>&lt;<span class="tp">string</span>&gt; tags = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">string</span>&gt;
+    { <span class="st">"dotnet"</span>, <span class="st">"csharp"</span> };
+
+<span class="kw">var</span> combined = nums
+    .<span class="mt">Concat</span>(<span class="kw">new</span>[] { <span class="nm">4</span>, <span class="nm">5</span> })
+    .<span class="mt">ToArray</span>();</pre>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-title">After — Collection Expressions</span>
+          <span class="code-tag tag-good">C# 12</span>
+        </div>
+        <pre><span class="tp">int</span>[] nums = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>];
+<span class="tp">List</span>&lt;<span class="tp">string</span>&gt; tags = [<span class="st">"dotnet"</span>, <span class="st">"csharp"</span>];
+
+<span class="cm">// Spread operator (..) to merge</span>
+<span class="tp">int</span>[] extra = [<span class="nm">4</span>, <span class="nm">5</span>];
+<span class="tp">int</span>[] combined = [..nums, ..extra];
+
+<span class="cm">// Works with Span&lt;T&gt; — zero allocation!</span>
+<span class="tp">Span</span>&lt;<span class="tp">int</span>&gt; span = [<span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>];</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inline Arrays -->
+  <div class="topic reveal">
+    <div class="topic-header">
+      <div class="topic-icon icon-green">⚡</div>
+      <div>
+        <h3>Inline Arrays (C# 12)</h3>
+        <p class="topic-desc">
+          Inline arrays are a new struct feature enabling fixed-size, stack-allocated buffers without unsafe code.
+          Used internally by the runtime and available to library authors for high-performance scenarios.
+        </p>
+      </div>
+    </div>
+    <div class="code-wrap">
+      <div class="code-header">
+        <span class="code-title">Inline Array — Fixed-size Stack Buffer</span>
+        <span class="code-tag tag-good">C# 12 / HIGH PERF</span>
+      </div>
+      <pre><span class="at">[System.Runtime.CompilerServices.InlineArray(8)]</span>
+<span class="kw">public struct</span> <span class="tp">Buffer8</span>&lt;<span class="tp">T</span>&gt;
+{
+    <span class="kw">private</span> <span class="tp">T</span> _element0; <span class="cm">// runtime repeats this N times</span>
+}
+
+<span class="cm">// Usage — zero heap allocation</span>
+<span class="tp">Buffer8</span>&lt;<span class="tp">int</span>&gt; buf = <span class="kw">default</span>;
+buf[<span class="nm">0</span>] = <span class="nm">42</span>;
+buf[<span class="nm">1</span>] = <span class="nm">99</span>;
+
+<span class="kw">foreach</span> (<span class="kw">var</span> val <span class="kw">in</span> buf)
+    <span class="tp">Console</span>.<span class="mt">WriteLine</span>(val);</pre>
+    </div>
+  </div>
+
+  <!-- Default Lambda Params -->
+  <div class="topic reveal">
+    <div class="topic-header">
+      <div class="topic-icon icon-amber">λ</div>
+      <div>
+        <h3>Default Lambda Parameters (C# 12)</h3>
+        <p class="topic-desc">
+          Lambdas can now have default parameter values, just like regular methods. Reduces the need for overloads in callback-heavy APIs.
+        </p>
+      </div>
+    </div>
+    <div class="code-wrap">
+      <div class="code-header">
+        <span class="code-title">Default Lambda Parameters</span>
+        <span class="code-tag tag-good">C# 12</span>
+      </div>
+      <pre><span class="cm">// Lambda with defaults</span>
+<span class="kw">var</span> greet = (<span class="tp">string</span> name, <span class="tp">string</span> prefix = <span class="st">"Hello"</span>)
+    =&gt; <span class="st">$"{prefix}, {name}!"</span>;
+
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">greet</span>(<span class="st">"Alice"</span>));           <span class="cm">// Hello, Alice!</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">greet</span>(<span class="st">"Bob"</span>, <span class="st">"Hey"</span>));     <span class="cm">// Hey, Bob!</span>
+
+<span class="cm">// Practical: configurable retry delegate</span>
+<span class="tp">Func</span>&lt;<span class="tp">int</span>, <span class="tp">TimeSpan</span>&gt; backoff =
+    (<span class="tp">int</span> attempt, <span class="tp">int</span> baseMs = <span class="nm">100</span>)
+        =&gt; <span class="tp">TimeSpan</span>.<span class="mt">FromMilliseconds</span>(baseMs * (<span class="nm">1</span> &lt;&lt; attempt));
+
+<span class="kw">var</span> delay = <span class="mt">backoff</span>(<span class="nm">3</span>);  <span class="cm">// 800ms</span></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── SECTION 2: NAMING ─────────────── -->
+<section class="section" id="naming">
+  <div class="reveal">
+    <div class="section-label">02 — Conventions</div>
+    <h2>Naming Conventions</h2>
+    <p class="section-intro">
+      Consistent naming is the single highest-ROI standard. It makes code self-documenting and
+      eliminates whole categories of questions during review.
+    </p>
+  </div>
+
+  <div class="rules-grid reveal">
+    <div class="rule-card rule-blue">
+      <div class="rule-title">Types &amp; Namespaces</div>
+      <div class="rule-body">PascalCase for all types, interfaces, enums, namespaces.<br>
+      <code>OrderService</code>, <code>IPaymentGateway</code>, <code>MyApp.Orders</code></div>
+    </div>
+    <div class="rule-card rule-purple">
+      <div class="rule-title">Methods &amp; Properties</div>
+      <div class="rule-body">PascalCase for methods, properties, events.<br>
+      <code>GetOrderAsync()</code>, <code>TotalAmount</code>, <code>OnCompleted</code></div>
+    </div>
+    <div class="rule-card rule-green">
+      <div class="rule-title">Local Variables &amp; Parameters</div>
+      <div class="rule-body">camelCase. Avoid single letters except in short lambdas.<br>
+      <code>orderId</code>, <code>maxRetries</code>, <code>x =&gt; x.Id</code></div>
+    </div>
+    <div class="rule-card rule-amber">
+      <div class="rule-title">Private Fields</div>
+      <div class="rule-body">Prefix with underscore + camelCase.<br>
+      <code>_repository</code>, <code>_logger</code>, <code>_cacheExpiry</code></div>
+    </div>
+    <div class="rule-card rule-blue">
+      <div class="rule-title">Constants &amp; Static Readonly</div>
+      <div class="rule-body">PascalCase for both.<br>
+      <code>MaxPageSize</code>, <code>DefaultTimeout</code></div>
+    </div>
+    <div class="rule-card rule-purple">
+      <div class="rule-title">Interfaces</div>
+      <div class="rule-body">Prefix with <code>I</code> (PascalCase after).<br>
+      <code>IOrderRepository</code>, <code>IAsyncDisposable</code></div>
+    </div>
+    <div class="rule-card rule-green">
+      <div class="rule-title">Generic Type Parameters</div>
+      <div class="rule-body">Single T for simple, descriptive T-prefix for complex.<br>
+      <code>T</code>, <code>TKey</code>, <code>TValue</code>, <code>TResult</code></div>
+    </div>
+    <div class="rule-card rule-amber">
+      <div class="rule-title">Async Methods</div>
+      <div class="rule-body">Always suffix with <code>Async</code>.<br>
+      <code>GetOrderAsync()</code>, <code>SaveChangesAsync()</code></div>
+    </div>
+  </div>
+
+  <div class="topic reveal">
+    <h3 style="margin-bottom:16px;">Naming in Practice</h3>
+    <div class="code-grid">
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-title">Avoid</span>
+          <span class="code-tag tag-bad">BAD</span>
+        </div>
+        <pre><span class="kw">public class</span> <span class="tp">mgr</span>  <span class="cm">// abbreviation</span>
+{
+    <span class="kw">int</span> x;           <span class="cm">// meaningless</span>
+    <span class="kw">string</span> Data;     <span class="cm">// field, not property</span>
+
+    <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="tp">Order</span>&gt; <span class="mt">Get</span>() <span class="cm">// missing Async</span>
+        =&gt; ...;
+
+    <span class="kw">public void</span> <span class="mt">DoIt</span>() <span class="cm">// vague intent</span>
+        =&gt; ...;
+}</pre>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-title">Prefer</span>
+          <span class="code-tag tag-good">GOOD</span>
+        </div>
+        <pre><span class="kw">public class</span> <span class="tp">OrderManager</span>
+{
+    <span class="kw">private int</span> _retryCount;
+    <span class="kw">public string</span> Data { <span class="kw">get</span>; <span class="kw">init</span>; }
+
+    <span class="kw">public async</span> <span class="tp">Task</span>&lt;<span class="tp">List</span>&lt;<span class="tp">Order</span>&gt;&gt; <span class="mt">GetActiveAsync</span>()
+        =&gt; ...;
+
+    <span class="kw">public async</span> <span class="tp">Task</span> <span class="mt">ProcessPendingOrdersAsync</span>()
+        =&gt; ...;
+}</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── SECTION 3: NULLABILITY ─────────────── -->
+<section class="section" id="nullability">
+  <div class="reveal">
+    <div class="section-label">03 — Safety</div>
+    <h2>Nullability &amp; Pattern Matching</h2>
+    <p class="section-intro">
+      Enable nullable reference types globally. Combine with C# pattern matching to write null-safe,
+      expressive code without defensive null-checks cluttering logic.
+    </p>
+  </div>
+
+  <div class="topic reveal">
+    <div class="topic-header">
+      <div class="topic-icon icon-blue">🛡</div>
+      <div>
+        <h3>Nullable Reference Types</h3>
+        <p class="topic-desc">Enable <code>#nullable enable</code> project-wide. Distinguish nullable from non-nullable at the type level.</p>
+      </div>
+    </div>
+    <div class="code-wrap">
+      <div class="code-header">
+        <span class="code-title">Nullable Reference Types + Null-Coalescing</span>
+        <span class="code-tag tag-good">RECOMMENDED</span>
+      </div>
+      <pre><span class="cm">// .csproj — enable globally</span>
+<span class="cm">// &lt;Nullable&gt;enable&lt;/Nullable&gt;</span>
+
+<span class="kw">public record</span> <span class="tp">Customer</span>(
+    <span class="tp">string</span> Name,            <span class="cm">// non-nullable — must be set</span>
+    <span class="tp">string</span>? MiddleName,     <span class="cm">// nullable — optional</span>
+    <span class="tp">Address</span>? ShippingAddress
+);
+
+<span class="kw">public</span> <span class="tp">string</span> <span class="mt">GetDisplayName</span>(<span class="tp">Customer</span> customer)
+{
+    <span class="cm">// Null-conditional + null-coalescing</span>
+    <span class="kw">var</span> middle = customer.MiddleName <span class="kw">is not null</span>
+        ? <span class="st">$" {customer.MiddleName[0]}."</span>
+        : <span class="tp">string</span>.Empty;
+
+    <span class="kw">return</span> <span class="st">$"{customer.Name}{middle}"</span>;
+}
+
+<span class="cm">// Null-forgiving when you're certain (use sparingly)</span>
+<span class="kw">var</span> city = customer.ShippingAddress!.City;</pre>
+    </div>
+  </div>
+
+  <div class="topic reveal">
+    <div class="topic-header">
+      <div class="topic-icon icon-purple">🔍</div>
+      <div>
+        <h3>Pattern Matching</h3>
+        <p class="topic-desc">
+          C# 8–12 progressively expanded pattern matching. Use switch expressions, list patterns, and
+          property patterns instead of nested if-else chains.
+        </p>
+      </div>
+    </div>
+    <div class="code-grid">
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-title">Old — Nested if/else</span>
+          <span class="code-tag tag-bad">AVOID</span>
+        </div>
+        <pre><span class="kw">string</span> <span class="mt">Classify</span>(<span class="tp">Order</span> o)
+{
+    <span class="kw">if</span> (o == <span class="kw">null</span>)
+        <span class="kw">return</span> <span class="st">"invalid"</span>;
+    <span class="kw">if</span> (o.Total &gt; <span class="nm">1000</span> &amp;&amp; o.IsPriority)
+        <span class="kw">return</span> <span class="st">"vip"</span>;
+    <span class="kw">if</span> (o.Total &gt; <span class="nm">1000</span>)
+        <span class="kw">return</span> <span class="st">"high-value"</span>;
+    <span class="kw">return</span> <span class="st">"standard"</span>;
+}</pre>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-title">Modern — Switch Expression + Patterns</span>
+          <span class="code-tag tag-good">PREFERRED</span>
+        </div>
+        <pre><span class="tp">string</span> <span class="mt">Classify</span>(<span class="tp">Order</span>? o) =&gt; o <span class="kw">switch</span>
+{
+    <span class="kw">null</span>                           =&gt; <span class="st">"invalid"</span>,
+    { Total: &gt; <span class="nm">1000</span>, IsPriority: <span class="kw">true</span> }
+                                   =&gt; <span class="st">"vip"</span>,
+    { Total: &gt; <span class="nm">1000</span> }             =&gt; <span class="st">"high-value"</span>,
+    _                              =&gt; <span class="st">"standard"</span>
+};</pre>
+      </div>
+    </div>
+
+    <div class="code-wrap" style="margin-top:16px;">
+      <div class="code-header">
+        <span class="code-title">List Patterns (C# 11) — Deconstruct sequences</span>
+        <span class="code-tag tag-note">C# 11+</span>
+      </div>
+      <pre><span class="tp">string</span> <span class="mt">DescribeList</span>(<span class="tp">int</span>[] nums) =&gt; nums <span class="kw">switch</span>
+{
+    []              =&gt; <span class="st">"empty"</span>,
+    [<span class="kw">var</span> single]    =&gt; <span class="st">$"one item: {single}"</span>,
+    [<span class="kw">var</span> a, <span class="kw">var</span> b] =&gt; <span class="st">$"two items: {a}, {b}"</span>,
+    [.., <span class="nm">42</span>]       =&gt; <span class="st">"ends with 42"</span>,
+    [<span class="nm">1</span>, ..]         =&gt; <span class="st">"starts with 1"</span>,
+    _               =&gt; <span class="st">"many items"</span>
+};</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── SECTION 4: RECORDS ─────────────── -->
+<section class="section" id="records">
+  <div class="reveal">
+    <div class="section-label">04 — Type Design</div>
+    <h2>Records, Structs &amp; Type Hierarchy</h2>
+    <p class="section-intro">
+      Choose the right type for your data. Records are immutable value-semantic types ideal for DTOs,
+      domain events, and query results.
+    </p>
+  </div>
+
+  <div class="topic reveal">
+    <div class="topic-header">
+      <div class="topic-icon icon-green">📋</div>
+      <div>
+        <h3>Record Types — When &amp; How</h3>
+        <p class="topic-desc">Records provide value equality, with-expressions, and deconstruction out of the box. Prefer them over classes for immutable data carriers.</p>
+      </div>
+    </div>
+    <div class="code-wrap">
+      <div class="code-header">
+        <span class="code-title">Records — DTOs, Domain Events, Value Objects</span>
+        <span class="code-tag tag-good">IDIOMATIC</span>
+      </div>
+      <pre><span class="cm">// Positional record — compact syntax</span>
+<span class="kw">public record</span> <span class="tp">OrderCreatedEvent</span>(
+    <span class="tp">Guid</span>     OrderId,
+    <span class="tp">Guid</span>     CustomerId,
+    <span class="tp">decimal</span>  Total,
+    <span class="tp">DateTime</span> CreatedAt);
+
+<span class="cm">// With-expression: non-destructive update</span>
+<span class="kw">var</span> original = <span class="kw">new</span> <span class="tp">OrderCreatedEvent</span>(
+    <span class="tp">Guid</span>.<span class="mt">NewGuid</span>(), <span class="tp">Guid</span>.<span class="mt">NewGuid</span>(),
+    <span class="nm">299.99m</span>, <span class="tp">DateTime</span>.UtcNow);
+
+<span class="kw">var</span> corrected = original <span class="kw">with</span> { Total = <span class="nm">349.99m</span> };
+
+<span class="cm">// Value equality — no custom Equals needed</span>
+<span class="kw">var</span> copy = original <span class="kw">with</span> { };
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(original == copy); <span class="cm">// True</span>
+
+<span class="cm">// Deconstruction</span>
+<span class="kw">var</span> (orderId, custId, total, _) = original;
+
+<span class="cm">// record struct — stack-allocated value equality</span>
+<span class="kw">public readonly record struct</span> <span class="tp">Money</span>(
+    <span class="tp">decimal</span> Amount, <span class="tp">string</span> Currency);
+
+<span class="kw">var</span> usd = <span class="kw">new</span> <span class="tp">Money</span>(<span class="nm">100m</span>, <span class="st">"USD"</span>);
+<span class="kw">var</span> eur = usd <span class="kw">with</span> { Currency = <span class="st">"EUR"</span>, Amount = <span class="nm">92m</span> };</pre>
+    </div>
+    <div class="callout callout-info">
+      <span class="callout-icon">ℹ</span>
+      <span>Use <code>record</code> (class) for reference semantics with value equality. Use <code>readonly record struct</code> for small, frequently-allocated value objects that benefit from stack allocation.</span>
+    </div>
+  </div>
+
+  <div class="topic reveal">
+    <div class="topic-header">
+      <div class="topic-icon icon-amber">🔒</div>
+      <div>
+        <h3>Required Members &amp; Init-Only</h3>
+        <p class="topic-desc">
+          <code>required</code> keyword (C# 11) forces callers to set properties during object initialization.
+          Combine with <code>init</code> to create immutable objects with flexible construction.
+        </p>
+      </div>
+    </div>
+    <div class="code-wrap">
+      <div class="code-header">
+        <span class="code-title">required + init — Safe Object Construction</span>
+        <span class="code-tag tag-good">C# 11/12</span>
+      </div>
+      <pre><span class="kw">public class</span> <span class="tp">CreateOrderCommand</span>
+{
+    <span class="kw">public required</span> <span class="tp">Guid</span>   CustomerId  { <span class="kw">get</span>; <span class="kw">init</span>; }
+    <span class="kw">public required</span> <span class="tp">string</span> ProductSku  { <span class="kw">get</span>; <span class="kw">init</span>; }
+    <span class="kw">public required</span> <span class="tp">int</span>    Quantity    { <span class="kw">get</span>; <span class="kw">init</span>; }
+    <span class="kw">public</span>          <span class="tp">string</span> Note       { <span class="kw">get</span>; <span class="kw">init</span>; } = <span class="st">""</span>;
+}
+
+<span class="cm">// ✓ Compiles — all required properties set</span>
+<span class="kw">var</span> cmd = <span class="kw">new</span> <span class="tp">CreateOrderCommand</span>
+{
+    CustomerId = <span class="tp">Guid</span>.<span class="mt">NewGuid</span>(),
+    ProductSku = <span class="st">"SKU-001"</span>,
+    Quantity   = <span class="nm">2</span>
+};
+
+<span class="cm">// ✗ Compile error — missing required members</span>
+<span class="cm">// var bad = new CreateOrderCommand { Quantity = 1 };</span></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── SECTION 5: PERFORMANCE ─────────────── -->
+<section class="section" id="performance">
+  <div class="reveal">
+    <div class="section-label">05 — Performance</div>
+    <h2>Performance Best Practices</h2>
+    <p class="section-intro">
+      .NET 8 ships with significant runtime optimisations — DATAS garbage collector, tiered JIT, frozen objects.
+      Write code that cooperates with these improvements.
+    </p>
+  </div>
+
+  <!-- Frozen Collections -->
+  <div class="topic reveal">
+    <div class="topic-header">
+      <div class="topic-icon icon-blue">❄</div>
+      <div>
+        <h3>Frozen Collections (.NET 8)</h3>
+        <p class="topic-desc">
+          <code>FrozenDictionary</code> and <code>FrozenSet</code> are read-only collections optimised for fast lookup.
+          Ideal for static configuration data, lookup tables, and feature flags loaded at startup.
+        </p>
+      </div>
+    </div>
+    <div class="code-grid">
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-title">Dictionary (mutable)</span>
+          <span class="code-tag tag-mid">BASELINE</span>
+        </div>
+        <pre><span class="cm">// Mutable — lock needed for thread safety</span>
+<span class="kw">private static readonly</span>
+    <span class="tp">Dictionary</span>&lt;<span class="tp">string</span>, <span class="tp">int</span>&gt; _codes
+        = <span class="kw">new</span>()
+{
+    { <span class="st">"USD"</span>, <span class="nm">840</span> },
+    { <span class="st">"EUR"</span>, <span class="nm">978</span> },
+    { <span class="st">"GBP"</span>, <span class="nm">826</span> }
+};</pre>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-title">FrozenDictionary (.NET 8)</span>
+          <span class="code-tag tag-good">FASTER LOOKUP</span>
+        </div>
+        <pre><span class="kw">using</span> <span class="tp">System.Collections.Frozen</span>;
+
+<span class="kw">private static readonly</span>
+    <span class="tp">FrozenDictionary</span>&lt;<span class="tp">string</span>, <span class="tp">int</span>&gt; _codes =
+        <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="tp">string</span>, <span class="tp">int</span>&gt;
+        {
+            { <span class="st">"USD"</span>, <span class="nm">840</span> },
+            { <span class="st">"EUR"</span>, <span class="nm">978</span> }
+        }.<span class="mt">ToFrozenDictionary</span>();
+
+<span class="cm">// Thread-safe, no lock needed, ~2× faster reads</span>
+<span class="kw">if</span> (_codes.<span class="mt">TryGetValue</span>(<span class="st">"USD"</span>, <span class="kw">out var</span> code))
+    ...</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- String performance -->
+  <div class="topic reveal">
+    <div class="topic-header">
+      <div class="topic-icon icon-purple">🔤</div>
+      <div>
+        <h3>String Handling — Avoid Allocations</h3>
+        <p class="topic-desc">
+          Strings are the #1 source of unnecessary heap allocations. Use <code>Span&lt;char&gt;</code>,
+          <code>SearchValues</code>, and <code>CompositeFormat</code> to minimise pressure on the GC.
+        </p>
+      </div>
+    </div>
+    <div class="code-wrap">
+      <div class="code-header">
+        <span class="code-title">SearchValues + Span — Zero-Allocation String Scanning (.NET 8)</span>
+        <span class="code-tag tag-good">HIGH PERF</span>
+      </div>
+      <pre><span class="kw">using</span> <span class="tp">System.Buffers</span>;
+
+<span class="cm">// Pre-build the search set once — O(1) lookup</span>
+<span class="kw">private static readonly</span> <span class="tp">SearchValues</span>&lt;<span class="tp">char</span>&gt; _special =
+    <span class="tp">SearchValues</span>.<span class="mt">Create</span>(<span class="st">"!@#$%^&*()"</span>);
+
+<span class="kw">public static bool</span> <span class="mt">HasSpecialChar</span>(<span class="tp">ReadOnlySpan</span>&lt;<span class="tp">char</span>&gt; input)
+    =&gt; input.<span class="mt">ContainsAny</span>(_special); <span class="cm">// no allocation!</span>
+
+<span class="cm">// CompositeFormat — parse format string once</span>
+<span class="kw">private static readonly</span> <span class="tp">CompositeFormat</span> _fmt =
+    <span class="tp">CompositeFormat</span>.<span class="mt">Parse</span>(<span class="st">"Order {0} placed by {1}"</span>);
+
+<span class="kw">public string</span> <span class="mt">FormatMessage</span>(<span class="tp">Guid</span> orderId, <span class="tp">string</span> name)
+    =&gt; <span class="tp">string</span>.<span class="mt">Format</span>(
+        <span class="tp">System.Globalization.CultureInfo</span>.InvariantCulture,
+        _fmt, orderId, name);</pre>
+    </div>
+  </div>
+
+  <!-- LINQ performance -->
+  <div class="topic reveal">
+    <div class="topic-header">
+      <div class="topic-icon icon-green">⚡</div>
+      <div>
+        <h3>LINQ — Right Tool, Right Place</h3>
+        <p class="topic-desc">
+          LINQ is expressive but can hide allocations. Use <code>Count()</code> vs <code>.Count</code>,
+          short-circuit with <code>Any()</code>, and prefer <code>Where</code>+<code>Select</code> over
+          nested LINQ to keep allocations minimal.
+        </p>
+      </div>
+    </div>
+    <div class="code-grid">
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-title">Common LINQ Pitfalls</span>
+          <span class="code-tag tag-bad">AVOID</span>
+        </div>
+        <pre><span class="cm">// Multiple enumerations</span>
+<span class="kw">if</span> (orders.<span class="mt">Count</span>() &gt; <span class="nm">0</span>)     <span class="cm">// use Any()</span>
+    ...
+
+<span class="cm">// Materialises entire list to check one</span>
+<span class="kw">var</span> found = orders
+    .<span class="mt">Where</span>(o =&gt; o.Id == id)
+    .<span class="mt">ToList</span>()              <span class="cm">// unnecessary</span>
+    .<span class="mt">FirstOrDefault</span>();
+
+<span class="cm">// Select inside Where causes double iteration</span>
+orders.<span class="mt">Select</span>(o =&gt; o.Total)
+      .<span class="mt">Where</span>(t =&gt; t &gt; <span class="nm">100</span>);</pre>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-title">Optimised LINQ</span>
+          <span class="code-tag tag-good">PREFER</span>
+        </div>
+        <pre><span class="cm">// Short-circuit, no full enumeration</span>
+<span class="kw">if</span> (orders.<span class="mt">Any</span>())  ...
+
+<span class="cm">// No intermediate list</span>
+<span class="kw">var</span> found = orders
+    .<span class="mt">FirstOrDefault</span>(o =&gt; o.Id == id);
+
+<span class="cm">// Filter then project (less work per item)</span>
+orders.<span class="mt">Where</span>(o =&gt; o.Total &gt; <span class="nm">100</span>)
+      .<span class="mt">Select</span>(o =&gt; o.Total);
+
+<span class="cm">// For hot paths — avoid LINQ entirely</span>
+<span class="kw">foreach</span> (<span class="kw">var</span> o <span class="kw">in</span> orders)
+    <span class="kw">if</span> (o.Total &gt; <span class="nm">100</span>) <span class="mt">Process</span>(o);</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ObjectPool -->
+  <div class="topic reveal">
+    <div class="topic-header">
+      <div class="topic-icon icon-amber">♻</div>
+      <div>
+        <h3>Object Pooling</h3>
+        <p class="topic-desc">
+          Reuse expensive objects with <code>ObjectPool&lt;T&gt;</code> (Microsoft.Extensions.ObjectPool)
+          and <code>ArrayPool&lt;T&gt;</code> from the BCL. Critical for high-throughput services.
+        </p>
+      </div>
+    </div>
+    <div class="code-wrap">
+      <div class="code-header">
+        <span class="code-title">StringBuilder Pool + ArrayPool</span>
+        <span class="code-tag tag-good">ZERO GC PRESSURE</span>
+      </div>
+      <pre><span class="kw">using</span> <span class="tp">Microsoft.Extensions.ObjectPool</span>;
+<span class="kw">using</span> <span class="tp">System.Buffers</span>;
+
+<span class="cm">// StringBuilder pool — DI registration</span>
+services.<span class="mt">AddSingleton</span>(<span class="tp">ObjectPool</span>.<span class="mt">Create</span>(
+    <span class="kw">new</span> <span class="tp">StringBuilderPooledObjectPolicy</span>()));
+
+<span class="cm">// Usage in a handler</span>
+<span class="kw">public string</span> <span class="mt">BuildReport</span>(
+    <span class="tp">ObjectPool</span>&lt;<span class="tp">StringBuilder</span>&gt; pool,
+    <span class="tp">IEnumerable</span>&lt;<span class="tp">Order</span>&gt; orders)
+{
+    <span class="kw">var</span> sb = pool.<span class="mt">Get</span>();
+    <span class="kw">try</span>
+    {
+        <span class="kw">foreach</span> (<span class="kw">var</span> o <span class="kw">in</span> orders)
+            sb.<span class="mt">AppendLine</span>(<span class="st">$"{o.Id}: {o.Total:C}"</span>);
+        <span class="kw">return</span> sb.<span class="mt">ToString</span>();
+    }
+    <span class="kw">finally</span> { pool.<span class="mt">Return</span>(sb); }
+}
+
+<span class="cm">// ArrayPool for temp buffers</span>
+<span class="kw">var</span> buffer = <span class="tp">ArrayPool</span>&lt;<span class="tp">byte</span>&gt;.Shared.<span class="mt">Rent</span>(<span class="nm">4096</span>);
+<span class="kw">try</span>   { <span class="cm">/* use buffer */</span> }
+<span class="kw">finally</span> { <span class="tp">ArrayPool</span>&lt;<span class="tp">byte</span>&gt;.Shared.<span class="mt">Return</span>(buffer); }</pre>
+    </div>
+  </div>
+
+  <!-- Performance comparison -->
+  <div class="topic reveal">
+    <h3 style="margin-bottom:18px;">Performance Comparison Table</h3>
+    <table class="perf-table">
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>Slower Approach</th>
+          <th>Faster Approach</th>
+          <th>Relative Gain</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Fixed lookups</td>
+          <td class="tag-slow">Dictionary&lt;T&gt;</td>
+          <td class="tag-fast">FrozenDictionary&lt;T&gt;</td>
+          <td class="tag-fast">~2×</td>
+        </tr>
+        <tr>
+          <td>String search</td>
+          <td class="tag-slow">IndexOfAny(char[])</td>
+          <td class="tag-fast">SearchValues&lt;char&gt;</td>
+          <td class="tag-fast">~4×+</td>
+        </tr>
+        <tr>
+          <td>Temp buffers</td>
+          <td class="tag-slow">new byte[4096]</td>
+          <td class="tag-fast">ArrayPool&lt;byte&gt;.Rent()</td>
+          <td class="tag-fast">No GC</td>
+        </tr>
+        <tr>
+          <td>String building</td>
+          <td class="tag-slow">string + string</td>
+          <td class="tag-fast">StringBuilder (pooled)</td>
+          <td class="tag-fast">~10× for many ops</td>
+        </tr>
+        <tr>
+          <td>Slicing arrays</td>
+          <td class="tag-slow">Array.Copy()</td>
+          <td class="tag-fast">Span&lt;T&gt;.Slice()</td>
+          <td class="tag-fast">No allocation</td>
+        </tr>
+        <tr>
+          <td>Existence check</td>
+          <td class="tag-slow">.Where().Count() &gt; 0</td>
+          <td class="tag-fast">.Any(predicate)</td>
+          <td class="tag-fast">Short-circuits</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ─────────────── SECTION 6: ASYNC ─────────────── -->
+<section class="section" id="async">
+  <div class="reveal">
+    <div class="section-label">06 — Concurrency</div>
+    <h2>Async / Await Patterns</h2>
+    <p class="section-intro">
+      Async is pervasive in .NET. Common mistakes — deadlocks, fire-and-forget, sync-over-async —
+      are preventable with consistent patterns.
+    </p>
+  </div>
+
+  <div class="topic reveal">
+    <div class="topic-header">
+      <div class="topic-icon icon-red">🚫</div>
+      <div>
+        <h3>Anti-Patterns to Avoid</h3>
+        <p class="topic-desc">These patterns are the most common sources of deadlocks and thread-pool starvation.</p>
+      </div>
+    </div>
+    <div class="code-grid">
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-title">Dangerous Anti-Patterns</span>
+          <span class="code-tag tag-bad">NEVER DO</span>
+        </div>
+        <pre><span class="cm">// 1. Sync-over-async → deadlock risk</span>
+<span class="kw">var</span> result = <span class="mt">GetDataAsync</span>().<span class="mt">Result</span>;
+<span class="kw">var</span> result = <span class="mt">GetDataAsync</span>().<span class="mt">GetAwaiter</span>()
+                             .<span class="mt">GetResult</span>();
+
+<span class="cm">// 2. async void → exceptions uncatchable</span>
+<span class="kw">public async void</span> <span class="mt">OnButtonClick</span>() { ... }
+
+<span class="cm">// 3. Unobserved fire-and-forget</span>
+<span class="mt">SendEmailAsync</span>(user); <span class="cm">// Task discarded!</span>
+
+<span class="cm">// 4. ConfigureAwait missing in lib code</span>
+<span class="kw">await</span> <span class="mt">SomeIoAsync</span>(); <span class="cm">// in library = bad</span></pre>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-title">Correct Patterns</span>
+          <span class="code-tag tag-good">DO THIS</span>
+        </div>
+        <pre><span class="cm">// 1. Always await</span>
+<span class="kw">var</span> result = <span class="kw">await</span> <span class="mt">GetDataAsync</span>();
+
+<span class="cm">// 2. async Task, never async void</span>
+<span class="kw">public async</span> <span class="tp">Task</span> <span class="mt">OnButtonClickAsync</span>() { }
+
+<span class="cm">// 3. Observed fire-and-forget (if needed)</span>
+_ = <span class="mt">SendEmailAsync</span>(user)
+    .<span class="mt">ContinueWith</span>(t =&gt; _log.<span class="mt">LogError</span>(t.Exception),
+        <span class="tp">TaskContinuationOptions</span>.OnlyOnFaulted);
+
+<span class="cm">// 4. ConfigureAwait in library code</span>
+<span class="kw">await</span> <span class="mt">SomeIoAsync</span>().<span class="mt">ConfigureAwait</span>(<span class="kw">false</span>);</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="topic reveal">
+    <div class="topic-header">
+      <div class="topic-icon icon-green">🔀</div>
+      <div>
+        <h3>Parallel Async — WhenAll &amp; Channels</h3>
+        <p class="topic-desc">Run independent async operations concurrently. Use <code>Channel&lt;T&gt;</code> for producer-consumer patterns.</p>
+      </div>
+    </div>
+    <div class="code-wrap">
+      <div class="code-header">
+        <span class="code-title">Task.WhenAll + CancellationToken + Channel&lt;T&gt;</span>
+        <span class="code-tag tag-good">CONCURRENT</span>
+      </div>
+      <pre><span class="cm">// Run independent operations in parallel</span>
+<span class="kw">public async</span> <span class="tp">Task</span>&lt;<span class="tp">DashboardData</span>&gt; <span class="mt">GetDashboardAsync</span>(
+    <span class="tp">CancellationToken</span> ct)
+{
+    <span class="kw">var</span> ordersTask  = _orderRepo.<span class="mt">GetRecentAsync</span>(ct);
+    <span class="kw">var</span> statsTask   = _statsService.<span class="mt">GetTodayAsync</span>(ct);
+    <span class="kw">var</span> alertsTask  = _alertService.<span class="mt">GetActiveAsync</span>(ct);
+
+    <span class="kw">await</span> <span class="tp">Task</span>.<span class="mt">WhenAll</span>(ordersTask, statsTask, alertsTask);
+
+    <span class="kw">return new</span> <span class="tp">DashboardData</span>(
+        ordersTask.Result,
+        statsTask.Result,
+        alertsTask.Result);
+}
+
+<span class="cm">// Channel&lt;T&gt; — producer-consumer pipeline</span>
+<span class="kw">var</span> channel = <span class="tp">Channel</span>.<span class="mt">CreateBounded</span>&lt;<span class="tp">Order</span>&gt;(<span class="nm">100</span>);
+
+<span class="kw">var</span> producer = <span class="tp">Task</span>.<span class="mt">Run</span>(<span class="kw">async</span> () =&gt;
+{
+    <span class="kw">await foreach</span> (<span class="kw">var</span> o <span class="kw">in</span> _feed.<span class="mt">ReadAsync</span>(ct))
+        <span class="kw">await</span> channel.Writer.<span class="mt">WriteAsync</span>(o, ct);
+    channel.Writer.<span class="mt">Complete</span>();
+});
+
+<span class="kw">var</span> consumer = <span class="tp">Task</span>.<span class="mt">Run</span>(<span class="kw">async</span> () =&gt;
+{
+    <span class="kw">await foreach</span> (<span class="kw">var</span> o <span class="kw">in</span> channel.Reader.<span class="mt">ReadAllAsync</span>(ct))
+        <span class="kw">await</span> _processor.<span class="mt">ProcessAsync</span>(o, ct);
+});
+
+<span class="kw">await</span> <span class="tp">Task</span>.<span class="mt">WhenAll</span>(producer, consumer);</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── SECTION 7: SPANS ─────────────── -->
+<section class="section" id="spans">
+  <div class="reveal">
+    <div class="section-label">07 — Memory</div>
+    <h2>Spans &amp; Memory</h2>
+    <p class="section-intro">
+      <code>Span&lt;T&gt;</code> and <code>Memory&lt;T&gt;</code> provide safe, allocation-free slicing over arrays,
+      strings, and stack memory. Essential for parsing and high-throughput data processing.
+    </p>
+  </div>
+
+  <div class="topic reveal">
+    <div class="topic-header">
+      <div class="topic-icon icon-blue">🔪</div>
+      <div>
+        <h3>Span&lt;T&gt; — Zero-Copy Slicing</h3>
+        <p class="topic-desc">Parse and process data without creating intermediate arrays or substrings.</p>
+      </div>
+    </div>
+    <div class="code-wrap">
+      <div class="code-header">
+        <span class="code-title">Parsing with Span — No Heap Allocation</span>
+        <span class="code-tag tag-good">ZERO ALLOC</span>
+      </div>
+      <pre><span class="cm">// Parse "2024-01-15" without substring allocations</span>
+<span class="kw">public static</span> <span class="tp">DateOnly</span> <span class="mt">ParseDate</span>(<span class="tp">ReadOnlySpan</span>&lt;<span class="tp">char</span>&gt; input)
+{
+    <span class="kw">var</span> dashIdx = input.<span class="mt">IndexOf</span>(<span class="st">'-'</span>);
+    <span class="kw">var</span> year    = <span class="tp">int</span>.<span class="mt">Parse</span>(input[..dashIdx]);
+
+    <span class="kw">var</span> rest     = input[(dashIdx + <span class="nm">1</span>)..];
+    <span class="kw">var</span> dashIdx2 = rest.<span class="mt">IndexOf</span>(<span class="st">'-'</span>);
+    <span class="kw">var</span> month    = <span class="tp">int</span>.<span class="mt">Parse</span>(rest[..dashIdx2]);
+    <span class="kw">var</span> day      = <span class="tp">int</span>.<span class="mt">Parse</span>(rest[(dashIdx2 + <span class="nm">1</span>)..]);
+
+    <span class="kw">return new</span> <span class="tp">DateOnly</span>(year, month, day);
+}
+
+<span class="cm">// Called with a string — implicit conversion, no alloc</span>
+<span class="kw">var</span> date = <span class="mt">ParseDate</span>(<span class="st">"2024-01-15"</span>);
+
+<span class="cm">// Stack-allocated buffer using stackalloc</span>
+<span class="tp">Span</span>&lt;<span class="tp">byte</span>&gt; stackBuffer = <span class="kw">stackalloc byte</span>[<span class="nm">256</span>];
+<span class="kw">int</span> written = <span class="tp">Encoding</span>.UTF8.<span class="mt">GetBytes</span>(<span class="st">"hello"</span>, stackBuffer);
+<span class="tp">ReadOnlySpan</span>&lt;<span class="tp">byte</span>&gt; encoded = stackBuffer[..written];</pre>
+    </div>
+    <div class="callout callout-warn">
+      <span class="callout-icon">⚠</span>
+      <span><code>Span&lt;T&gt;</code> is a ref struct — it cannot be stored on the heap, used in async methods, or held in fields. Use <code>Memory&lt;T&gt;</code> when you need to store a slice or pass it across async boundaries.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── SECTION 8: CODE REVIEW ─────────────── -->
+<section class="section" id="code-review">
+  <div class="reveal">
+    <div class="section-label">08 — Process</div>
+    <h2>Code Review Best Practices</h2>
+    <p class="section-intro">
+      Great code reviews are about knowledge sharing, catching bugs early, and improving design
+      — not gatekeeping or demonstrating seniority.
+    </p>
+  </div>
+
+  <div class="topic reveal">
+    <div class="topic-header">
+      <div class="topic-icon icon-blue">👤</div>
+      <div>
+        <h3>Author Responsibilities</h3>
+        <p class="topic-desc">Before opening a PR, the author should do these things to make the reviewer's job easier and more productive.</p>
+      </div>
+    </div>
+    <ul class="checklist">
+      <li>Self-review the diff before assigning reviewers — catch obvious issues yourself</li>
+      <li>Write a clear PR description: what changed, why, and how to test it</li>
+      <li>Keep PRs small and focused — ideally &lt;400 lines changed</li>
+      <li>Link to the issue/ticket being addressed</li>
+      <li>Annotate complex sections in the PR with comments explaining non-obvious decisions</li>
+      <li>Ensure all CI checks pass before requesting review</li>
+      <li>Update or add XML doc comments for public APIs</li>
+    </ul>
+  </div>
+
+  <div class="topic reveal">
+    <div class="topic-header">
+      <div class="topic-icon icon-purple">🔎</div>
+      <div>
+        <h3>Reviewer Guidelines — The LGTM Trap</h3>
+        <p class="topic-desc">Effective review takes focused attention. A rubber-stamp LGTM is worse than no review — it creates false confidence.</p>
+      </div>
+    </div>
+    <div class="code-grid">
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-title">What Reviewers Should Check</span>
+          <span class="code-tag tag-good">DO</span>
+        </div>
+        <pre><span class="cm">✓ Correctness — does the logic handle edge cases?</span>
+<span class="cm">✓ Error handling — all exceptions handled/logged?</span>
+<span class="cm">✓ Nullability — nullable annotations correct?</span>
+<span class="cm">✓ Thread safety — shared state protected?</span>
+<span class="cm">✓ Resource disposal — IDisposable wrapped in using?</span>
+<span class="cm">✓ Naming — does intent come through clearly?</span>
+<span class="cm">✓ Test coverage — happy + unhappy paths tested?</span>
+<span class="cm">✓ Performance — any obvious hot-path issues?</span>
+<span class="cm">✓ Security — user input validated/sanitised?</span>
+<span class="cm">✓ Breaking changes — public API modifications?</span></pre>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-title">Comment Tone — Be Constructive</span>
+          <span class="code-tag tag-bad">AVOID / USE</span>
+        </div>
+        <pre><span class="cm">✗ "This is wrong."</span>
+<span class="cm">✓ "This will throw when list is empty.</span>
+<span class="cm">   Consider using FirstOrDefault()."</span>
+
+<span class="cm">✗ "Why didn't you use X?"</span>
+<span class="cm">✓ "Have you considered using X here?</span>
+<span class="cm">   It handles Y edge case automatically."</span>
+
+<span class="cm">✗ "Nit: rename this." (with no suggestion)</span>
+<span class="cm">✓ "Nit: processorManager → orderProcessor</span>
+<span class="cm">   to match the domain language."</span>
+
+<span class="cm">Use prefixes to set expectations:</span>
+<span class="cm">  [blocking]  — must fix before merge</span>
+<span class="cm">  [nit]       — minor style, non-blocking</span>
+<span class="cm">  [question]  — genuine curiosity</span>
+<span class="cm">  [suggestion]— take it or leave it</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="topic reveal">
+    <div class="topic-header">
+      <div class="topic-icon icon-green">🐛</div>
+      <div>
+        <h3>Real Review — Common C# Bugs to Catch</h3>
+        <p class="topic-desc">These are the patterns most likely to slip through without careful review.</p>
+      </div>
+    </div>
+    <div class="code-wrap">
+      <div class="code-header">
+        <span class="code-title">IDisposable — Missing using</span>
+        <span class="code-tag tag-bad">BUG: RESOURCE LEAK</span>
+      </div>
+      <pre><span class="cm">// ✗ HttpClient created per-request — socket exhaustion</span>
+<span class="kw">public async</span> <span class="tp">Task</span>&lt;<span class="tp">string</span>&gt; <span class="mt">FetchAsync</span>(<span class="tp">string</span> url)
+{
+    <span class="kw">var</span> client = <span class="kw">new</span> <span class="tp">HttpClient</span>();  <span class="cm">// never disposed!</span>
+    <span class="kw">return await</span> client.<span class="mt">GetStringAsync</span>(url);
+}
+
+<span class="cm">// ✓ Inject IHttpClientFactory and let DI manage lifetime</span>
+<span class="kw">public async</span> <span class="tp">Task</span>&lt;<span class="tp">string</span>&gt; <span class="mt">FetchAsync</span>(
+    <span class="tp">string</span> url, <span class="tp">IHttpClientFactory</span> factory)
+{
+    <span class="kw">using var</span> client = factory.<span class="mt">CreateClient</span>(<span class="st">"api"</span>);
+    <span class="kw">return await</span> client.<span class="mt">GetStringAsync</span>(url);
+}</pre>
+    </div>
+    <div class="code-wrap" style="margin-top:16px;">
+      <div class="code-header">
+        <span class="code-title">EF Core — N+1 Query</span>
+        <span class="code-tag tag-bad">BUG: PERFORMANCE</span>
+      </div>
+      <pre><span class="cm">// ✗ N+1: each iteration hits the database</span>
+<span class="kw">var</span> orders = <span class="kw">await</span> ctx.Orders.<span class="mt">ToListAsync</span>();
+<span class="kw">foreach</span> (<span class="kw">var</span> o <span class="kw">in</span> orders)
+{
+    <span class="cm">// lazy-load → separate DB round-trip per order</span>
+    <span class="kw">var</span> customerName = o.Customer.Name;
+}
+
+<span class="cm">// ✓ Eager-load with Include</span>
+<span class="kw">var</span> orders = <span class="kw">await</span> ctx.Orders
+    .<span class="mt">Include</span>(o =&gt; o.Customer)
+    .<span class="mt">AsNoTracking</span>()          <span class="cm">// read-only = faster</span>
+    .<span class="mt">ToListAsync</span>();</pre>
+    </div>
+    <div class="code-wrap" style="margin-top:16px;">
+      <div class="code-header">
+        <span class="code-title">CancellationToken — Not Propagated</span>
+        <span class="code-tag tag-bad">BUG: UNRESPONSIVE CANCELLATION</span>
+      </div>
+      <pre><span class="cm">// ✗ CancellationToken accepted but never used</span>
+<span class="kw">public async</span> <span class="tp">Task</span>&lt;<span class="tp">Order</span>&gt; <span class="mt">GetAsync</span>(
+    <span class="tp">Guid</span> id, <span class="tp">CancellationToken</span> ct)
+{
+    <span class="kw">return await</span> _db.Orders
+        .<span class="mt">FindAsync</span>(id);  <span class="cm">// ct not passed!</span>
+}
+
+<span class="cm">// ✓ Thread ct through every async call</span>
+<span class="kw">public async</span> <span class="tp">Task</span>&lt;<span class="tp">Order</span>&gt; <span class="mt">GetAsync</span>(
+    <span class="tp">Guid</span> id, <span class="tp">CancellationToken</span> ct)
+{
+    <span class="kw">return await</span> _db.Orders
+        .<span class="mt">FindAsync</span>(<span class="kw">new object</span>[] { id }, ct);
+}</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── SECTION 9: CHECKLIST ─────────────── -->
+<section class="section" id="checklist">
+  <div class="reveal">
+    <div class="section-label">09 — Reference</div>
+    <h2>PR Review Checklist</h2>
+    <p class="section-intro">
+      A quick-reference checklist for reviewers. Use as a mental framework — not a mechanical tick-box exercise.
+    </p>
+  </div>
+
+  <div class="code-grid reveal">
+    <div>
+      <h3 style="margin-bottom:14px; font-size:1rem; color:var(--accent);">🏗 Design &amp; Architecture</h3>
+      <ul class="checklist">
+        <li>Single responsibility — does each class/method do one thing?</li>
+        <li>No circular dependencies introduced</li>
+        <li>Public APIs are minimal and intentional</li>
+        <li>Domain language used in naming (ubiquitous language)</li>
+        <li class="warn">Interfaces not over-extracted (YAGNI)</li>
+      </ul>
+
+      <h3 style="margin:28px 0 14px; font-size:1rem; color:var(--accent);">⚡ Performance</h3>
+      <ul class="checklist">
+        <li>No boxing of value types in hot paths</li>
+        <li>No unintentional closures capturing expensive objects</li>
+        <li>Async stream (<code>IAsyncEnumerable</code>) for large result sets</li>
+        <li class="warn">Benchmark before optimising guesses</li>
+        <li class="no">No <code>Thread.Sleep</code> in async code — use <code>Task.Delay</code></li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="margin-bottom:14px; font-size:1rem; color:var(--accent);">🛡 Safety &amp; Correctness</h3>
+      <ul class="checklist">
+        <li>Nullable reference types honoured throughout</li>
+        <li>Inputs validated at service boundaries</li>
+        <li>Exceptions caught at the right layer; not swallowed</li>
+        <li><code>CancellationToken</code> threaded through all async calls</li>
+        <li class="no">No <code>catch (Exception)</code> without logging &amp; rethrowing</li>
+      </ul>
+
+      <h3 style="margin:28px 0 14px; font-size:1rem; color:var(--accent);">🧪 Testing</h3>
+      <ul class="checklist">
+        <li>Unit tests cover the happy path</li>
+        <li>Edge cases covered: null, empty, boundary values</li>
+        <li>Tests are readable — Arrange/Act/Assert structure</li>
+        <li>No external calls in unit tests — dependencies mocked</li>
+        <li class="warn">Integration tests for EF Core / HTTP / message queues</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout callout-tip reveal" style="margin-top:32px;">
+    <span class="callout-icon">💡</span>
+    <span>
+      <strong>Team automation tip:</strong> Enforce standards automatically with <code>.editorconfig</code>,
+      Roslyn Analyzers (<code>Microsoft.CodeAnalysis.NetAnalyzers</code>), and StyleCop.
+      Reserve human review time for design, correctness, and domain logic — not formatting disputes.
+    </span>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer>
+  <div>
+    <span class="footer-brand">.NET 8 &amp; C# 12</span> — Engineering Excellence Guide
+  </div>
+  <div>Generated with Claude · March 2026</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver(
+    entries => entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    }),
+    { threshold: 0.07 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Active nav link
+  const sections = document.querySelectorAll('.section');
+  const navLinks = document.querySelectorAll('nav a');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        navLinks.forEach(a => {
+          a.style.color = a.getAttribute('href') === `#${id}`
+            ? 'var(--accent)' : '';
+          a.style.borderBottomColor = a.getAttribute('href') === `#${id}`
+            ? 'var(--accent)' : 'transparent';
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => io.observe(s));
+</script>
+</body>
+</html>

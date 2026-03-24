@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Introduction to C# and .NET 8</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0F1C3F;
+    --blue: #1565C0;
+    --accent: #00BCD4;
+    --accent2: #00E676;
+    --bg: #F4F7FC;
+    --white: #FFFFFF;
+    --slate: #546E7A;
+    --light: #E3F2FD;
+    --code-bg: #1A2744;
+    --text: #1A237E;
+    --border: #D0D8E8;
+    --card-shadow: 0 4px 20px rgba(21, 101, 192, 0.10);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Sora', sans-serif;
+    background: var(--bg);
+    color: var(--navy);
+    line-height: 1.6;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    padding: 72px 60px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 6px; height: 100%;
+    background: var(--accent);
+  }
+  .hero::after {
+    content: '';
+    position: absolute; top: -80px; right: -80px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(21,101,192,0.35) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: var(--blue);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 4px 14px;
+    border-radius: 3px;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-size: clamp(36px, 5vw, 58px);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub {
+    font-size: 15px;
+    color: #90A4AE;
+    margin-bottom: 28px;
+    font-weight: 300;
+    letter-spacing: 1px;
+  }
+  .hero-tags {
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .hero-tags span {
+    background: rgba(0,188,212,0.15);
+    color: var(--accent);
+    border: 1px solid rgba(0,188,212,0.3);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 32px;
+  }
+
+  /* ── AGENDA ── */
+  .agenda {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+    padding: 40px;
+    margin-bottom: 48px;
+  }
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    border-bottom: 3px solid var(--accent);
+  }
+  .agenda-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  .agenda-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+    background: var(--bg);
+    border-radius: 10px;
+    border-left: 3px solid var(--blue);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .agenda-item:hover { transform: translateY(-2px); box-shadow: var(--card-shadow); }
+  .agenda-num {
+    background: var(--navy);
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 700;
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .agenda-info strong { font-size: 14px; color: var(--navy); font-weight: 700; display: block; }
+  .agenda-info span { font-size: 12px; color: var(--slate); }
+
+  /* ── TOPIC SECTIONS ── */
+  .topic-section {
+    margin-bottom: 48px;
+  }
+  .topic-header {
+    background: var(--navy);
+    border-radius: 14px 14px 0 0;
+    padding: 22px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .topic-num {
+    background: var(--blue);
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 6px;
+    letter-spacing: 1px;
+  }
+  .topic-header h2 {
+    font-size: 20px; font-weight: 700;
+    color: var(--white);
+  }
+  .topic-body {
+    background: var(--white);
+    border-radius: 0 0 14px 14px;
+    padding: 32px;
+    box-shadow: var(--card-shadow);
+  }
+
+  /* ── CARDS ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+    margin-top: 8px;
+  }
+  .card {
+    background: var(--bg);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: transform 0.2s;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: var(--card-shadow); }
+  .card-head {
+    background: var(--navy);
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 13px;
+    padding: 12px 18px;
+    letter-spacing: 0.5px;
+  }
+  .card-body {
+    padding: 18px;
+  }
+  .card-body ul { padding-left: 18px; }
+  .card-body li {
+    font-size: 13px;
+    color: var(--slate);
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  /* ── CODE BLOCKS ── */
+  .code-block {
+    background: var(--code-bg);
+    border-radius: 10px;
+    padding: 22px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    overflow-x: auto;
+    margin: 16px 0;
+    border: 1px solid rgba(255,255,255,0.07);
+    position: relative;
+  }
+  .code-block .lang-tag {
+    position: absolute; top: 10px; right: 14px;
+    font-size: 10px; color: #546E7A;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .kw { color: #FFD54F; }
+  .str { color: #A5D6A7; }
+  .cm { color: #546E7A; font-style: italic; }
+  .fn { color: #80DEEA; }
+  .num { color: #EF9A9A; }
+  .var { color: #00E676; }
+  .op { color: #CE93D8; }
+
+  /* ── TWO COLUMN ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 8px;
+  }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ── TYPE TABLE ── */
+  .type-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+  .type-table th {
+    background: var(--navy);
+    color: var(--accent);
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .type-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .type-table tr:nth-child(even) td { background: var(--bg); }
+  .type-table tr:hover td { background: var(--light); }
+  .type-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--blue);
+    font-size: 13px;
+  }
+  .ref-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: #00838F;
+    font-size: 13px;
+  }
+  .code-inline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--navy);
+    background: var(--bg);
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  /* ── INFO CARDS ── */
+  .info-card {
+    background: var(--bg);
+    border-left: 4px solid var(--blue);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+  }
+  .info-card strong {
+    display: block;
+    font-size: 14px; font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .info-card p { font-size: 13px; color: var(--slate); }
+  .info-card.accent { border-left-color: var(--accent); }
+  .info-card.green { border-left-color: #43A047; }
+  .info-card.purple { border-left-color: #7B1FA2; }
+
+  /* ── OPERATOR TABLE ── */
+  .op-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .op-card {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .op-card-head {
+    padding: 10px 16px;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--white);
+  }
+  .op-card-head.blue { background: var(--blue); }
+  .op-card-head.teal { background: #00838F; }
+  .op-card-head.purple { background: #6A1B9A; }
+  .op-card-head.green { background: #558B2F; }
+  .op-card-body {
+    padding: 14px 16px;
+    background: var(--white);
+  }
+  .op-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .op-row:last-child { border-bottom: none; }
+  .op-sym { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--navy); }
+  .op-desc { color: var(--slate); font-size: 12px; }
+
+  /* ── TIP BOX ── */
+  .tip-box {
+    background: #E8F5E9;
+    border: 1px solid #A5D6A7;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 20px;
+    font-size: 13px;
+    color: #2E7D32;
+  }
+  .tip-box strong { font-weight: 700; }
+
+  /* ── LOOP GRID ── */
+  .loop-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .loop-card {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: var(--card-shadow);
+  }
+  .loop-head {
+    padding: 12px 16px;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--white);
+    letter-spacing: 0.5px;
+  }
+  .loop-code {
+    background: var(--code-bg);
+    padding: 14px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    line-height: 1.75;
+  }
+  .loop-note {
+    background: var(--white);
+    padding: 12px 16px;
+    font-size: 12px;
+    color: var(--slate);
+    border-top: 2px solid var(--border);
+    line-height: 1.5;
+  }
+
+  /* ── CONDITIONAL BOXES ── */
+  .cond-block {
+    background: var(--code-bg);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .cond-title {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-family: 'Sora', sans-serif;
+  }
+
+  /* ── TAKEAWAYS ── */
+  .takeaway-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 600px) { .takeaway-grid { grid-template-columns: 1fr; } }
+  .takeaway-card {
+    background: #162040;
+    border-radius: 12px;
+    display: flex;
+    gap: 0;
+    overflow: hidden;
+    color: #CFD8DC;
+    border: 1px solid #243560;
+  }
+  .takeaway-num {
+    background: var(--blue);
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 16px;
+    width: 52px;
+    min-width: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .takeaway-text {
+    padding: 16px 18px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #0A1530;
+    color: #546E7A;
+    text-align: center;
+    padding: 24px;
+    font-size: 13px;
+    margin-top: 32px;
+  }
+  footer span { color: var(--accent); }
+
+  /* ── SCROLL ANIMATIONS ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── FILE TREE ── */
+  .file-tree {
+    background: var(--code-bg);
+    border-radius: 10px;
+    padding: 20px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 2;
+  }
+  .file-dir { color: #00E676; font-weight: 700; }
+  .file-item { color: #CFD8DC; padding-left: 16px; }
+  .file-sub { color: #CFD8DC; padding-left: 32px; }
+  .file-comment { color: #546E7A; font-style: italic; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Module 1 &amp; 2</div>
+  <h1>Introduction to <span>C#</span> and <span>.NET 8</span></h1>
+  <p class="hero-sub">C# Syntax · Basic Constructs · Control Flow Statements</p>
+  <div class="hero-tags">
+    <span>Designed for Freshers</span>
+    <span>Beginner-Friendly</span>
+    <span>.NET 8</span>
+    <span>C# 12</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- AGENDA -->
+  <div class="agenda fade-in">
+    <div class="section-label">Overview</div>
+    <div class="section-title">Today's Agenda</div>
+    <div class="agenda-grid">
+      <div class="agenda-item"><div class="agenda-num">01</div><div class="agenda-info"><strong>.NET 8 Framework Overview</strong><span>Runtime, project structure &amp; ecosystem</span></div></div>
+      <div class="agenda-item"><div class="agenda-num">02</div><div class="agenda-info"><strong>C# 12 Language Features</strong><span>What's new and why it matters</span></div></div>
+      <div class="agenda-item"><div class="agenda-num">03</div><div class="agenda-info"><strong>Data Types &amp; Variables</strong><span>Value types, reference types, type inference</span></div></div>
+      <div class="agenda-item"><div class="agenda-num">04</div><div class="agenda-info"><strong>Basic Programming Constructs</strong><span>Operators, expressions, methods</span></div></div>
+      <div class="agenda-item"><div class="agenda-num">05</div><div class="agenda-info"><strong>Control Flow Statements</strong><span>if-else, switch, loops, conditional operators</span></div></div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: What is .NET 8 -->
+  <div class="topic-section fade-in">
+    <div class="topic-header">
+      <span class="topic-num">01</span>
+      <h2>What is .NET 8?</h2>
+    </div>
+    <div class="topic-body">
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-head">⚙️ Framework</div>
+          <div class="card-body"><ul>
+            <li>Free, open-source platform by Microsoft</li>
+            <li>Cross-platform: Windows, Linux, macOS</li>
+            <li>LTS (Long Term Support) until November 2026</li>
+            <li>Successor to .NET Framework &amp; .NET Core</li>
+          </ul></div>
+        </div>
+        <div class="card">
+          <div class="card-head">▶ Runtime (CLR)</div>
+          <div class="card-body"><ul>
+            <li>CLR – Common Language Runtime</li>
+            <li>Executes compiled C# (IL) code</li>
+            <li>Handles memory &amp; garbage collection</li>
+            <li>JIT compiles to native machine code</li>
+          </ul></div>
+        </div>
+        <div class="card">
+          <div class="card-head">📦 Ecosystem</div>
+          <div class="card-body"><ul>
+            <li>NuGet – package manager</li>
+            <li>ASP.NET Core – web applications</li>
+            <li>MAUI – mobile &amp; desktop</li>
+            <li>Blazor, EF Core, ML.NET &amp; more</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Project Structure -->
+  <div class="topic-section fade-in">
+    <div class="topic-header">
+      <span class="topic-num">02</span>
+      <h2>.NET 8 Project Structure</h2>
+    </div>
+    <div class="topic-body">
+      <div class="two-col">
+        <div>
+          <div class="file-tree">
+            <div class="file-dir">📁 MyApp/</div>
+            <div class="file-item">📄 MyApp.csproj</div>
+            <div class="file-item">📄 Program.cs</div>
+            <div class="file-item">📁 Properties/</div>
+            <div class="file-sub">📄 launchSettings.json</div>
+            <div class="file-item">📁 bin/ <span class="file-comment">← compiled output</span></div>
+            <div class="file-item">📁 obj/ <span class="file-comment">← build artifacts</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="info-card"><strong>.csproj</strong><p>Project configuration – target framework, dependencies, build settings</p></div>
+          <div class="info-card accent"><strong>Program.cs</strong><p>Entry point – execution starts here with Main() or top-level statements</p></div>
+          <div class="info-card green"><strong>launchSettings.json</strong><p>Dev environment settings – ports, environment variables</p></div>
+          <div class="info-card purple"><strong>bin/ &amp; obj/</strong><p>Auto-generated – compiled DLLs and build cache (don't edit manually)</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Data Types -->
+  <div class="topic-section fade-in">
+    <div class="topic-header">
+      <span class="topic-num">03</span>
+      <h2>C# Data Types</h2>
+    </div>
+    <div class="topic-body">
+      <div class="two-col">
+        <div>
+          <p style="font-size:13px;font-weight:700;color:var(--blue);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">Value Types (stored on Stack)</p>
+          <table class="type-table">
+            <thead><tr><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><span class="type-name">int</span></td><td>32-bit integer</td><td><code class="code-inline">int age = 25;</code></td></tr>
+              <tr><td><span class="type-name">double</span></td><td>64-bit decimal</td><td><code class="code-inline">double pi = 3.14;</code></td></tr>
+              <tr><td><span class="type-name">float</span></td><td>32-bit decimal</td><td><code class="code-inline">float x = 1.5f;</code></td></tr>
+              <tr><td><span class="type-name">bool</span></td><td>true / false</td><td><code class="code-inline">bool ok = true;</code></td></tr>
+              <tr><td><span class="type-name">char</span></td><td>Single character</td><td><code class="code-inline">char g = 'A';</code></td></tr>
+              <tr><td><span class="type-name">long</span></td><td>64-bit integer</td><td><code class="code-inline">long n = 8B;</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <p style="font-size:13px;font-weight:700;color:#00838F;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">Reference Types (stored on Heap)</p>
+          <table class="type-table">
+            <thead><tr><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><span class="ref-name">string</span></td><td>Text data</td><td><code class="code-inline">string s = "Hi";</code></td></tr>
+              <tr><td><span class="ref-name">object</span></td><td>Base of all types</td><td><code class="code-inline">object o = 42;</code></td></tr>
+              <tr><td><span class="ref-name">int[]</span></td><td>Array of ints</td><td><code class="code-inline">int[] a = {1,2};</code></td></tr>
+              <tr><td><span class="ref-name">List&lt;T&gt;</span></td><td>Dynamic list</td><td><code class="code-inline">new List&lt;int&gt;()</code></td></tr>
+              <tr><td><span class="ref-name">class</span></td><td>Custom type</td><td><code class="code-inline">class Person{}</code></td></tr>
+              <tr><td><span class="ref-name">dynamic</span></td><td>Runtime-typed</td><td><code class="code-inline">dynamic d = "hi";</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: Variables -->
+  <div class="topic-section fade-in">
+    <div class="topic-header">
+      <span class="topic-num">04</span>
+      <h2>Variables &amp; Type Inference</h2>
+    </div>
+    <div class="topic-body">
+      <div class="two-col">
+        <div class="code-block">
+          <span class="lang-tag">C#</span>
+<span class="cm">// Explicit Declaration</span>
+<span class="kw">int</span> <span class="var">age</span> = <span class="num">25</span>;
+<span class="kw">string</span> <span class="var">name</span> = <span class="str">"Alice"</span>;
+<span class="kw">bool</span> <span class="var">isStudent</span> = <span class="kw">true</span>;
+
+<span class="cm">// Type Inference with 'var'</span>
+<span class="kw">var</span> <span class="var">score</span> = <span class="num">95</span>;        <span class="cm">// int</span>
+<span class="kw">var</span> <span class="var">city</span> = <span class="str">"Chennai"</span>; <span class="cm">// string</span>
+
+<span class="cm">// Constants</span>
+<span class="kw">const double</span> <span class="var">PI</span> = <span class="num">3.14159</span>;
+<span class="kw">const string</span> <span class="var">APP</span> = <span class="str">"MyApp"</span>;
+
+<span class="cm">// Nullable types</span>
+<span class="kw">int?</span> <span class="var">x</span> = <span class="kw">null</span>;
+        </div>
+        <div>
+          <div class="info-card"><strong>Naming Rules</strong><p>Start with letter or underscore; case-sensitive; use camelCase for variables</p></div>
+          <div class="info-card accent"><strong>var keyword</strong><p>Compiler infers type at compile time — not dynamic. Type cannot change later.</p></div>
+          <div class="info-card green"><strong>const keyword</strong><p>Value set once, never changes. Must be initialized at declaration.</p></div>
+          <div class="info-card purple"><strong>Nullable Types (?)</strong><p>Use <code class="code-inline">int? x = null;</code> — allows null for value types</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: Operators -->
+  <div class="topic-section fade-in">
+    <div class="topic-header">
+      <span class="topic-num">05</span>
+      <h2>Operators &amp; Expressions</h2>
+    </div>
+    <div class="topic-body">
+      <div class="op-grid">
+        <div class="op-card">
+          <div class="op-card-head blue">Arithmetic</div>
+          <div class="op-card-body">
+            <div class="op-row"><span class="op-sym">+</span><span class="op-desc">Addition</span></div>
+            <div class="op-row"><span class="op-sym">-</span><span class="op-desc">Subtraction</span></div>
+            <div class="op-row"><span class="op-sym">*</span><span class="op-desc">Multiply</span></div>
+            <div class="op-row"><span class="op-sym">/</span><span class="op-desc">Divide</span></div>
+            <div class="op-row"><span class="op-sym">%</span><span class="op-desc">Modulus (remainder)</span></div>
+          </div>
+        </div>
+        <div class="op-card">
+          <div class="op-card-head teal">Comparison</div>
+          <div class="op-card-body">
+            <div class="op-row"><span class="op-sym">==</span><span class="op-desc">Equal to</span></div>
+            <div class="op-row"><span class="op-sym">!=</span><span class="op-desc">Not equal</span></div>
+            <div class="op-row"><span class="op-sym">&gt;</span><span class="op-desc">Greater than</span></div>
+            <div class="op-row"><span class="op-sym">&lt;</span><span class="op-desc">Less than</span></div>
+            <div class="op-row"><span class="op-sym">&gt;= / &lt;=</span><span class="op-desc">Greater/less or equal</span></div>
+          </div>
+        </div>
+        <div class="op-card">
+          <div class="op-card-head purple">Logical</div>
+          <div class="op-card-body">
+            <div class="op-row"><span class="op-sym">&amp;&amp;</span><span class="op-desc">AND</span></div>
+            <div class="op-row"><span class="op-sym">||</span><span class="op-desc">OR</span></div>
+            <div class="op-row"><span class="op-sym">!</span><span class="op-desc">NOT</span></div>
+          </div>
+        </div>
+        <div class="op-card">
+          <div class="op-card-head green">Assignment</div>
+          <div class="op-card-body">
+            <div class="op-row"><span class="op-sym">=</span><span class="op-desc">Assign</span></div>
+            <div class="op-row"><span class="op-sym">+=</span><span class="op-desc">Add &amp; assign</span></div>
+            <div class="op-row"><span class="op-sym">-=</span><span class="op-desc">Subtract &amp; assign</span></div>
+            <div class="op-row"><span class="op-sym">*=</span><span class="op-desc">Multiply &amp; assign</span></div>
+            <div class="op-row"><span class="op-sym">++</span><span class="op-desc">Increment by 1</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="code-block" style="margin-top:20px;">
+        <span class="lang-tag">C#</span>
+<span class="kw">int</span> <span class="var">a</span> = <span class="num">10</span>, <span class="var">b</span> = <span class="num">3</span>;
+<span class="cm">// a + b = 13 | a % b = 1 | a > b is true | a++ → a becomes 11</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: if-else -->
+  <div class="topic-section fade-in">
+    <div class="topic-header">
+      <span class="topic-num">06</span>
+      <h2>Control Flow — if / else if / else</h2>
+    </div>
+    <div class="topic-body">
+      <div class="two-col">
+        <div class="code-block">
+          <span class="lang-tag">C#</span>
+<span class="kw">int</span> <span class="var">marks</span> = <span class="num">75</span>;
+
+<span class="kw">if</span> (<span class="var">marks</span> &gt;= <span class="num">90</span>)
+{
+    <span class="fn">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Grade: A"</span>);
+}
+<span class="kw">else if</span> (<span class="var">marks</span> &gt;= <span class="num">75</span>)
+{
+    <span class="fn">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Grade: B"</span>);
+}
+<span class="kw">else</span>
+{
+    <span class="fn">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Grade: C"</span>);
+}
+        </div>
+        <div>
+          <div class="info-card"><strong>1. Condition (bool)</strong><p>Expression inside () must evaluate to true or false</p></div>
+          <div class="info-card accent"><strong>2. else if</strong><p>Chain multiple conditions — only the first true block runs</p></div>
+          <div class="info-card green"><strong>3. else</strong><p>Fallback when no condition is true — optional but good practice</p></div>
+          <div class="tip-box"><strong>💡 Best Practice:</strong> Always use braces { } even for one-line blocks to avoid bugs</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 7: Switch -->
+  <div class="topic-section fade-in">
+    <div class="topic-header">
+      <span class="topic-num">07</span>
+      <h2>Control Flow — switch Statement</h2>
+    </div>
+    <div class="topic-body">
+      <div class="two-col">
+        <div>
+          <p style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Traditional Switch</p>
+          <div class="code-block">
+            <span class="lang-tag">C#</span>
+<span class="kw">int</span> <span class="var">day</span> = <span class="num">3</span>;
+<span class="kw">switch</span> (<span class="var">day</span>)
+{
+  <span class="kw">case</span> <span class="num">1</span>:
+    <span class="fn">Console</span>.<span class="fn">Write</span>(<span class="str">"Mon"</span>);
+    <span class="kw">break</span>;
+  <span class="kw">case</span> <span class="num">2</span>:
+    <span class="fn">Console</span>.<span class="fn">Write</span>(<span class="str">"Tue"</span>);
+    <span class="kw">break</span>;
+  <span class="kw">default</span>:
+    <span class="fn">Console</span>.<span class="fn">Write</span>(<span class="str">"Other"</span>);
+    <span class="kw">break</span>;
+}
+          </div>
+        </div>
+        <div>
+          <p style="font-size:12px;font-weight:700;color:#00838F;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Switch Expression (C# 8+)</p>
+          <div class="code-block">
+            <span class="lang-tag">C#</span>
+<span class="kw">string</span> <span class="var">result</span> = <span class="var">day</span> <span class="kw">switch</span>
+{
+    <span class="num">1</span> <span class="op">=&gt;</span> <span class="str">"Monday"</span>,
+    <span class="num">2</span> <span class="op">=&gt;</span> <span class="str">"Tuesday"</span>,
+    <span class="num">3</span> <span class="op">=&gt;</span> <span class="str">"Wednesday"</span>,
+    <span class="op">_</span> <span class="op">=&gt;</span> <span class="str">"Other Day"</span>
+};
+          </div>
+          <div class="tip-box" style="margin-top:12px;">
+            <strong>Key Points:</strong><br>
+            • <strong>break</strong> exits the case in traditional switch<br>
+            • <strong>_</strong> is the default wildcard in switch expressions<br>
+            • Switch expressions are cleaner — prefer in C# 8+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 8: Loops -->
+  <div class="topic-section fade-in">
+    <div class="topic-header">
+      <span class="topic-num">08</span>
+      <h2>Control Flow — Loops</h2>
+    </div>
+    <div class="topic-body">
+      <div class="loop-grid">
+        <div class="loop-card">
+          <div class="loop-head" style="background:var(--blue);">for loop</div>
+          <div class="loop-code">
+<span class="kw">for</span> (<span class="kw">int</span> <span class="var">i</span> = <span class="num">0</span>; <span class="var">i</span> &lt; <span class="num">5</span>; <span class="var">i</span>++)
+{
+    <span class="fn">Console</span>.<span class="fn">Write</span>(<span class="var">i</span>);
+}
+<span class="cm">// Output: 0 1 2 3 4</span>
+          </div>
+          <div class="loop-note">Use when number of iterations is known</div>
+        </div>
+        <div class="loop-card">
+          <div class="loop-head" style="background:#00838F;">while loop</div>
+          <div class="loop-code">
+<span class="kw">int</span> <span class="var">n</span> = <span class="num">1</span>;
+<span class="kw">while</span> (<span class="var">n</span> &lt;= <span class="num">3</span>)
+{
+    <span class="fn">Console</span>.<span class="fn">Write</span>(<span class="var">n</span>);
+    <span class="var">n</span>++;
+}
+<span class="cm">// Output: 1 2 3</span>
+          </div>
+          <div class="loop-note">Checks condition before each iteration</div>
+        </div>
+        <div class="loop-card">
+          <div class="loop-head" style="background:#6A1B9A;">do-while loop</div>
+          <div class="loop-code">
+<span class="kw">int</span> <span class="var">x</span> = <span class="num">1</span>;
+<span class="kw">do</span>
+{
+    <span class="fn">Console</span>.<span class="fn">Write</span>(<span class="var">x</span>);
+    <span class="var">x</span>++;
+} <span class="kw">while</span> (<span class="var">x</span> &lt;= <span class="num">3</span>);
+<span class="cm">// Runs at least once!</span>
+          </div>
+          <div class="loop-note">Checks condition after — runs minimum once</div>
+        </div>
+        <div class="loop-card">
+          <div class="loop-head" style="background:#558B2F;">foreach loop</div>
+          <div class="loop-code">
+<span class="kw">int</span>[] <span class="var">nums</span> = {<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>};
+<span class="kw">foreach</span> (<span class="kw">int</span> <span class="var">n</span> <span class="kw">in</span> <span class="var">nums</span>)
+{
+    <span class="fn">Console</span>.<span class="fn">Write</span>(<span class="var">n</span>);
+}
+<span class="cm">// Output: 1 2 3</span>
+          </div>
+          <div class="loop-note">Best for iterating collections &amp; arrays</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 9: Conditional Operators -->
+  <div class="topic-section fade-in">
+    <div class="topic-header">
+      <span class="topic-num">09</span>
+      <h2>Conditional Operators</h2>
+    </div>
+    <div class="topic-body">
+      <div class="cond-block">
+        <div class="cond-title">Ternary Operator — condition ? value_if_true : value_if_false</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.8;">
+<span class="kw">string</span> <span class="var">status</span> = (<span class="var">age</span> &gt;= <span class="num">18</span>) <span class="op">?</span> <span class="str">"Adult"</span> <span class="op">:</span> <span class="str">"Minor"</span>;
+        </div>
+      </div>
+      <div class="cond-block">
+        <div class="cond-title">Null-Coalescing Operator — ?? returns right side if left is null</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.8;">
+<span class="kw">string</span> <span class="var">name</span> = <span class="var">userInput</span> <span class="op">??</span> <span class="str">"Guest"</span>;  <span class="cm">// If null → "Guest"</span>
+        </div>
+      </div>
+      <div class="cond-block">
+        <div class="cond-title">Null-Coalescing Assignment — ??= assigns only if null (C# 8+)</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.8;">
+<span class="var">userInput</span> <span class="op">??=</span> <span class="str">"Default"</span>;
+<span class="cm">// Same as: if (userInput == null) userInput = "Default";</span>
+        </div>
+      </div>
+      <div class="tip-box">
+        <strong>💡 Quick Tip:</strong> Ternary replaces simple if-else in one line. Use it for clarity, not complex logic — don't nest ternaries!
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 10: Key Takeaways -->
+  <div class="topic-section fade-in">
+    <div class="topic-header" style="background:#162040;border-radius:14px 14px 0 0;">
+      <span class="topic-num">✓</span>
+      <h2>Key Takeaways</h2>
+    </div>
+    <div class="topic-body" style="background:#0F1C3F;">
+      <div class="takeaway-grid">
+        <div class="takeaway-card"><div class="takeaway-num">01</div><div class="takeaway-text">.NET 8 is Microsoft's free, cross-platform runtime. C# code compiles to IL, executed by the CLR.</div></div>
+        <div class="takeaway-card"><div class="takeaway-num">02</div><div class="takeaway-text">C# is strongly typed — choose the right data type (int, double, string, bool) for your data.</div></div>
+        <div class="takeaway-card"><div class="takeaway-num">03</div><div class="takeaway-text">Use <code style="color:#00E676;font-family:monospace;">var</code> for type inference, <code style="color:#00E676;font-family:monospace;">const</code> for unchanging values, and <code style="color:#00E676;font-family:monospace;">?</code> for nullable types.</div></div>
+        <div class="takeaway-card"><div class="takeaway-num">04</div><div class="takeaway-text">if-else handles branching; switch is cleaner for multiple fixed value checks.</div></div>
+        <div class="takeaway-card"><div class="takeaway-num">05</div><div class="takeaway-text">Loops: for (known count), while (condition-first), do-while (run once), foreach (collections).</div></div>
+        <div class="takeaway-card"><div class="takeaway-num">06</div><div class="takeaway-text">Ternary (?:) shortens if-else; ?? handles null safely; ??= assigns only when null.</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>Practice daily &nbsp;•&nbsp; Read docs at <span>learn.microsoft.com</span> &nbsp;•&nbsp; Ask questions!</p>
+  <p style="margin-top:6px;font-size:11px;">Introduction to C# and .NET 8 — Designed for Freshers</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
