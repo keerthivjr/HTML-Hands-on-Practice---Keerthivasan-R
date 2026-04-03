@@ -1,0 +1,26 @@
+﻿@model DataAccessLayer.Models.ContactInfo
+
+<h2>Edit Contact</h2>
+
+<form asp-action="EditContact" method="post">
+
+    <input type="hidden" asp-for="ContactId" />
+
+    <input asp-for="FirstName" class="form-control" placeholder="First Name" />
+    <input asp-for="LastName" class="form-control mt-2" placeholder="Last Name" />
+    <input asp-for="EmailId" class="form-control mt-2" placeholder="Email" />
+    <input asp-for="MobileNo" class="form-control mt-2" placeholder="Mobile" />
+    <input asp-for="Designation" class="form-control mt-2" placeholder="Designation" />
+
+    <select asp-for="CompanyId" asp-items="ViewBag.Companies" class="form-control mt-2">
+        <option value="">Select Company</option>
+    </select>
+
+    <select asp-for="DepartmentId" asp-items="ViewBag.Departments" class="form-control mt-2">
+        <option value="">Select Department</option>
+    </select>
+
+    <button type="submit" class="btn btn-success mt-3">Update</button>
+</form>
+
+<a asp-action="ShowContacts" class="btn-dark">Back to List</a>

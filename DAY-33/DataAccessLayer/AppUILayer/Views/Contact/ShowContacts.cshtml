@@ -1,0 +1,49 @@
+﻿@model List<DataAccessLayer.Models.ContactInfo>
+
+@{
+    ViewData["Title"] = "All Contacts";
+}
+
+<h1>📞 Contact List</h1>
+
+<p>
+    <a href="@Url.Action("AddContact")" class="btn btn-primary">➕ Add New Contact</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Designation</th>
+            <th>Company</th>
+            <th>Department</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var contact in Model)
+        {
+            <tr>
+                <td>@contact.ContactId</td>
+                <td>@contact.FirstName</td>
+                <td>@contact.LastName</td>
+                <td>@contact.EmailId</td>
+                <td>@contact.MobileNo</td>
+                <td>@contact.Designation</td>
+                <td>@contact.Company?.CompanyName</td>
+                <td>@contact.Department?.DepartmentName</td>
+                <td>
+                    <a href="@Url.Action("GetContactById", new { id = contact.ContactId })" class="btn btn-info btn-sm">👁️ View</a>
+                    <a href="@Url.Action("EditContact", new { id = contact.ContactId })" class="btn btn-warning btn-sm">✏️ Edit</a>
+                    <form asp-action="DeleteContact" asp-route-id="@contact.ContactId" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Delete this contact?')">🗑️ Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

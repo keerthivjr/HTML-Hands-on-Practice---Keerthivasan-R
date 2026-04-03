@@ -1,0 +1,38 @@
+﻿@model DataAccessLayer.Models.ContactInfo
+
+<h2>Add Contact</h2>
+
+<form asp-action="AddContact" method="post">
+
+    <input asp-for="FirstName" class="form-control" placeholder="First Name" />
+    <span asp-validation-for="FirstName" class="text-danger"></span>
+    <input asp-for="LastName" class="form-control mt-2" placeholder="Last Name" />
+    <span asp-validation-for="LastName" class="text-danger"></span>
+    <input asp-for="EmailId" class="form-control mt-2" placeholder="Email" />
+    <span asp-validation-for="EmailId" class="text-danger"></span>
+    <input asp-for="MobileNo" class="form-control mt-2" placeholder="Mobile" />
+    <span asp-validation-for="MobileNo" class="text-danger"></span>
+    <input asp-for="Designation" class="form-control mt-2" placeholder="Designation" />
+    <span asp-validation-for="Designation" class="text-danger"></span>
+
+    <select asp-for="CompanyId" asp-items="ViewBag.Companies" class="form-control mt-2">
+        <option value="">Select Company</option>
+    </select>
+    <span asp-validation-for="CompanyId" class="text-danger"></span>
+
+    <select asp-for="DepartmentId" asp-items="ViewBag.Departments" class="form-control mt-2">
+        <option value="">Select Department</option>
+    </select>
+    <span asp-validation-for="DepartmentId" class="text-danger"></span>
+
+    <button type="submit" class="btn btn-success mt-3">Save</button>
+
+    
+</form>
+
+<a asp-action="ShowContacts" class="btn-dark">Back to List</a>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

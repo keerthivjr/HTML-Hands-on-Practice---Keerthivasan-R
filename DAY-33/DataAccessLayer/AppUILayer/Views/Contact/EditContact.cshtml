@@ -1,0 +1,74 @@
+﻿@model DataAccessLayer.Models.ContactInfo
+
+@{
+    ViewData["Title"] = "Edit Contact";
+}
+
+<h1>✏️ Edit Contact</h1>
+
+<form asp-action="EditContact" method="post">
+    <input type="hidden" asp-for="ContactId" />
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="FirstName"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LastName"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EmailId"></label>
+                <input asp-for="EmailId" class="form-control" type="email" />
+                <span asp-validation-for="EmailId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MobileNo"></label>
+                <input asp-for="MobileNo" class="form-control" />
+                <span asp-validation-for="MobileNo" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Designation"></label>
+                <input asp-for="Designation" class="form-control" />
+                <span asp-validation-for="Designation" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CompanyId">Company</label>
+                <select asp-for="CompanyId" class="form-control" asp-items="@(new SelectList(ViewBag.Companies, "CompanyId", "CompanyName"))">
+                    <option value="">-- Select Company --</option>
+                </select>
+                <span asp-validation-for="CompanyId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DepartmentId">Department</label>
+                <select asp-for="DepartmentId" class="form-control" asp-items="@(new SelectList(ViewBag.Departments, "DepartmentId", "DepartmentName"))">
+                    <option value="">-- Select Department --</option>
+                </select>
+                <span asp-validation-for="DepartmentId" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-primary">💾 Update Contact</button>
+        <a href="@Url.Action("ShowContacts")" class="btn btn-secondary">⬅️ Back to List</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

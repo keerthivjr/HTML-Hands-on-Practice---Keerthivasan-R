@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="AppUILayer/AppUILayer.csproj" />
+  <Project Path="DataAccessLayer/DataAccessLayer.csproj" />
+</Solution>
