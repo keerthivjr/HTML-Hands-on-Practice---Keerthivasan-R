@@ -1,0 +1,120 @@
+﻿@model EmployeeManagementSystem.Models.StatisticsViewModel
+
+@{
+    ViewData["Title"] = "Employee Statistics";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">📊 Employee Statistics Dashboard</h1>
+
+    @if (Model == null)
+    {
+        <div class="alert alert-danger">Error: Statistics data could not be loaded.</div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-header">Total Employees</div>
+                    <div class="card-body">
+                        <h1 class="card-title display-4">@Model.TotalEmployees</h1>
+                        <p class="card-text">Total active employees in system</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-header">Average Salary (Overall)</div>
+                    <div class="card-body">
+                        <h1 class="card-title display-4">@Model.OverallAverageSalary.ToString("C0")</h1>
+                        <p class="card-text">Company-wide average salary</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card text-white bg-warning mb-3">
+                    <div class="card-header">Highest Paid Employee</div>
+                    <div class="card-body">
+                        @* Use the Null-Conditional Operator '?' to prevent crashes *@
+                        @if (Model.HighestPaidEmployee != null)
+                        {
+                            <h4 class="card-title">@Model.HighestPaidEmployee.Name</h4>
+                            <p class="card-text">Salary: @Model.HighestPaidEmployee.Salary.ToString("C")</p>
+                            <small>Department: @Model.HighestPaidEmployee.Department</small>
+                        }
+                        else
+                        {
+                            <p class="card-text">No employees found</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header bg-info text-white">
+                <h5>📈 Department-wise Statistics (LINQ Grouping & Aggregation)</h5>
+            </div>
+            <div class="card-body">
+                @* Check if DepartmentGroups exists and has any data *@
+                @if (Model.DepartmentGroups != null && Model.DepartmentGroups.Any())
+                {
+                    @foreach (var dept in Model.DepartmentGroups)
+                    {
+                        <div class="card mb-3">
+                            <div class="card-header bg-secondary text-white">
+                                <h5>Department: @dept.Department</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <strong>👥 Employee Count:</strong> @dept.EmployeeCount
+                                    </div>
+                                    <div class="col-md-4">
+                                        <strong>💰 Average Salary:</strong> @dept.AverageSalary.ToString("C")
+                                    </div>
+                                    <div class="col-md-4">
+                                        @* Added '?' check before Sum to ensure the list isn't null *@
+                                        <strong>📊 Total Salary Pool:</strong> @(dept.Employees?.Sum(e => e.Salary).ToString("C") ?? "$0.00")
+                                    </div>
+                                </div>
+                                <hr />
+                                <h6>Employees in @dept.Department:</h6>
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr><th>Name</th><th>Salary</th><th>Status</th><th>Hire Date</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (dept.Employees != null)
+                                        {
+                                            @foreach (var emp in dept.Employees)
+                                            {
+                                                <tr>
+                                                    <td>@emp.Name</td>
+                                                    <td>@emp.Salary.ToString("C")</td>
+                                                    <td>@emp.JobStatus</td>
+                                                    <td>@emp.HireDate.ToString("yyyy-MM-dd")</td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-center">No departmental data available.</p>
+                }
+            </div>
+        </div>
+    }
+
+    <div class="mt-3">
+        <a asp-action="Index" class="btn btn-primary">← Back to Employee List</a>
+    </div>
+</div>

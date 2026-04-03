@@ -1,0 +1,140 @@
+﻿@model IEnumerable<EmployeeManagementSystem.Models.Employee>
+
+@{
+    ViewData["Title"] = "Employee Management";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Employee Management System</h1>
+
+    <!-- Success Message -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- LINQ Filtering and Search Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5>🔍 Search & Filter Employees (LINQ Queries)</h5>
+        </div>
+        <div class="card-body">
+            <form method="get" asp-action="Index">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Search by Name:</label>
+                        <input type="text" name="searchName" class="form-control" value="@ViewBag.SearchName" placeholder="Enter name..." />
+                    </div>
+                    <div class="col-md-3">
+                        <label>Filter by Department:</label>
+                        <select name="departmentFilter" class="form-control">
+                            <option value="">All Departments</option>
+                            @foreach (var dept in ViewBag.Departments)
+                            {
+                                if (ViewBag.DepartmentFilter == dept)
+                                {
+                                    <option value="@dept" selected>@dept</option>
+                                }
+                                else
+                                {
+                                    <option value="@dept">@dept</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label>Hire Date From:</label>
+                        <input type="date" name="fromDate" class="form-control" value="@ViewBag.FromDate" />
+                    </div>
+                    <div class="col-md-2">
+                        <label>Hire Date To:</label>
+                        <input type="date" name="toDate" class="form-control" value="@ViewBag.ToDate" />
+                    </div>
+                    <div class="col-md-2">
+                        <label>&nbsp;</label>
+                        <button type="submit" class="btn btn-primary form-control">Apply Filters</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sorting and Actions -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <a asp-action="Create" class="btn btn-success">➕ Add New Employee</a>
+            <a asp-action="Statistics" class="btn btn-info">📊 View Statistics</a>
+        </div>
+        <div class="col-md-6 text-end">
+            <a asp-action="Index" asp-route-sortOrder="asc" class="btn btn-outline-secondary">💰 Sort by Salary (Low to High)</a>
+            <a asp-action="Index" asp-route-sortOrder="desc" class="btn btn-outline-secondary">💰 Sort by Salary (High to Low)</a>
+        </div>
+    </div>
+
+    <!-- Employee List Table -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Employee Records (@Model.Count() employees found)</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                        <th>Salary</th>
+                        <th>Job Status</th>
+                        <th>Hire Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.Name</td>
+                            <td>@item.Email</td>
+                            <td>@item.Department</td>
+                            <td>@item.Salary.ToString("C")</td>
+                            <td>
+                                @if (item.JobStatus == "Active")
+                                {
+                                    <span class="badge bg-success">Active</span>
+                                }
+                                else if (item.JobStatus == "Inactive")
+                                {
+                                    <span class="badge bg-danger">Inactive</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning">On Leave</span>
+                                }
+                            </td>
+                            <td>@item.HireDate.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Auto-hide alert after 3 seconds
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 3000);
+    </script>
+}
