@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XYZ Solutions — Employee Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="css/styles.css" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ===== TOAST CONTAINER ===== -->
+  <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index:9999" id="toastContainer"></div>
+
+  <!-- ===== AUTH WRAPPER ===== -->
+  <div id="authWrapper">
+
+    <!-- SIGNUP VIEW -->
+    <div id="signupView" class="auth-page d-none">
+      <div class="auth-card">
+        <div class="auth-brand">
+          <div class="brand-icon"><i class="bi bi-building-fill-gear"></i></div>
+          <h1>XYZ Solutions</h1>
+          <p>Employee Management System</p>
+        </div>
+        <h2 class="auth-title">Create Admin Account</h2>
+        <div id="signupAlert" class="alert d-none" role="alert"></div>
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <input type="text" class="form-control" id="signupUsername" placeholder="Choose a username" />
+          </div>
+          <div class="invalid-feedback" id="signupUsernameError"></div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+            <input type="password" class="form-control" id="signupPassword" placeholder="Min. 6 characters" />
+          </div>
+          <div class="invalid-feedback" id="signupPasswordError"></div>
+        </div>
+        <div class="mb-4">
+          <label class="form-label">Confirm Password</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+            <input type="password" class="form-control" id="signupConfirm" placeholder="Repeat your password" />
+          </div>
+          <div class="invalid-feedback" id="signupConfirmError"></div>
+        </div>
+        <button class="btn btn-primary w-100 btn-lg" id="signupBtn">Create Account</button>
+        <p class="auth-switch">Already have an account? <a href="#" id="goToLogin">Sign in</a></p>
+      </div>
+    </div>
+
+    <!-- LOGIN VIEW -->
+    <div id="loginView" class="auth-page">
+      <div class="auth-card">
+        <div class="auth-brand">
+          <div class="brand-icon"><i class="bi bi-building-fill-gear"></i></div>
+          <h1>XYZ Solutions</h1>
+          <p>Employee Management System</p>
+        </div>
+        <h2 class="auth-title">Admin Sign In</h2>
+        <div id="loginAlert" class="alert alert-danger d-none" role="alert"></div>
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <input type="text" class="form-control" id="loginUsername" placeholder="Enter username" />
+          </div>
+          <div class="invalid-feedback" id="loginUsernameError"></div>
+        </div>
+        <div class="mb-4">
+          <label class="form-label">Password</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+            <input type="password" class="form-control" id="loginPassword" placeholder="Enter password" />
+          </div>
+          <div class="invalid-feedback" id="loginPasswordError"></div>
+        </div>
+        <button class="btn btn-primary w-100 btn-lg" id="loginBtn">Sign In</button>
+        <p class="auth-switch">Don't have an account? <a href="#" id="goToSignup">Create one</a></p>
+      </div>
+    </div>
+
+  </div><!-- /authWrapper -->
+
+  <!-- ===== APP WRAPPER (post-login) ===== -->
+  <div id="appWrapper" class="d-none">
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg fixed-top" id="mainNavbar">
+      <div class="container-fluid px-4">
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-building-fill-gear me-2"></i>XYZ <span>Solutions</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="#" id="navDashboard">
+                <i class="bi bi-speedometer2 me-1"></i>Dashboard
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="navEmployees">
+                <i class="bi bi-people me-1"></i>Employees
+              </a>
+            </li>
+          </ul>
+          <div class="d-flex align-items-center gap-2">
+            <span class="nav-user"><i class="bi bi-person-circle me-1"></i><span id="navUsername"></span></span>
+            <button class="btn btn-sm btn-add-emp" id="navAddEmployee">
+              <i class="bi bi-person-plus-fill me-1"></i>Add Employee
+            </button>
+            <button class="btn btn-sm btn-logout" id="logoutBtn">
+              <i class="bi bi-box-arrow-right me-1"></i>Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- DASHBOARD SECTION -->
+      <section id="dashboardSection">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Dashboard</h2>
+            <p class="section-subtitle">Workforce overview at a glance</p>
+          </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="row g-4 mb-4" id="kpiCards"></div>
+
+        <!-- Dept Breakdown + Recent Employees -->
+        <div class="row g-4">
+          <div class="col-lg-6">
+            <div class="panel-card h-100">
+              <div class="panel-card-header">
+                <h5><i class="bi bi-bar-chart-fill me-2"></i>Department Breakdown</h5>
+              </div>
+              <div class="panel-card-body" id="deptBreakdown"></div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="panel-card h-100">
+              <div class="panel-card-header">
+                <h5><i class="bi bi-clock-history me-2"></i>Recently Added</h5>
+              </div>
+              <div class="panel-card-body" id="recentEmployees"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EMPLOYEE LIST SECTION -->
+      <section id="employeeSection" class="d-none">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Employees</h2>
+            <p class="section-subtitle">Manage your workforce records</p>
+          </div>
+          <button class="btn btn-primary btn-add-emp" id="empAddEmployee">
+            <i class="bi bi-person-plus-fill me-1"></i>Add Employee
+          </button>
+        </div>
+
+        <!-- Filters Row -->
+        <div class="filter-bar mb-3">
+          <div class="row g-2 align-items-center">
+            <div class="col-md-4">
+              <div class="input-group search-group">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control" id="searchInput" placeholder="Search by name or email…" />
+                <button class="btn btn-clear-search d-none" id="clearSearch"><i class="bi bi-x-lg"></i></button>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" id="deptFilter">
+                <option value="">All Departments</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Marketing">Marketing</option>
+                <option value="HR">HR</option>
+                <option value="Finance">Finance</option>
+                <option value="Operations">Operations</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <div class="btn-group w-100" id="statusFilter" role="group">
+                <input type="radio" class="btn-check" name="statusOpt" id="statusAll" value="" checked />
+                <label class="btn btn-outline-secondary" for="statusAll">All</label>
+                <input type="radio" class="btn-check" name="statusOpt" id="statusActive" value="Active" />
+                <label class="btn btn-outline-success" for="statusActive">Active</label>
+                <input type="radio" class="btn-check" name="statusOpt" id="statusInactive" value="Inactive" />
+                <label class="btn btn-outline-danger" for="statusInactive">Inactive</label>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <select class="form-select" id="sortSelect">
+                <option value="">Sort By…</option>
+                <option value="name-asc">Name A–Z</option>
+                <option value="name-desc">Name Z–A</option>
+                <option value="salary-asc">Salary Low→High</option>
+                <option value="salary-desc">Salary High→Low</option>
+                <option value="date-asc">Date Oldest→Newest</option>
+                <option value="date-desc">Date Newest→Oldest</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Record count -->
+        <p class="record-count mb-2" id="recordCount"></p>
+
+        <!-- Table -->
+        <div class="table-wrapper">
+          <table class="table emp-table" id="employeeTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Designation</th>
+                <th>Salary</th>
+                <th>Join Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="employeeTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div><!-- /appWrapper -->
+
+  <!-- ===== ADD/EDIT EMPLOYEE MODAL ===== -->
+  <div class="modal fade" id="empFormModal" tabindex="-1" aria-labelledby="empFormModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="empFormModalLabel"><i class="bi bi-person-plus-fill me-2"></i>Add Employee</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="editEmployeeId" />
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">First Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="empFirstName" placeholder="e.g. Priya" />
+              <div class="invalid-feedback" id="empFirstNameError"></div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Last Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="empLastName" placeholder="e.g. Menon" />
+              <div class="invalid-feedback" id="empLastNameError"></div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Email <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" id="empEmail" placeholder="priya.menon@xyz.com" />
+              <div class="invalid-feedback" id="empEmailError"></div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Phone <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="empPhone" placeholder="10-digit number" maxlength="10" />
+              <div class="invalid-feedback" id="empPhoneError"></div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Department <span class="text-danger">*</span></label>
+              <select class="form-select" id="empDepartment">
+                <option value="">Select department</option>
+                <option>Engineering</option>
+                <option>Marketing</option>
+                <option>HR</option>
+                <option>Finance</option>
+                <option>Operations</option>
+              </select>
+              <div class="invalid-feedback" id="empDepartmentError"></div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Designation <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="empDesignation" placeholder="e.g. Software Engineer" />
+              <div class="invalid-feedback" id="empDesignationError"></div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Salary (₹) <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" id="empSalary" placeholder="e.g. 750000" min="1" />
+              <div class="invalid-feedback" id="empSalaryError"></div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Join Date <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" id="empJoinDate" />
+              <div class="invalid-feedback" id="empJoinDateError"></div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Status <span class="text-danger">*</span></label>
+              <select class="form-select" id="empStatus">
+                <option value="">Select status</option>
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+              <div class="invalid-feedback" id="empStatusError"></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="empFormSubmit">
+            <i class="bi bi-check-circle me-1"></i><span id="empFormSubmitLabel">Add Employee</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== VIEW EMPLOYEE MODAL ===== -->
+  <div class="modal fade" id="viewEmpModal" tabindex="-1" aria-labelledby="viewEmpModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="viewEmpModalLabel"><i class="bi bi-person-badge me-2"></i>Employee Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="viewEmpBody"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DELETE CONFIRM MODAL ===== -->
+  <div class="modal fade" id="deleteEmpModal" tabindex="-1" aria-labelledby="deleteEmpModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0">
+          <h5 class="modal-title text-danger" id="deleteEmpModalLabel"><i class="bi bi-exclamation-triangle-fill me-2"></i>Confirm Delete</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center py-4">
+          <div class="delete-icon mb-3"><i class="bi bi-trash3-fill"></i></div>
+          <p class="fs-5" id="deleteEmpMessage">Are you sure?</p>
+          <p class="text-muted small">This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer border-0 justify-content-center">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+            <i class="bi bi-trash3-fill me-1"></i>Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/storageService.js"></script>
+  <script src="js/authService.js"></script>
+  <script src="js/employeeService.js"></script>
+  <script src="js/validationService.js"></script>
+  <script src="js/dashboardService.js"></script>
+  <script src="js/uiService.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

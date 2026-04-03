@@ -1,0 +1,11 @@
+{
+  "name": "employee-management-dashboard",
+  "version": "1.0.0",
+  "description": "XYZ Solutions Employee Management System",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  }
+}
