@@ -1,0 +1,32 @@
+﻿@model ContactManagementApp.Models.ContactInfo
+
+@{
+    ViewData["Title"] = "Contact Details";
+}
+
+<h2>Contact Details</h2>
+
+@if (Model != null)
+{
+    <dl>
+        <dt>ID:</dt>
+        <dd>@Model.ContactId</dd>
+
+        <dt>Full Name:</dt>
+        <dd>@Model.FirstName @Model.LastName</dd>
+
+        <dt>Company:</dt>
+        <dd>@Model.CompanyName</dd>
+
+        <dt>Email:</dt>
+        <dd>@Model.EmailId</dd>
+
+        <dt>Mobile:</dt>
+        <dd>@Model.MobileNo</dd>
+
+        <dt>Designation:</dt>
+        <dd>@Model.Designation</dd>
+    </dl>
+
+    <a href="/Contact/ShowContacts">Back to List</a>
+}

@@ -1,0 +1,173 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Feedback Form</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .rating {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .rating-option {
+            flex: 1;
+            text-align: center;
+            min-width: 60px;
+        }
+
+            .rating-option input {
+                display: none;
+            }
+
+            .rating-option label {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #f0f0f0;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: all 0.3s;
+                font-weight: normal;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .rating-option input:checked + label {
+                background-color: #ffc107;
+                color: #333;
+                font-weight: bold;
+                transform: scale(1.05);
+            }
+
+            .rating-option label:hover {
+                background-color: #ffc107;
+                transform: scale(1.05);
+            }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+            button:hover {
+                transform: translateY(-2px);
+            }
+
+        .info {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>📝 We Value Your Feedback!</h2>
+
+        <form method="post" action="/Feedback/Submit">
+            <div class="form-group">
+                <label>Your Name:</label>
+                <input type="text" name="name" required placeholder="Enter your name" />
+            </div>
+
+            <div class="form-group">
+                <label>Your Comments:</label>
+                <textarea name="comments" required placeholder="Share your thoughts with us..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Rating (1-5):</label>
+                <div class="rating">
+                    <div class="rating-option">
+                        <input type="radio" id="rating1" name="rating" value="1" required />
+                        <label for="rating1">⭐ 1</label>
+                    </div>
+                    <div class="rating-option">
+                        <input type="radio" id="rating2" name="rating" value="2" />
+                        <label for="rating2">⭐⭐ 2</label>
+                    </div>
+                    <div class="rating-option">
+                        <input type="radio" id="rating3" name="rating" value="3" />
+                        <label for="rating3">⭐⭐⭐ 3</label>
+                    </div>
+                    <div class="rating-option">
+                        <input type="radio" id="rating4" name="rating" value="4" />
+                        <label for="rating4">⭐⭐⭐⭐ 4</label>
+                    </div>
+                    <div class="rating-option">
+                        <input type="radio" id="rating5" name="rating" value="5" />
+                        <label for="rating5">⭐⭐⭐⭐⭐ 5</label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit">Submit Feedback</button>
+        </form>
+
+        <div class="info">
+            💡 Your feedback helps us serve you better!
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+﻿@model List<ContactManagementApp.Models.ContactInfo>
+
+@{
+    ViewData["Title"] = "All Contacts";
+}
+
+<h2>Contact List</h2>
+
+@if (!Model.Any())
+{
+    <p>No contacts found. <a href="/Contact/AddContact">Add your first contact</a></p>
+}
+else
+{
+    <table border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Company</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Designation</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var contact in Model)
+            {
+                <tr>
+                    <td>@contact.ContactId</td>
+                    <td>@contact.FirstName</td>
+                    <td>@contact.LastName</td>
+                    <td>@contact.CompanyName</td>
+                    <td>@contact.EmailId</td>
+                    <td>@contact.MobileNo</td>
+                    <td>@contact.Designation</td>
+                    <td>
+                        <a href="/Contact/GetContactById/@contact.ContactId">View Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+    <a href="/Contact/AddContact">Add New Contact</a>
+}

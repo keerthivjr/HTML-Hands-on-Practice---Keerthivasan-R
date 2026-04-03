@@ -1,0 +1,60 @@
+﻿@model ContactManagementApp.Models.ContactInfo
+
+@{
+    ViewData["Title"] = "Add New Contact";
+}
+
+<h2>Add New Contact</h2>
+
+<form method="post" asp-action="AddContact">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div>
+        <label asp-for="FirstName">First Name:</label>
+        <input asp-for="FirstName" required />
+        <span asp-validation-for="FirstName"></span>
+    </div>
+    <br />
+
+    <div>
+        <label asp-for="LastName">Last Name:</label>
+        <input asp-for="LastName" required />
+        <span asp-validation-for="LastName"></span>
+    </div>
+    <br />
+
+    <div>
+        <label asp-for="CompanyName">Company Name:</label>
+        <input asp-for="CompanyName" />
+    </div>
+    <br />
+
+    <div>
+        <label asp-for="EmailId">Email:</label>
+        <input asp-for="EmailId" type="email" required />
+        <span asp-validation-for="EmailId"></span>
+    </div>
+    <br />
+
+    <div>
+        <label asp-for="MobileNo">Mobile No:</label>
+        <input asp-for="MobileNo" type="number" required />
+        <span asp-validation-for="MobileNo"></span>
+    </div>
+    <br />
+
+    <div>
+        <label asp-for="Designation">Designation:</label>
+        <input asp-for="Designation" />
+    </div>
+    <br />
+
+    <button type="submit">Save Contact</button>
+    <a href="/Contact/ShowContacts">Cancel</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
