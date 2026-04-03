@@ -1,0 +1,39 @@
+﻿@model DataAccessLayer.Models.ContactInfo
+
+@{
+    ViewData["Title"] = "Contact Details";
+}
+
+<h1>Contact Details</h1>
+
+<div class="card">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">First Name</dt>
+            <dd class="col-sm-9">@Model.FirstName</dd>
+
+            <dt class="col-sm-3">Last Name</dt>
+            <dd class="col-sm-9">@Model.LastName</dd>
+
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@Model.EmailId</dd>
+
+            <dt class="col-sm-3">Mobile No</dt>
+            <dd class="col-sm-9">@Model.MobileNo</dd>
+
+            <dt class="col-sm-3">Designation</dt>
+            <dd class="col-sm-9">@Model.Designation</dd>
+
+            <dt class="col-sm-3">Company</dt>
+            <dd class="col-sm-9">@Model.Company?.CompanyName</dd>
+
+            <dt class="col-sm-3">Department</dt>
+            <dd class="col-sm-9">@Model.Department?.DepartmentName</dd>
+        </dl>
+    </div>
+</div>
+
+<p class="mt-3">
+    <a asp-action="EditContact" asp-route-id="@Model.ContactId" class="btn btn-warning">Edit</a>
+    <a asp-action="ShowContacts" class="btn btn-secondary">Back to List</a>
+</p>

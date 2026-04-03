@@ -1,0 +1,47 @@
+﻿@model IEnumerable<DataAccessLayer.Models.ContactInfo>
+
+@{
+    ViewData["Title"] = "Contacts List";
+}
+
+<h1>Contacts List</h1>
+
+<p>
+    <a asp-action="AddContact" class="btn btn-primary">Create New Contact</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Mobile No</th>
+            <th>Designation</th>
+            <th>Company</th>
+            <th>Department</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td>@item.EmailId</td>
+                <td>@item.MobileNo</td>
+                <td>@item.Designation</td>
+                <td>@item.Company?.CompanyName</td>
+                <td>@item.Department?.DepartmentName</td>
+                <td>
+                    <a asp-action="GetContactById" asp-route-id="@item.ContactId" class="btn btn-info btn-sm">Details</a>
+                    <a asp-action="EditContact" asp-route-id="@item.ContactId" class="btn btn-warning btn-sm">Edit</a>
+                    <form asp-action="DeleteContact" asp-route-id="@item.ContactId" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this contact?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
