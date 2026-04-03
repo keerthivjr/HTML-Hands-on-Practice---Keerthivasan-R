@@ -1,0 +1,177 @@
+﻿@{
+    Layout = null;
+    var products = ViewBag.ProductList as List<ProductManagement.Controllers.Product> ?? new List<ProductManagement.Controllers.Product>();
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Management</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 30px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #333;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .form-container {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: inline-block;
+            width: 120px;
+            font-weight: bold;
+            color: #555;
+        }
+        input {
+            padding: 8px;
+            width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: 120px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid #28a745;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #e9ecef;
+        }
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-style: italic;
+        }
+        .total-row {
+            background-color: #ffeaa7;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🛍️ Product Management System</h2>
+
+        <div class="form-container">
+            <h3>Add New Product</h3>
+
+            @if (ViewBag.Message != null)
+            {
+                <div class="message">
+                    ✅ @ViewBag.Message
+                </div>
+            }
+
+            <form method="post" action="/Product/Add">
+                <div class="form-group">
+                    <label>Product Name:</label>
+                    <input type="text" name="productName" required placeholder="Enter product name" />
+                </div>
+                <div class="form-group">
+                    <label>Price ($):</label>
+                    <input type="number" name="price" step="0.01" required placeholder="0.00" />
+                </div>
+                <div class="form-group">
+                    <label>Quantity:</label>
+                    <input type="number" name="quantity" required placeholder="0" />
+                </div>
+                <button type="submit">➕ Add Product</button>
+            </form>
+        </div>
+
+        <h3>Product List</h3>
+
+        @if (products.Any())
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Product Name</th>
+                        <th>Price ($)</th>
+                        <th>Quantity</th>
+                        <th>Total Value ($)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in products)
+                    {
+                        <tr>
+                            <td>@product.Id</td>
+                            <td>@product.ProductName</td>
+                            <td>@product.Price.ToString("F2")</td>
+                            <td>@product.Quantity</td>
+                            <td>@product.TotalValue.ToString("F2")</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr class="total-row">
+                        <td colspan="4" style="text-align: right;"><strong>Total Products:</strong></td>
+                        <td><strong>@products.Count</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        }
+        else
+        {
+            <div class="no-data">
+                📦 No products added yet. Add your first product using the form above!
+            </div>
+        }
+    </div>
+</body>
+</html>

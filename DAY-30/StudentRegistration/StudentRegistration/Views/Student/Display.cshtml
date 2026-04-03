@@ -1,0 +1,65 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Details</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 50px;
+        }
+
+        .container {
+            width: 400px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+
+        .details {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: white;
+            border-left: 4px solid green;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>✅ Registration Successful!</h2>
+
+        @if (ViewBag.StudentName != null)
+        {
+            <div class="details">
+                <p><strong>Student Name:</strong> @ViewBag.StudentName</p>
+                <p><strong>Age:</strong> @ViewBag.Age</p>
+                <p><strong>Course:</strong> @ViewBag.Course</p>
+            </div>
+            <p class="success">✓ Student has been registered successfully!</p>
+        }
+        else
+        {
+            <p>No student data found.</p>
+        }
+
+        <br />
+        <a href="/Student/Register" class="back-link">← Register Another Student</a>
+    </div>
+</body>
+</html>
