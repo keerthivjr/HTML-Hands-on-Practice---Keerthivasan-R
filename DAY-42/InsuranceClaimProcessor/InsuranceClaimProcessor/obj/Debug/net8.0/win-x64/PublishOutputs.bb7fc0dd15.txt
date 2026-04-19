@@ -1,0 +1,5 @@
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-42\InsuranceService\appsettings.Development.json
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-42\InsuranceService\appsettings.json
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-42\InsuranceService\InsuranceClaimProcessor.pdb
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-42\InsuranceService\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-42\InsuranceService\InsuranceClaimProcessor.exe
