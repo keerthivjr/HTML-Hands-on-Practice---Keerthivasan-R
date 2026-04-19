@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ContactManagement.API/ContactManagement.API.csproj" />
+  <Project Path="ContactManagement.DAL/ContactManagement.DAL.csproj" />
+</Solution>

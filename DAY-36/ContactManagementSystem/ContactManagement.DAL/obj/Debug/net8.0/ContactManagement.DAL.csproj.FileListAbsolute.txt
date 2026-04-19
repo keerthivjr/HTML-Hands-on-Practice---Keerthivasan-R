@@ -1,0 +1,15 @@
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-36\ContactManagement.DAL\bin\Debug\net8.0\ContactManagement.DAL.deps.json
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-36\ContactManagement.DAL\bin\Debug\net8.0\ContactManagement.DAL.runtimeconfig.json
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-36\ContactManagement.DAL\bin\Debug\net8.0\ContactManagement.DAL.dll
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-36\ContactManagement.DAL\bin\Debug\net8.0\ContactManagement.DAL.pdb
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-36\ContactManagement.DAL\obj\Debug\net8.0\ContactManagement.DAL.csproj.AssemblyReference.cache
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-36\ContactManagement.DAL\obj\Debug\net8.0\ContactManagement.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-36\ContactManagement.DAL\obj\Debug\net8.0\ContactManagement.DAL.AssemblyInfoInputs.cache
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-36\ContactManagement.DAL\obj\Debug\net8.0\ContactManagement.DAL.AssemblyInfo.cs
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-36\ContactManagement.DAL\obj\Debug\net8.0\ContactManagement.DAL.csproj.CoreCompileInputs.cache
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-36\ContactManagement.DAL\obj\Debug\net8.0\ContactManagement.DAL.sourcelink.json
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-36\ContactManagement.DAL\obj\Debug\net8.0\ContactManagement.DAL.dll
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-36\ContactManagement.DAL\obj\Debug\net8.0\refint\ContactManagement.DAL.dll
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-36\ContactManagement.DAL\obj\Debug\net8.0\ContactManagement.DAL.pdb
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-36\ContactManagement.DAL\obj\Debug\net8.0\ContactManagement.DAL.genruntimeconfig.cache
+C:\Users\keerthi\OneDrive\Desktop\upGrad\DAY-36\ContactManagement.DAL\obj\Debug\net8.0\ref\ContactManagement.DAL.dll
