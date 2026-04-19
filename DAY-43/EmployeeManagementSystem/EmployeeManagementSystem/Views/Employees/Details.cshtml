@@ -1,0 +1,82 @@
+﻿@model EmployeeManagementSystem.Models.Employee
+
+@{
+    ViewData["Title"] = "Employee Details";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h3 class="mb-0">
+                        <i class="fas fa-user-circle"></i> Employee Details
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Id)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Id)</dd>
+
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.FirstName)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.FirstName)</dd>
+
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.LastName)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.LastName)</dd>
+
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.FullName)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.FullName)</dd>
+
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Email)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Email)</dd>
+
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Department)</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge bg-info">@Html.DisplayFor(model => model.Department)</span>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Position)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Position)</dd>
+
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.HireDate)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.HireDate)</dd>
+
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Salary)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Salary)</dd>
+
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.PhoneNumber)</dd>
+
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.IsActive)</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="badge bg-success">Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Inactive</span>
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

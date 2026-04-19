@@ -1,0 +1,115 @@
+﻿===========================================
+PRODUCT BACKLOG - Employee Management System
+===========================================
+Product Owner: Keerthi
+Created: [Today's Date]
+Status: Active
+
+===========================================
+PRIORITY 1 - MUST HAVE (Sprint 1 - COMPLETED)
+===========================================
+
+PB-001 | Create New Employee
+----------------------------------------
+User Story: As an HR manager, I want to add new employees 
+            so that I can maintain an up-to-date directory
+Priority: Critical
+Story Points: 5
+Status: ✅ COMPLETED
+Acceptance Criteria:
+  - Form with all employee fields (First Name, Last Name, Email, Department, Position, Hire Date, Salary)
+  - Validation for required fields
+  - Success message after creation
+  - Employee appears in list
+
+PB-002 | View All Employees
+----------------------------------------
+User Story: As a manager, I want to see all employees in a list
+            so that I can quickly find team members
+Priority: Critical
+Story Points: 3
+Status: ✅ COMPLETED
+Acceptance Criteria:
+  - Table showing all employees
+  - Display key information (Name, Email, Department, Position)
+  - Sortable columns
+  - Search functionality
+
+PB-003 | Edit Employee Details
+----------------------------------------
+User Story: As an HR manager, I want to update employee information
+            so that records stay accurate
+Priority: Critical
+Story Points: 5
+Status: ✅ COMPLETED
+Acceptance Criteria:
+  - Pre-populated form with existing data
+  - Validation on update
+  - Success message after update
+  - Changes reflected in list
+
+PB-004 | Delete Employee
+----------------------------------------
+User Story: As an HR manager, I want to remove employees
+            so that only active employees appear in the system
+Priority: Critical
+Story Points: 3
+Status: ✅ COMPLETED
+Acceptance Criteria:
+  - Confirmation dialog before deletion
+  - Success message after deletion
+  - Employee removed from list
+
+PB-005 | View Employee Details
+----------------------------------------
+User Story: As a manager, I want to see complete employee profile
+            so that I have all information in one place
+Priority: High
+Story Points: 2
+Status: ✅ COMPLETED
+Acceptance Criteria:
+  - Display all employee fields
+  - Professional formatting
+  - Navigation back to list
+
+===========================================
+PRIORITY 2 - SHOULD HAVE (Sprint 2 - PLANNED)
+===========================================
+
+PB-006 | Search Employees
+----------------------------------------
+User Story: As a user, I want to search employees by name
+            so that I can find specific people quickly
+Priority: Medium
+Story Points: 3
+Status: 📝 IN BACKLOG
+
+PB-007 | Filter by Department
+----------------------------------------
+User Story: As a manager, I want to filter employees by department
+            so that I can see team-specific information
+Priority: Medium
+Story Points: 2
+Status: 📝 IN BACKLOG
+
+===========================================
+PRIORITY 3 - COULD HAVE (Future Sprints)
+===========================================
+
+PB-008 | Export to Excel
+----------------------------------------
+Story Points: 5
+Status: 📝 IN BACKLOG
+
+PB-009 | Employee Photo Upload
+----------------------------------------
+Story Points: 8
+Status: 📝 IN BACKLOG
+
+===========================================
+METRICS
+===========================================
+Total Story Points Completed (Sprint 1): 18
+Total Features Delivered: 5
+Sprint Duration: 2 weeks
+Team Velocity: 18 points/sprint
