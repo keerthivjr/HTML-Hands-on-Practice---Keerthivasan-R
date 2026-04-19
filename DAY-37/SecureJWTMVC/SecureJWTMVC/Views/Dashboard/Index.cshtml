@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h3>Welcome to Your Dashboard</h3>
+                </div>
+                <div class="card-body">
+                    <h4>User Information</h4>
+                    <p><strong>Email:</strong> @ViewBag.UserEmail</p>
+                    <p><strong>Roles:</strong> @string.Join(", ", ViewBag.UserRoles)</p>
+
+                    <hr />
+
+                    <div class="alert alert-success">
+                        <h5>✅ JWT Token Active</h5>
+                        <p>You are authenticated using JWT token stored in HttpOnly cookie.</p>
+                        <p>Token expires in 60 minutes.</p>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5>Protected Content</h5>
+                                    <p>This page is only accessible to authenticated users.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <div class="col-md-6">
+                                <div class="card bg-warning">
+                                    <div class="card-body">
+                                        <h5>Admin Access</h5>
+                                        <p>You have admin privileges!</p>
+                                        <a asp-controller="Admin" asp-action="Index" class="btn btn-dark">Go to Admin Panel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

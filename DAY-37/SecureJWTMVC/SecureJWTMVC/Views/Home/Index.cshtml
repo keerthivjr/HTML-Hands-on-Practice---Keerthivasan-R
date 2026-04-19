@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Secure JWT Authentication</h1>
+    <p>Learn about <a href="https://jwt.io/">JWT Tokens</a>.</p>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h3>🔐 Secure Authentication</h3>
+                <p>This application uses JWT (JSON Web Token) for secure authentication.</p>
+                <ul>
+                    <li>Tokens stored in HttpOnly cookies</li>
+                    <li>Role-based authorization</li>
+                    <li>Protected routes</li>
+                    <li>Stateless authentication</li>
+                </ul>
+                @if (User.Identity?.IsAuthenticated != true)
+                {
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-primary">Login to Access Dashboard</a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h3>👥 Demo Accounts</h3>
+                <p><strong>Admin:</strong> admin@secureapp.com / Admin@123</p>
+                <p><strong>User:</strong> Register a new account</p>
+                <hr />
+                <a asp-controller="Account" asp-action="Register" class="btn btn-success">Create New Account</a>
+            </div>
+        </div>
+    </div>
+</div>

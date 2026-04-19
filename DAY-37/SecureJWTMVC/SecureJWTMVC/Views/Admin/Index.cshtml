@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+<div class="container">
+    <div class="alert alert-warning">
+        <h3>🔐 Admin Panel - Restricted Access</h3>
+        <p>Only users with <strong>Admin</strong> role can access this page.</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h3>@ViewBag.TotalUsers</h3>
+                    <p>Total Users</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h3>@ViewBag.TotalRoles</h3>
+                    <p>Total Roles</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h3>JWT</h3>
+                    <p>Token Active</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <div class="card">
+            <div class="card-header">
+                <h4>Admin Actions</h4>
+            </div>
+            <div class="card-body">
+                <a asp-action="Users" class="btn btn-primary">Manage Users</a>
+            </div>
+        </div>
+    </div>
+</div>
